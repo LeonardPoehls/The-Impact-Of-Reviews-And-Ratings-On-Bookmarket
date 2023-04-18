@@ -1,0 +1,431 @@
+---
+title: "Replikationen"
+author: "Leonard Poehls"
+date: "2023-03-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+
+library(haven)
+library(ggplot2)
+library(stargazer)
+library(kableExtra)
+library(tidyverse)
+library(janitor)
+library(cowplot)
+library(ivreg)
+library(tinytex)
+library(lfe)
+library(plm)
+library(dplyr)
+library(zoo)
+library(broom)
+library(fixest)
+library(modelsummary)
+library(gt)
+```
+
+
+```{r}
+setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit")
+data <- readRDS("The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data/dataEst.RDS")
+
+```
+
+```{r}
+
+#Table 1 Replication
+
+#saveRDS(dataEst, file = "The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data/dataEst.RDS")
+
+# Descriptive Values differentiated by country
+dataDesKript <- data %>%
+   group_by(country) %>%
+   summarize(Price = round(mean(pamzn),2), 
+            Star_Rating = round(mean(R),2), 
+            Sales_Rank = round(mean(rank),2), 
+            Number_of_Ratings = round(mean(review), 2),
+            Teenth = quantile(R, probs = 0.1, na.rm = TRUE), 
+            Tweentyfifth = quantile(R, probs = 0.25, na.rm = TRUE),
+            Fiftith = quantile(R, probs = 0.5, na.rm = TRUE),
+            Seventyfifth = quantile(R, probs = 0.75, na.rm = TRUE), 
+            Ninetith = quantile(R, probs = 0.9, na.rm = TRUE),
+            Titles = n_distinct(titleno),
+            Observations = NROW(country), 
+            Editions = n_distinct(asin))
+
+# Descriptive Values for all countries
+dataDesKript2 <- data %>%
+   summarize(country = "All",
+            Price = round(mean(pamzn),2), 
+            Star_Rating = round(mean(R),2), 
+            Sales_Rank = round(mean(rank),2),
+            Number_of_Ratings = round(mean(review), 2),
+            Teenth = quantile(R, probs = 0.1, na.rm = TRUE), 
+            Tweentyfifth = quantile(R, probs = 0.25, na.rm = TRUE),
+            Fiftith = quantile(R, probs = 0.5, na.rm = TRUE),
+            Seventyfifth = quantile(R, probs = 0.75, na.rm = TRUE), 
+            Ninetith = quantile(R, probs = 0.9, na.rm = TRUE),
+            Titles = n_distinct(titleno),
+            Observations = length(asin), 
+            Editions = n_distinct(asin))
+
+# Merge Dataframes
+DataDes <- rbind(dataDesKript, dataDesKript2)
+
+# Transform Dataframe into a clearer schema
+DataDesTest <- t(DataDes)
+colnames(DataDesTest) <- rownames(DataDes)
+DataDescriptive <- as.data.frame(DataDesTest)
+colnames(DataDescriptive) <- unlist(DataDescriptive[1,])
+DataDescriptive <- DataDescriptive[-1,]
+
+
+# Change Row Names 
+row.names(DataDescriptive) = c("Price", "Star rating", "Sales rank", "Number of ratings", "10th", "25th", "50th", "75th", "90th", "Titles", "Observations", "Editions")
+
+
+# Kable-Function to create an attractive overview
+
+DataDescriptive %>%
+kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States", "All" = "All"), caption = "Group Rows") %>%
+  kable_paper("striped", full_width = TRUE) %>%
+  pack_rows("Star rating percentiles", 5, 9) %>%
+  pack_rows("", 10, 12)
+
+```
+
+
+
+```{r}
+#Figure 1 
+
+
+#Create a fictive Dataset 
+
+yPredQualityPrice <- c(1.6,1.0,0.50,0.15,0.02)
+xQuan <- c(1,2,3,4,5)
+yRealQualityPrice <- c(2.1,1.5,1,0.65,0.52)
+xGroup <- c(1, 1, 1, 1, 1)
+DatasetTest <- data.frame(Pred_Price = yPredQualityPrice, Quan = xQuan, Real_Price = yRealQualityPrice, Group = xGroup)
+
+#Create a plot
+
+ggplot(data = DatasetTest) +
+  geom_line(aes(x=Quan, y=Pred_Price, group = Group), linetype = 2, size = 0.9) +
+  geom_line(aes(x=Quan, y=Real_Price, group = Group), linetype = 1, size = 0.9) +
+  geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = "red", linetype = "dashed") +
+  geom_segment(aes(x = 3, y = 0, xend = 3, yend = 1), color = "red", linetype = "dashed") +
+  geom_segment(aes(x = 4, y = 0, xend = 4, yend = 1), color = "red", linetype = "dashed") +
+  geom_segment(aes(x = 0, y = 1, xend = 5, yend = 1),size=1.1, color = "red") +
+
+#Mark Zone A
+  geom_text(aes(x=1.25, y=1.15, label = "A"), color = "black", hjust=0, size=5, alpha = 0.1) +
+  geom_segment(aes(x = 1, y = 1, xend = 1, yend = 1.5), color = "black", linetype = "dashed") +
+#Mark Zone B
+  geom_text(aes(x=1.5, y=1.5, label = "B"), color = "black", hjust=0, size=5, alpha = 0.1) +
+  geom_segment(aes(x = 1, y = 1.5, xend = 1, yend = 2.1), color = "black", linetype = "dashed") +
+  geom_segment(aes(x = 2, y = 1, xend = 2, yend = 1.5), color = "black", linetype = "dashed") +
+#Mark Zone C
+  geom_text(aes(x=2.27, y=1.17, label = "C"), color = "black", hjust=0, size=5, alpha = 0.1) +
+#Mark Zone D
+  geom_text(aes(x=3.6, y=0.9, label = "D"), color = "black", hjust=0, size=5, alpha = 0.1) +
+  geom_segment(aes(x = 4, y = 0.65, xend = 4, yend = 1), color = "black", linetype = "dashed") +
+#Mark intersection points
+  geom_point(aes(x = 2, y=1), color = "red", size=2.5) +
+  geom_point(aes(x = 4, y=1), color = "red", size=2.5) +
+  geom_text(aes(x=1.8, y=0.93, label = "P1"), color = "black", hjust=0, size=3, alpha = 0.1) +
+  geom_text(aes(x=3.8, y=0.93, label = "P2"), color = "black", hjust=0, size=3, alpha = 0.1) +
+
+#Add line description
+  geom_text(aes(x=0, y=1.55, label = "Without \nPre-Purchase Information\n _ _ _ _ _ _ _ _ _ _ _ _ "), color = "Black", hjust=0, size= 2.2, alpha=0.1) + 
+  geom_text(aes(x=0, y=2.05, label = "With \nPre-Purchase Information\n ___________________"), color = "Black", hjust=0, size= 2.2, alpha=0.1) +
+  
+#Set specific layout
+  theme_bw() +
+  labs(title = "How is Pre-Purchase Information related to Welfare?",
+       x = "Quantity", 
+       y = "Price") +
+  scale_x_continuous(breaks = 1:5, labels = c("", "Q1", "Q*", "Q2", "")) +
+  theme(
+  axis.text.y=element_blank(),
+  panel.grid.minor=element_blank(),plot.background=element_blank())
+```
+
+
+
+
+```{r}
+#Table 2 - Data Transformation
+#Transform data structure
+data <- data %>%
+  arrange(canum, ddate)
+prev_btitle <- NULL
+prev_lrank <- NULL
+new_lrank <- NULL
+for (i in 1:nrow(data)) {
+  if (i == 1 || data$canum[i] != prev_btitle) {
+    new_lrank[i] <- data$lrank[i]
+  } else {
+    new_lrank[i] <- prev_lrank
+  }
+  prev_btitle <- data$canum[i]
+  prev_lrank <- data$lrank[i]
+}
+data$L1.rank <- new_lrank
+
+
+
+#Transform dnyt
+
+data <- data %>%
+    mutate(dnytpost1 = ifelse(NYT_elapse >= 1 & NYT_elapse <= 5, 1, 0), 
+           dnytpost6 = ifelse(NYT_elapse >= 6 & NYT_elapse <= 10, 1, 0),
+           dnytpost10Test = ifelse(NYT_elapse >= 11 & NYT_elapse <= 20, 1, 0),
+           dnytpostpreTest = ifelse(NYT_elapse >= -10 & NYT_elapse <= 20, 1, 0),
+           dothpostTest = ifelse(OTH_elapse >= 1 & OTH_elapse <= 10, 1, 0), 
+           dothpost10Test = ifelse(OTH_elapse >= 11 & OTH_elapse <= 20, 1, 0), 
+           dothpostpreTest = ifelse(OTH_elapse >= -10 & OTH_elapse <= 20, 1, 0),
+ 
+          dnytpost1 = ifelse(is.na(NYT_elapse), 0, dnytpost1), 
+          dnytpost6 = ifelse(is.na(NYT_elapse), 0, dnytpost6),
+          dnytpost10 = ifelse(is.na(NYT_elapse), 0, dnytpost10), 
+          dothpost = ifelse(is.na(NYT_elapse), 0, dothpost), 
+          dnytpost10 = ifelse(is.na(NYT_elapse), 0, dnytpost10)) 
+
+
+
+for (x in c("NYT", "OTH")) {
+  
+  for (k in 0:40) {
+    
+    data[, paste0("D", x, k)] <- as.integer(data[, paste0(x, "_elapse")] == k)
+    data[, paste0("D", x, k)] <- replace(data[, paste0("D", x, k)], is.na(data[, paste0("D", x, k)]), 0)
+  }
+  
+  
+  for (k in 1:20) {
+  
+    data[, paste0("D", x, "m", k)] <- as.integer(data[, paste0(x, "_elapse")] == -1 * k)
+    data[, paste0("D", x, "m", k)] <- replace(data[, paste0("D", x, "m", k)], is.na(data[, paste0("D", x, "m", k)]), 0)
+  }
+}
+
+for (k in 1:3) {
+  data[, paste0("dnytpost1_", k)] <- data$dnytpost1 * (data$cno == k) * (data$drecommended == 0)
+  data[, paste0("dnytpost6_", k)] <- data$dnytpost6 * (data$cno == k) * (data$drecommended == 0)
+  data[, paste0("dnytpost10_", k)] <- data$dnytpost10 * (data$cno == k) * (data$drecommended == 0)
+  data[, paste0("dnytpostpre_", k)] <- data$dnytpostpre * (data$cno == k) * (data$drecommended == 0)
+  
+  data[, paste0("dothpost_", k)] <- data$dothpost * (data$cno == k)
+  data[, paste0("dothpost10_", k)] <- data$dothpost10 * (data$cno == k)
+  data[, paste0("dothpostpre_", k)] <- data$dothpostpre * (data$cno == k)
+  
+  data[, paste0("dnytpost1r_", k)] <- data$dnytpost1 * (data$cno == k) * data$drecommended
+  data[, paste0("dnytpost6r_", k)] <- data$dnytpost6 * (data$cno == k) * data$drecommended
+  data[, paste0("dnytpost10r_", k)] <- data$dnytpost10 * (data$cno == k) * data$drecommended
+  data[, paste0("dnytpostprer_", k)] <- data$dnytpostpre * (data$cno == k) * data$drecommended
+}
+
+
+#T <- data[,c(29, 74)] 
+
+
+#Add neccessary columns to differentiate between countries and times etc.
+  dataUS <- data %>%
+    filter(country == "US", ddate >= "2018-01-01" & ddate <= "2018-12-31") %>%
+    arrange(canum, ddate) 
+
+
+```
+
+
+
+```{r}
+#Table 2 
+
+
+
+#Regression 1, 2, 3 for US Data
+
+
+#Regression 1
+#reghdfe lrank L1.lrank lpamzn lreview lR  DNYT* DOTH* epos* eneg* if cno==3, absorb(canum) vce(robust)
+reg1 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR + DNYT + DNYT0 + DNYT1 + DNYT2 + DNYT3 +DNYT4 + DNYT5 + DNYT6 + DNYT7 + DNYT8 + DNYT9 + DNYT10 + DNYT11 + DNYT12 + DNYT13 +DNYT14 + DNYT15 +DNYT16 + DNYT17 +DNYT18 +DNYT19 + DNYT20 + DNYT21 + DNYT22 + DNYT23 + DNYT24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DNYT39 +DNYT40 + DNYTm1 + DNYTm2 + DNYTm3 + DNYTm4 + DNYTm5 + DNYTm6 + DNYTm7 + DNYTm8 + DNYTm9 + DNYTm10 + DNYTm11 + DNYTm12 + DNYTm13 + DNYTm14 + DNYTm15 + DNYTm16 + DNYTm17 + DNYTm18 + DNYTm19 + DNYTm20 + DOTH0 + DOTH1 + DOTH2 + DOTH3 +DOTH4 + DOTH5 + DOTH6 + DOTH7 + DOTH8 + DOTH9 + DOTH10 + DOTH11 + DOTH12 + DOTH13 + DOTH14 + DOTH15 +DOTH16 + DOTH17 + DOTH18 + DOTH19 + DOTH20 + DOTH21 + DOTH22 + DOTH23 + DOTH24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DOTH39 +DOTH40 + DOTHm1 + DOTHm2 + DOTHm3 + DOTHm4 + DOTHm5 + DOTHm6 + DOTHm7 + DOTHm8 + DOTHm9 + DOTHm10 + DOTHm11 + DOTHm12 + DOTHm13 + DOTHm14 + DOTHm15 + DOTHm16 + DOTHm17 + DOTHm18 + DOTHm19 + DOTHm20 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+
+#Regression 2
+#reghdfe lrank L1.lrank  lpamzn lreview lR  dnytpost1_3 dnytpost6_3 dnytpost10_3 dnytpost1r_3 dnytpost6r_3 dnytpost10r_3 #dnytpostprer_* dothpost_3 dothpost10_3  dnytpostpre_* dothpostpre_* epos* eneg* if cno==3, absorb(ano) vce(robust)
+reg2 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+
+#Regression 3
+#reghdfe lrank L1.lrank  lpamzn lreview lR lrR  dnytpost1_3 dnytpost6_3 dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_3 dnytpost6r_3 dnytpost10r_3 dnytpostprer_* epos* eneg* if cno==3, absorb(ano) vce(robust)
+reg3 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR + lrR + dnytpost1_3 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+
+
+
+
+#Transform data including all data
+dataAll <- data %>%
+  filter(ddate >= "2018-01-01" & ddate <= "2018-12-31") %>%
+  arrange(canum, ddate) 
+
+
+
+#Regression 4, 5 for US, CA and GB Data
+
+#reghdfe lrank L1.lrank  lpamzn lreview lR   dnytpost1_*  dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
+#Regression 4
+reg4 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR  + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataAll)
+
+#reghdfe lrank L1.lrank  lpamzn lreview lR  lrR  dnytpost1_* dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
+#Regression 5
+reg5 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR + lrR + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataAll)
+
+
+panel1 <- list("Standard Values" = reg1$coefficients[1:4])
+panel2 <- list("Standard Values" = reg2$coefficients[1:4], 
+               "NYT not recommended" = reg2$coefficients[c(5,6,7,9)])
+
+
+rows <- c("NYT not recommended", "NYT recommended", "Other paper") 
+
+
+RegTable <- modelsummary(list(reg1, reg2, reg3, reg4, reg5), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("L1.rank" = "Lagged log sales rank", "lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
+ RegTable 
+
+```
+
+
+
+
+```{r}
+#Figure 2 
+
+
+ 
+regTest <- feols(lrank ~ L1.rank + lpamzn + lreview + lR | canum, vcov = "hetero", data = dataUS)
+
+ 
+ 
+###NYT Plot
+regTest$residuals <- regTest$residuals - mean(regTest$residuals[which(dataUS$NYT_elapse == -1)])
+ 
+ reg1_agg <- aggregate(regTest$residuals, by = list(dataUS$NYT_elapse), FUN = mean)
+  colnames(reg1_agg) <- c("NYT_elapse", "Avg.Sales.rank")
+ reg1_agg <- reg1_agg %>%
+   mutate(Max95 = Avg.Sales.rank + 1.96*sd(Avg.Sales.rank  - mean(regTest$residuals[which(dataUS$NYT_elapse == -1)])),
+          Min95 = Avg.Sales.rank - 1.96*sd(Avg.Sales.rank   - mean(regTest$residuals[which(dataUS$NYT_elapse == -1)])))
+ 
+ 
+ ggplot(reg1_agg, aes(x = NYT_elapse, y = Avg.Sales.rank)) + 
+   geom_line() + 
+   scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + 
+#  geom_line(aes(y = Max95), linetype = "dashed") + 
+#  geom_line(aes(y = Min95), linetype = "dotted") +
+#  geom_smooth() +
+  geom_vline(xintercept = -1, color = "red", size = 0.5) +
+  scale_y_reverse() + 
+  ylim(0.3, -0.6) +
+  theme_minimal() 
+ 
+ 
+###OTH Plot
+ regTest$residuals <- regTest$residuals - mean(regTest$residuals[which(dataUS$OTH_elapse == -1)])
+ 
+ reg2_agg <- aggregate(regTest$residuals, by = list(dataUS$OTH_elapse), FUN = mean)
+ colnames(reg2_agg) <- c("OTH_elapse", "Avg.Sales.rank")
+ reg2_agg <- reg2_agg %>%
+   mutate(Max95 = Avg.Sales.rank + 1.96*sd(Avg.Sales.rank),
+         Min95 = Avg.Sales.rank - 1.96*sd(Avg.Sales.rank))
+ 
+ reg2_agg <- reg2_agg %>%
+   filter(OTH_elapse %% 1 == 0)
+ ggplot(reg2_agg, aes(x = OTH_elapse, y = Avg.Sales.rank)) + geom_line() + scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + geom_line(aes(y = Max95), linetype = "dashed") + geom_line(aes(y = Min95), linetype = "dotted") +    scale_y_reverse() + 
+   geom_vline(xintercept = -1, color = "red", size = 0.5) +
+ ylim(0.3, -0.5) +
+ theme_minimal() 
+
+
+```
+
+
+
+
+```{r}
+
+# figure 3
+
+
+#Regression 1
+dataAll <- dataAll %>%
+  mutate(lRev_50 = ntile(lreview, 50))
+
+regRev <- lm(lreview ~ lrR_50, data = dataAll)
+
+regRev_agg <- aggregate(dataAll$lreview, by = list(dataAll$lrR_50), FUN = mean) 
+ colnames(regRev_agg) <- c("lRev_50", "log.review")
+ 
+dataAll <- merge(dataAll, regRev_agg, by = "lRev_50") 
+ 
+
+
+#Regression 2
+reg6 <- feols(lrank ~ L1.rank + lpamzn + lreview + log.review*lR + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3  + dnytpost10_1 + dnytpost10_2 + dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpostprer_1  + dnytpostprer_2  + dnytpostprer_3  + dothpost10_1  + dothpost10_2  + dothpost10_3  + dnytpost1r_3 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataAll)
+
+summary(reg6)
+#	reghdfe lrank L1.lrank  lpamzn c.lR#i.r50 i.r50   dnytpost1_* dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
+#	estimates save "estimates/review_quantiles_50", replace
+
+ reg3_agg <- aggregate(reg6$residuals, by = list(dataAll$log.review), FUN = mean) 
+ colnames(reg3_agg) <- c("Quantiles", "log.Review.rank.effect")
+ 
+# reg3_agg <- aggregate(reg6$residuals, by = list(dataAll$lrR_50), FUN = mean) 
+# colnames(reg3_agg) <- c("Quantiles", "log.Review.rank.effect")
+ 
+ 
+ regMerge <- merge(reg3_agg, regRev_agg, by = "Quantiles") %>%
+   mutate(estimateInteraction = log.Review.rank.effect*log.review)
+ 
+ 
+ 
+ 
+ 
+ 
+ reg3_agg <- reg3_agg %>%
+   group_by(lRev_50) %>%
+   summarize(log.reviews = mean(log.reviews), 
+             estimate = mean(log.sales.rank.effect), 
+             Max95 = mean(Max95), 
+             Min95 = mean(Min95))
+
+ ggplot(regRev_agg, aes(x = Quantiles, y = log.review.effect)) + 
+   geom_point() +
+ #  geom_errorbar(aes(ymin = Min95, ymax = Max95), width = 0.1) +
+   scale_x_continuous(breaks = seq(0, 10, by = 2), limits = c(0, 10)) + 
+   scale_y_reverse() + 
+   geom_vline(xintercept = -1, color = "red", size = 0.5) +
+   ylim(0.5, -1.2) +
+   theme_minimal() 
+
+ 
+ 
+ 
+ 
+
+```
+
+
+
+
+
+
+
+
+
+
+

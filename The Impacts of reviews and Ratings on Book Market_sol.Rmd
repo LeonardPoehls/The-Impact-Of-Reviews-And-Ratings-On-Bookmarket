@@ -1,0 +1,148 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+#< ignore
+
+# The Impacts of Reviews and Ratings on Book Market
+
+Author: Leonard Pöhls 
+
+Hello readers and welcome to my Bachelor Thesis about how professional reviews and crowd ratings impacting the book market. Do not wonder about the manner of this Thesis. The whole Program is based on the statistical programming language R and its package RTutor to generate interactive problem sets with exercises for its readers. My created Problem is based on the Paper **Digitization and Pre-Purchase Information: The Causal and Welfare Impacts of Reviews and Crowd Ratings"** by Imke Reimers and Joel Waldfogel, that has been published in 2021 in the American Economic Journal. It investigates two main aspects. First, how pre-purchase information in the form of crowd ratings from other individual purchaser and professional reviews from daily newspapers do affect sales ranks and revenues. Second, to compare the welfare effect with and without the presence of pre-purchase information. The base of those considered welfare effects got determined through the transformation from sales prices and sales ranks into quantity elasticities. The Paper can be opened [here](https://www.aeaweb.org/articles?id=10.1257/aer.20200153). 
+
+
+
+
+
+
+
+
+```{r "setup", eval=FALSE}
+
+# Load required Packages
+library(RTutor)
+library(yaml)
+
+#Set Working Directory
+setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit")
+
+# Set problem set's name
+ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
+
+# character vector of all required packages in the problem set
+libs = c("ggplot2") 
+
+#rps.has.sol=TRUE
+# Create Problem Set
+create.ps(sol.file=sol.file, ps.name=ps.name,libs=libs,stop.when.finished=FALSE, addons="quiz")
+
+# Show the problem set in the webbrowser
+show.ps(ps.name,sample.solution=FALSE,auto.save.code = TRUE)
+```
+
+#>
+
+## Exercise 1 -- Computing with R
+
+a) We often want to compute some summary statistic of a vector. For example:
+
+```{r}
+#< task
+x = 10:20
+# Computing the sum of x
+sum(x)
+#>
+```
+
+Now compute the mean of x.
+```{r optional=TRUE}
+# Note the chunk option optional = TRUE means
+# the user can continue with the next exercise
+# without having solved this one
+
+mean(x)
+#< hint
+cat("There already exist R functions for many things. To find them use Google, e.g. search for 'R compute mean'.")
+#>
+```
+
+
+#< info "useful functions for numeric vectors"
+Here are examples for useful R functions
+```{r}
+max(c(1,5,2)) # returns maximum
+min(c(1,5,2)) # returns minimum
+
+sum(c(1,5,2,NA), na.rm=TRUE) # returns sum of all numbers, ignore NA
+cumsum(c(1,5,2)) # returns cummulated sum
+diff(c(1,5,2)) # returns the vector of differences
+```
+#>
+
+
+#< award "mean means mean"
+Well, in some occasions one can just guess the name of an R function. The function to compute the mean of a vector, or matrix is called 'mean'. Usually, it is much quicker to goggle than to guess function names, however.
+#>
+
+b) Let `y` be a vector that contains the squared elements of `x`, i.e. for each element $i$ we want $$y_i = x_i^2.$$ Then show `y`.
+```{r}
+# We should not set this chunk optional
+# since we need y in the next chunk
+y = x^2
+y
+```
+
+#c) Now use the function `qplot` from the package `ggplot2` to create a scatter plot of `x` against `y`. You can google `r qplot` to get the help for #the function `qplot`.
+
+```{r optional=TRUE, dev="svg", fig.width=4}
+#< task
+library(ggplot2) # load ggplot2 package
+
+# Enter your call to qplot here...
+#>
+qplot(x,y)
+#< test_arg
+allow.extra.arg = TRUE 
+#>
+# The block above allows the user to add extra arguments to the call to qplot, i.e. qplot(x,y,xlab="The variable x"), would also pass the test.
+```
+
+
+#< quiz "prime"
+question: What is the 'oddest' prime?
+sc:
+    - 2*
+    - 3
+    - 5
+    - 7
+success: Well, of course the answer is debatable...
+failure: Try again.
+#>
+
+Note: A quiz as specified below only works in the shiny environment. If you want to design a quiz in an RMarkdown based RTutor problem set, you should use a chunk. E.g. as follows:
+
+Which of the following numbers is the oddest prime? 2,3,5 or 7? Enter you solution in the code below and press "check".
+
+```{r}
+2
+```
+#< award "The oddest prime"
+Wouldn't you agree that the only even prime is the odd man out?
+#>
+
+## Exercise Submitting your solution
+
+To submit your solution please proceed as follows:
+
+1. Scroll to the top and click on the icon with the bars <i class="fa fa-tasks fa-fw"></i> to see how many points you got so far. If you want to have more points you can try to solve the missing tasks.
+
+2. If you want to submit click on the download button <i class="fa  fa-download fa-fw"></i> at the very right.
+
+3. In the opened tab click the button "Download Submission File". Your browser should then download a file with the extension `.sub`.
+
+4. Upload that downloaded file to your course management system like Moodle, as specified by your instructor.
+
+
+
