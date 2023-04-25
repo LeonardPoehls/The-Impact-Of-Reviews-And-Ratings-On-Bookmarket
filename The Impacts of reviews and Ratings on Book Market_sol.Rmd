@@ -7,26 +7,26 @@ output:
 #< ignore
 
 ```{r "setup", eval=FALSE}
-
-# Load required Packages
 library(RTutor)
 library(yaml)
+ 
+ #Set Working Directory
+ setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket")
+ 
+ # Set problem set's name
+ ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
+ 
+ # character vector of all required packages in the problem set
+ libs = c("ggplot2") 
+ 
+ # Create Problem Set
+ create.ps(sol.file=sol.file, user.name = NULL, ps.name=ps.name,libs=libs,stop.when.finished=FALSE, addons="quiz")
+ 
+ #open problem set in web browser
+show.ps(ps.name,launch.browser=TRUE, auto.save.code=FALSE, sample.solution=FALSE)
+ 
+ stop.without.error()
 
-#Set Working Directory
-setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket")
-
-# Set problem set's name
-ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
-
-# character vector of all required packages in the problem set
-libs = c("ggplot2") 
-
-#rps.has.sol=TRUE
-# Create Problem Set
-create.ps(sol.file=sol.file, ps.name=ps.name,libs=libs,stop.when.finished=FALSE, addons="quiz")
-
-# Show the problem set in the webbrowser
-show.ps(ps.name,sample.solution=FALSE,auto.save.code = TRUE)
 ```
 
 #>
@@ -114,14 +114,46 @@ After editing this chapter, you gained an insight of the initial situation on th
 1.2 Introduction to Welfare, Demand and Price Elasticity
 
 
+## Exercise 1.1 -- Book Market, Professional Reviews and Crowd Ratings
+
+Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **search goods**, **experience goods** and **Credence goods**. Buyer of **search goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts comsuming it, such as visits to cinema or whine. By the consumption of **Credence goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
+
+#< quiz "Books_As_Goods"
+question: What would you guess books belong to?
+sc:
+- Search Goods.
+- Experience Goods.*
+- Credence Goods.
+success: Great, your answer is correct!
+failure: Try again.
+#>
+
+The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is particulary the book market that appropriated for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
+
+As explained, professional reviews are defined as periodically appearing reviews in daily newspaper articles. The data set includes information about the appearance of professional reviews from the New York Times, the Chicago Tribune, the Boston Globe, the Wall Street Journal, the Los Angeles Times and the Washington Post. However, quantitative information as well as star ratings are not available. Additionally, The New York Times recommends nine books every week (New York Times, 2023). Professional reviews enable access to pre-purchase information. 
+
+#< quiz "Big_Newspapers"
+question: What is your suggestion, which of these newspapers has the most impact on the sales quantity?
+sc:
+- The New York Times.*
+- The Chicago Tribune.
+- The Boston Globe.
+- The Wall Street Journal.
+- The Los Angeles Times.
+- The Washington Post.
+success: Great, your answer is correct!
+failure: Try again.
+#>
+
+As well as professional reviews, the Amazon data set also includes information about star ratings from buyers. Identified as buyer on Amazon, everyone is permitted to evaluate the bought product on a five-point scale. Basically, people benefit from other customers reviews. However, in contrast to professional reviews, crowd rating are tending to generate less trust. Crowd ratings are susceptible to fake content for defaming or fraudulent purposes while professional reviews were created by objective and professional reviewers. Therefore, the more ratings exist for the particular product, the more likely the calculated average star rating approximates the "actual" quality. Thus crowd ratings are representing the second pre-purchase information.                                                                 
+ 
+Hence, the consumer interacts with 
 
 
 
 
 
 
-
-## Exercise 1 -- Computing with R
 
 a) We often want to compute some summary statistic of a vector. For example:
 
