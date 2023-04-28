@@ -149,21 +149,29 @@ As well as professional reviews, the Amazon data set also includes information a
  
 Hence, Reimers and Waldfogel claim that the consumer interacts with both of these types of pre-purchase information in a different way, perhaps resulting in different or superimposed effects. One possible reason could be the difference in accessibility of these information types. While crowd ratings are visible for every Amazon user, professional reviews are accessible but not automatically visible for everyone. Furthermore, it is less likely that people who randomly find a book on Amazon will verify the existence of a professional review afterwards. Vice versa, after finding a professional reviewed book, people automatically get access to crowd ratings during the purchasing process. Incidentally, word-of-mouth can be also understood as pre-purchase information. Nevertheless, the consumer has access to at least one type of pre-purchase information. 
 
-#< quiz "Beginning_CrowdRatings"
-question: What is your suggestion, which of these newspapers has the most impact on the sales quantity?
+
+#< quiz "Fakereviews_Amazon"
+question: How many reviews on Amazon are fake or unreliable?
 sc:
-- The New York Times.*
-- The Chicago Tribune.
-- The Boston Globe.
-- The Wall Street Journal.
-- The Los Angeles Times.
-- The Washington Post.
-success: Great, your answer is correct!
+- 61%.
+- 23%.
+- 9%.
+- 42%.*
+- 15%.
+success: Great, your answer is correct! (Stieb, 2022)
 failure: Try again.
 #>
 
 
+Previously, we mentioned to aim an estimation on so called sales ranks. Sales ranks are the numerical representation of how your products sells in contrast to other products in the same categorie (Wisniach, 2022). Actually, we do not have information about sold quantities so that sales ranks are substituting these values. [Amazon](https://www.amazon.com/gp/help/customer/display.html?nodeId=GGGMZK378RQPATDJ) defined their sales rank as hourly updated calculation to "reflect recent recent and historical sales of every item sold on Amazon". Hence, sales ranks are relative numbers to compare sales activities. To make assumptions regarding a welfare analysis, the authors of the underlying paper collected more data from New York Times top-100 weekly bestsellers from 2018 to transform ranks into quantities. As a result, we can examine price elasticities. 
 
+**Summary**
+
+To sum up, we obtained an explanation of goods concerning their level of certainty and assigned books to the experience goods. Furthermore, we enumerated three different types of pre-purchase information from which we use two for the estimation. We recognized that crowd ratings and professional reviews exhibit different effects and potentially superimpose each other what possibly leads to different results in estimation. Finally, we got an introduction to Amazons sales ranks and their importance for the further course. 
+
+In the following chapter 1.2, you will pick up the economic basic knowledge you need to understand the analysis and the manner of this examination. 
+
+## Exercise 1.2 -- Introduction to Welfare, Demand and Price Elasticity
 
 
 a) We often want to compute some summary statistic of a vector. For example:
