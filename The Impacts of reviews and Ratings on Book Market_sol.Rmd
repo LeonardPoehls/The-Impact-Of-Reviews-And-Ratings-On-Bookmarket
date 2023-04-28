@@ -173,6 +173,24 @@ In the following chapter 1.2, you will pick up the economic basic knowledge you 
 
 ## Exercise 1.2 -- Introduction to Welfare, Demand and Price Elasticity
 
+Colloquially, the term "welfare" is associated with many contexts, such as unemployment benefit or other social assistance. The actual origin of this term lies in the economy. Mathematically, welfare is sum of producer surplus and consumer surplus. Basically, consumer surplus is the difference between the price for a good that consumers are willing to pay and the actual price of this good. Against this, Producer surplus is the difference between the price that suppliers would be willing to charge for their goods and the actual price of this good. Actually, the economic reality is much more complex. For simplifying purposes, we focus on polypol markets (markets with many suppliers) under perfect conditions, that the model requires in order to work. 
+
+#< quiz "perfectMarket_Conditions"
+question: Which of these assumptions are not relevant for a perfect market? 
+sc:
+- Perfect information availability (Knowledge about every price for the underlying good).
+- No personal preferences (Preferences, that are preventing you to act rational).
+- Homogenous products (Equal goods).
+- Fast reaction velocity (Changing market conditions are quickly recognized from every market participant).*
+- 15%.
+success: Great, your answer is correct! (Stieb, 2022)
+failure: Try again.
+#>
+
+
+
+
+
 
 a) We often want to compute some summary statistic of a vector. For example:
 
