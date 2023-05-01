@@ -119,7 +119,7 @@ After editing this chapter, you gained an insight of the initial situation on th
 
 ## Exercise 1.1 -- Book Market, Professional Reviews and Crowd Ratings
 
-Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **search goods**, **experience goods** and **Credence goods**. Buyer of **search goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts comsuming it, such as visits to cinema or whine. By the consumption of **Credence goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
+Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts comsuming it, such as visits to cinema or whine. By the consumption of **Credence Goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
 
 #< quiz "Books_As_Goods"
 question: What would you guess books belong to?
@@ -182,7 +182,7 @@ In the following chapter 1.2, you will pick up the economic basic knowledge you 
 Colloquially, the term "welfare" is associated with many contexts, such as unemployment benefit or other social assistance. The actual origin of this term lies in the economy. Mathematically, welfare is sum of producer surplus and consumer surplus. Basically, consumer surplus is the difference between the price for a good that consumers are willing to pay and the actual price of this good. Against this, Producer surplus is the difference between the price that suppliers would be willing to charge for their goods and the actual price of this good. Actually, the economic reality is much more complex. For simplifying purposes, we focus on polypol markets (markets with many suppliers) under perfect conditions, that the model requires in order to work. Without even one of these assumptions, the model is invalid.   
 
 #< quiz "perfectMarket_Conditions"
-question: which of these conditions is *not* relevant for a perfect market? 
+question: Which of these conditions is **not** relevant for a perfect market? 
 sc:
 - Perfect information availability (Knowledge about every price for the underlying good).
 - No personal preferences (Preferences, that are preventing you to act rational).
@@ -221,23 +221,43 @@ ggplot(data = DatasetTest) +
   geom_text(aes(x=0.5, y=1.3, label = "A"), color = "black", hjust=0, size=8, alpha = 0.1) +
 #Mark Zone B
   geom_text(aes(x=0.5, y=0.7, label = "B"), color = "black", hjust=0, size=8, alpha = 0.1) +
+#Mark Zone C
+  geom_text(aes(x=1.5, y=0.3, label = "C"), color = "black", hjust=0, size=8, alpha = 0.1) +  
 #Mark intersection point
   geom_point(aes(x = 2, y=1), color = "red", size=2.5) +
 #Add line description
-geom_text(aes(x=0.5, y=1.83, label = "Demand"), color = "Black", angle = 328, size= 4, alpha=0.1) +
-geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 32, size= 4, alpha=0.1) +
+geom_text(aes(x=0.5, y=1.83, label = "Demand"), color = "Black", angle = 332, size= 4, alpha=0.1) +
+geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 28, size= 4, alpha=0.1) +
 #Set specific layout
   theme_bw() +
   labs(title = "How is Pre-Purchase Information related to Welfare?",
        x = "Quantity", 
        y = "Price") +
-  scale_x_continuous(labels = c("", "", "Q*", "", "")) +
-  scale_y_continuous(labels = c("", "", "P*", "", "")) +
+  scale_x_continuous(labels = c("0", "", "Q*", "", "")) +
+  scale_y_continuous(labels = c("0", "", "P*", "", "")) +
   theme(
  # axis.text.y=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
 #>
 ```
+
+The linear demand curve shows how the consumers act on a perfect market. Obviously, a maximum price exists at which no more is consumed. This model likewise assumes unrealistically that free goods are consumed infinitely. On the other side, the linear supply curve illustrates the suppliers point of view. The model concludes that every supplier can offer his good for the maximum price. Vice versa, the more the price falls, the fewer suppliers can still offer their good.                         In natural competition, suppliers are forced to align their prices. This is due to the fact that each supplier wants to maximize its revenue, so it is not worthwhile for the suppliers who can offer the lowest price to actually offer the lowest price. In long term, the actual market price will converge to P* and every supplier that can not offer for P* disappears. Finally, P* defines the equilibrium price and Q* the equilibrium quantity.  
+
+#< quiz "Mark_Surplus"
+question: Which of these marked triangles represents the consumer surplus? 
+sc:
+- A.*
+- B.
+- C.
+success: Great, your answer is correct!
+
+#>
+
+As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand curve 
+
+
+
+
 
 Now compute the mean of x.
 ```{r optional=TRUE}
