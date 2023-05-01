@@ -10,6 +10,7 @@ output:
 library(RTutor)
 library(yaml)
 library(xfun)
+library(ggplot2)
  
  #Set Working Directory
  setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket")
@@ -207,45 +208,33 @@ demand <- c(2, 1.5, 1, 0.5, 0)
 xAxis <- c(0, 1,2,3,4)
 supply <- c(0, 0.5, 1, 1.5, 2)
 xGroup <- c(1, 1, 1, 1, 1)
-DatasetTest <- data.frame(Demand = demand, Quan = xAxis, Supply = supply, Group = xGroup)
+DatasetTest <- data.frame(Price = demand, Quantity = xAxis, Supply = supply, Group = xGroup)
 
 #Create a plot
-
 ggplot(data = DatasetTest) +
-  geom_line(aes(x=Quan, y=Demand, group = Group), linetype = 1, size = 0.8) +
-  geom_line(aes(x=Quan, y=supply, group = Group), linetype = 1, size = 0.8) +
+  geom_line(aes(x=Quantity, y=Price, group = Group), linetype = 1, size = 0.8) +
+  geom_line(aes(x=Quantity, y=supply, group = Group), linetype = 1, size = 0.8) +
   geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 0, y = 1, xend = 2, yend = 1), color = "red", linetype = "dashed") +
 
 #Mark Zone A
   geom_text(aes(x=0.5, y=1.3, label = "A"), color = "black", hjust=0, size=8, alpha = 0.1) +
 #Mark Zone B
-  geom_text(aes(x=1.5, y=1.5, label = "B"), color = "black", hjust=0, size=5, alpha = 0.1) +
-  geom_segment(aes(x = 1, y = 1.5, xend = 1, yend = 2.1), color = "black", linetype = "dashed") +
-  geom_segment(aes(x = 2, y = 1, xend = 2, yend = 1.5), color = "black", linetype = "dashed") +
-#Mark Zone C
-  geom_text(aes(x=2.27, y=1.17, label = "C"), color = "black", hjust=0, size=5, alpha = 0.1) +
-#Mark Zone D
-  geom_text(aes(x=3.6, y=0.9, label = "D"), color = "black", hjust=0, size=5, alpha = 0.1) +
-  geom_segment(aes(x = 4, y = 0.65, xend = 4, yend = 1), color = "black", linetype = "dashed") +
-#Mark intersection points
+  geom_text(aes(x=0.5, y=0.7, label = "B"), color = "black", hjust=0, size=8, alpha = 0.1) +
+#Mark intersection point
   geom_point(aes(x = 2, y=1), color = "red", size=2.5) +
-  geom_point(aes(x = 4, y=1), color = "red", size=2.5) +
-  geom_text(aes(x=1.8, y=0.93, label = "P1"), color = "black", hjust=0, size=3, alpha = 0.1) +
-  geom_text(aes(x=3.8, y=0.93, label = "P2"), color = "black", hjust=0, size=3, alpha = 0.1) +
-
 #Add line description
-  geom_text(aes(x=0, y=1.55, label = "Without \nPre-Purchase Information\n _ _ _ _ _ _ _ _ _ _ _ _ "), color = "Black", hjust=0, size= 2.2, alpha=0.1) + 
-  geom_text(aes(x=0, y=2.05, label = "With \nPre-Purchase Information\n ___________________"), color = "Black", hjust=0, size= 2.2, alpha=0.1) +
-  
+geom_text(aes(x=0.5, y=1.83, label = "Demand"), color = "Black", angle = 328, size= 4, alpha=0.1) +
+geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 32, size= 4, alpha=0.1) +
 #Set specific layout
   theme_bw() +
   labs(title = "How is Pre-Purchase Information related to Welfare?",
        x = "Quantity", 
        y = "Price") +
-  scale_x_continuous(breaks = 1:5, labels = c("", "Q1", "Q*", "Q2", "")) +
+  scale_x_continuous(labels = c("", "", "Q*", "", "")) +
+  scale_y_continuous(labels = c("", "", "P*", "", "")) +
   theme(
-  axis.text.y=element_blank(),
+ # axis.text.y=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
 #>
 ```
