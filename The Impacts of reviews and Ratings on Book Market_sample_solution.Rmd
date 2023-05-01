@@ -1,36 +1,15 @@
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'Jane Doe'
+```
+
 ---
 output:
   word_document: default
   html_document: default
 ---
 
-#< ignore
-
-```{r "setup", eval=FALSE}
-library(RTutor)
-library(yaml)
-library(xfun)
- 
- #Set Working Directory
- setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket")
- 
- # Set problem set's name
- ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
- 
- # character vector of all required packages in the problem set
- libs = c("ggplot2") 
- 
- # Create Problem Set
- create.ps(sol.file=sol.file, user.name = NULL, ps.name=ps.name,libs=libs,stop.when.finished=FALSE, addons="quiz")
- 
- #open problem set in web browser
-show.ps(ps.name,launch.browser=TRUE, auto.save.code=FALSE, sample.solution=FALSE)
- 
- stop.without.error()
-
-```
-
-#>
 
 # The Impacts of Professional Reviews and Crowd Ratings on the Book Market
 
@@ -120,52 +99,54 @@ After editing this chapter, you gained an insight of the initial situation on th
 
 Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **search goods**, **experience goods** and **Credence goods**. Buyer of **search goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts comsuming it, such as visits to cinema or whine. By the consumption of **Credence goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
 
-#< quiz "Books_As_Goods"
-question: What would you guess books belong to?
-sc:
-- Search Goods.
-- Experience Goods.*
-- Credence Goods.
-success: Great, your answer is correct!
-failure: Try again.
 
-#>
+Quiz: What would you guess books belong to?
+
+- Search Goods. [ ]
+
+- Experience Goods. [x]
+
+- Credence Goods. [ ]
+
 
 The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is particulary the book market that appropriated for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
 
 As explained, professional reviews are defined as periodically appearing reviews in daily newspaper articles. The data set includes information about the appearance of professional reviews from the New York Times, the Chicago Tribune, the Boston Globe, the Wall Street Journal, the Los Angeles Times and the Washington Post. However, quantitative information as well as star ratings are not available. Additionally, The New York Times recommends nine books every week (New York Times, 2023). Professional reviews enable access to pre-purchase information. 
 
-#< quiz "Big_Newspapers"
-question: What is your suggestion, which of these newspapers has the most impact on the sales quantity?
-sc:
-- The New York Times.*
-- The Chicago Tribune.
-- The Boston Globe.
-- The Wall Street Journal.
-- The Los Angeles Times.
-- The Washington Post.
-success: Great, your answer is correct!
-failure: Try again.
 
-#>
+Quiz: What is your suggestion, which of these newspapers has the most impact on the sales quantity?
+
+- The New York Times. [x]
+
+- The Chicago Tribune. [ ]
+
+- The Boston Globe. [ ]
+
+- The Wall Street Journal. [ ]
+
+- The Los Angeles Times. [ ]
+
+- The Washington Post. [ ]
+
 
 As well as professional reviews, the Amazon data set also includes information about star ratings from buyers. Identified as buyer on Amazon, everyone is permitted to evaluate the bought product on a five-point scale. Basically, people benefit from other customers reviews. However, in contrast to professional reviews, crowd rating are tending to generate less trust. Crowd ratings are susceptible to fake content for defaming or fraudulent purposes while professional reviews were created by objective and professional reviewers. Therefore, the more ratings exist for the particular product, the more likely the calculated average star rating approximates the "actual" quality. Thus crowd ratings are representing the second pre-purchase information.                                                                 
  
 Hence, Reimers and Waldfogel claim that the consumer interacts with both of these types of pre-purchase information in a different way, perhaps resulting in different or superimposed effects. One possible reason could be the difference in accessibility of these information types. While crowd ratings are visible for every Amazon user, professional reviews are accessible but not automatically visible for everyone. Furthermore, it is less likely that people who randomly find a book on Amazon will verify the existence of a professional review afterwards. Vice versa, after finding a professional reviewed book, people automatically get access to crowd ratings during the purchasing process. Incidentally, word-of-mouth can be also understood as pre-purchase information. Nevertheless, the consumer has access to at least one type of pre-purchase information. 
 
 
-#< quiz "Fakereviews_Amazon"
-question: How many reviews on Amazon are fake or unreliable?
-sc:
-- 61%.
-- 23%.
-- 9%.
-- 42%.*
-- 15%.
-success: Great, your answer is correct! (Stieb, 2022)
-failure: Try again.
 
-#>
+Quiz: How many reviews on Amazon are fake or unreliable?
+
+- 61%. [ ]
+
+- 23%. [ ]
+
+- 9%. [ ]
+
+- 42%. [x]
+
+- 15%. [ ]
+
 
 
 Previously, we mentioned to aim an estimation on so called sales ranks. Sales ranks are the numerical representation of how your products sells in contrast to other products in the same categorie (Wisniach, 2022). Actually, we do not have information about sold quantities so that sales ranks are substituting these values. [Amazon](https://www.amazon.com/gp/help/customer/display.html?nodeId=GGGMZK378RQPATDJ) defined their sales rank as hourly updated calculation to "reflect recent recent and historical sales of every item sold on Amazon". Hence, sales ranks are relative numbers to compare sales activities. To make assumptions regarding to a welfare analysis, the authors of the underlying paper collected more data from New York Times top-100 weekly bestsellers from 2018 to transform ranks into quantities. As a result, we are capable to examine price elasticities. 
@@ -180,26 +161,27 @@ In the following chapter 1.2, you will pick up the economic basic knowledge you 
 
 Colloquially, the term "welfare" is associated with many contexts, such as unemployment benefit or other social assistance. The actual origin of this term lies in the economy. Mathematically, welfare is sum of producer surplus and consumer surplus. Basically, consumer surplus is the difference between the price for a good that consumers are willing to pay and the actual price of this good. Against this, Producer surplus is the difference between the price that suppliers would be willing to charge for their goods and the actual price of this good. Actually, the economic reality is much more complex. For simplifying purposes, we focus on polypol markets (markets with many suppliers) under perfect conditions, that the model requires in order to work. Without even one of these assumptions, the model is invalid.   
 
-#< quiz "perfectMarket_Conditions"
-question: which of these conditions is *not* relevant for a perfect market? 
-sc:
-- Perfect information availability (Knowledge about every price for the underlying good).
-- No personal preferences (Preferences, that are preventing you to act rational).
-- Homogenous goods (Equal goods).
-- Fast reaction velocity (Changing market conditions are quickly recognized from every market participant).
-- Every good has the same quality.*
-- A large number of demanders and suppliers.
-success: Great, your answer is correct! Equality of quality and homogeneity of goods do not from an equivalent. Homogeneity only includes the physical condition and the substitutability. 
-failure: Try again.
 
-#>
+Quiz: which of these conditions is *not* relevant for a perfect market?
+
+- Perfect information availability (Knowledge about every price for the underlying good). [ ]
+
+- No personal preferences (Preferences, that are preventing you to act rational). [ ]
+
+- Homogenous goods (Equal goods). [ ]
+
+- Fast reaction velocity (Changing market conditions are quickly recognized from every market participant). [ ]
+
+- Every good has the same quality. [x]
+
+- A large number of demanders and suppliers. [ ]
+
 
 Under these conditions, we apply a graph to illustrate the situation between demand and supply to better understand the added value of pre-purchase information. 
 
 **Task:** Run the following chunk to create this model. Press `check` to collect your points. 
 
-```{r}
-#< task
+```{r "4_1"}
 
 #Create a fictive Dataset 
 
@@ -247,41 +229,24 @@ ggplot(data = DatasetTest) +
   theme(
   axis.text.y=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
-#>
 ```
 
 Now compute the mean of x.
-```{r optional=TRUE}
+```{r "4_2",optional=TRUE}
 # Note the chunk option optional = TRUE means
 # the user can continue with the next exercise
 # without having solved this one
 
 mean(x)
-#< hint
-cat("There already exist R functions for many things. To find them use Google, e.g. search for 'R compute mean'.")
-#>
 ```
 
 
-#< info "useful functions for numeric vectors"
-Here are examples for useful R functions
-```{r}
-max(c(1,5,2)) # returns maximum
-min(c(1,5,2)) # returns minimum
-
-sum(c(1,5,2,NA), na.rm=TRUE) # returns sum of all numbers, ignore NA
-cumsum(c(1,5,2)) # returns cummulated sum
-diff(c(1,5,2)) # returns the vector of differences
-```
-#>
+info("useful functions for numeric vectors")
 
 
-#< award "mean means mean"
-Well, in some occasions one can just guess the name of an R function. The function to compute the mean of a vector, or matrix is called 'mean'. Usually, it is much quicker to goggle than to guess function names, however.
-#>
 
 b) Let `y` be a vector that contains the squared elements of `x`, i.e. for each element $i$ we want $$y_i = x_i^2.$$ Then show `y`.
-```{r}
+```{r "4_b"}
 # We should not set this chunk optional
 # since we need y in the next chunk
 y = x^2
@@ -290,41 +255,34 @@ y
 
 #c) Now use the function `qplot` from the package `ggplot2` to create a scatter plot of `x` against `y`. You can google `r qplot` to get the help for #the function `qplot`.
 
-```{r optional=TRUE, dev="svg", fig.width=4}
-#< task
+```{r "4_b_2",optional=TRUE, dev='svg', fig.width=4}
 library(ggplot2) # load ggplot2 package
 
 # Enter your call to qplot here...
-#>
 qplot(x,y)
-#< test_arg
-allow.extra.arg = TRUE 
-#>
 # The block above allows the user to add extra arguments to the call to qplot, i.e. qplot(x,y,xlab="The variable x"), would also pass the test.
 ```
 
 
-#< quiz "prime"
-question: What is the 'oddest' prime?
-sc:
-    - 2*
-    - 3
-    - 5
-    - 7
-success: Well, of course the answer is debatable...
-failure: Try again.
-#>
+
+Quiz: What is the 'oddest' prime?
+
+- 2 [x]
+
+- 3 [ ]
+
+- 5 [ ]
+
+- 7 [ ]
+
 
 Note: A quiz as specified below only works in the shiny environment. If you want to design a quiz in an RMarkdown based RTutor problem set, you should use a chunk. E.g. as follows:
 
 Which of the following numbers is the oddest prime? 2,3,5 or 7? Enter you solution in the code below and press "check".
 
-```{r}
+```{r "4_b_3"}
 2
 ```
-#< award "The oddest prime"
-Wouldn't you agree that the only even prime is the odd man out?
-#>
 
 ## Exercise Submitting your solution
 
