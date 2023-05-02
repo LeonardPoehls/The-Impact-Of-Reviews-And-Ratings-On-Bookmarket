@@ -1,8 +1,3 @@
----
-output:
-  word_document: default
-  html_document: default
----
 
 #< ignore
 
@@ -185,7 +180,7 @@ Colloquially, the term "welfare" is associated with many contexts, such as unemp
 question: Which of these conditions is **not** relevant for a perfect market? 
 sc:
 - Perfect information availability (Knowledge about every price for the underlying good).
-- No personal preferences (Preferences, that are preventing you to act rational).
+- No personal preferences (Preferences, that prevent you from acting rationally).
 - Homogenous goods (Equal goods).
 - Fast reaction velocity (Changing market conditions are quickly recognized from every market participant).
 - Every good has the same quality.*
@@ -209,14 +204,12 @@ xAxis <- c(0, 1,2,3,4)
 supply <- c(0, 0.5, 1, 1.5, 2)
 xGroup <- c(1, 1, 1, 1, 1)
 DatasetTest <- data.frame(Price = demand, Quantity = xAxis, Supply = supply, Group = xGroup)
-
 #Create a plot
 ggplot(data = DatasetTest) +
   geom_line(aes(x=Quantity, y=Price, group = Group), linetype = 1, size = 0.8) +
   geom_line(aes(x=Quantity, y=supply, group = Group), linetype = 1, size = 0.8) +
   geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 0, y = 1, xend = 2, yend = 1), color = "red", linetype = "dashed") +
-
 #Mark Zone A
   geom_text(aes(x=0.5, y=1.3, label = "A"), color = "black", hjust=0, size=8, alpha = 0.1) +
 #Mark Zone B
@@ -250,11 +243,29 @@ sc:
 - B.
 - C.
 success: Great, your answer is correct!
-
+failure: Try again.
 #>
 
-As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand curve 
+As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand or supply curve depends on the so called **Price Elasticity**. For the demand side, **Price elasticity** indicates how demand reacts on changes in prices relatively. The formula looks as follows:  
 
+$$
+ \epsilon = \frac{\Delta Q/Q}{\Delta P/P} =  \frac{\%\,\mathrm{Change\,in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
+$$
+
+Hence, price elasticity delivers a value ε := [0, ∞] that can also show whether price increases would be worthwhile. An elasticity of ε = 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of ε < 1 are inelastic and otherwise elastic.   
+
+#< quiz "Elastic_orInelastic"
+question: You are bar owner and want to maximize your turnover. You found out that the demand is linear and a price increase from 3 Units to 4 Units implies a decreasing sales quantity from 1000 quantity units to 875 quantity units. Which of the following responses is correct? 
+sc:
+- The price is inelastic - You should not increase the price.
+- The price is elastic - You should increase the price by 47%.
+- The price is inelastic - You should increase the price by 34%.
+- The price is inelastic - You can easily more than double the price.*
+
+success: Great, your answer is correct!
+failure: Try again.
+
+#>
 
 
 
@@ -264,7 +275,8 @@ Now compute the mean of x.
 # Note the chunk option optional = TRUE means
 # the user can continue with the next exercise
 # without having solved this one
-
+#
+#\epsilon = \frac{\%\,\mathrm{Change\,in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
 mean(x)
 #< hint
 cat("There already exist R functions for many things. To find them use Google, e.g. search for 'R compute mean'.")

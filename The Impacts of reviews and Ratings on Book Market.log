@@ -1,0 +1,64 @@
+{"type":["init_ps"],"time":["2023-04-29 11:34:12"],"user":["default_user"],"umph":[1682760852.983],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-04-29 11:35:44"],"user":["default_user"],"umph":[1682760944.1378],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-04-29 11:41:40"],"user":["default_user"],"umph":[1682761300.9531],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-04-29 12:37:01"],"user":["default_user"],"umph":[1682764621.6184],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-04-29 12:55:14"],"user":["default_user"],"umph":[1682765714.1749],"ok":[true]}
+,
+{"type":["check_chunk"],"time":["2023-04-29 13:49:43"],"user":["default_user"],"umph":[1682768983.1605],"ok":[true],"chunk":[1],"ex":[4],"e.ind":[0],"code":["x = 10:20\n# Computing the sum of x\nsum(x)"],"message":[""]}
+,
+{"type":["hint"],"time":["2023-04-29 13:49:43"],"user":["default_user"],"umph":[1682768983.1719],"ok":[true],"chunk":[1],"ex":[4],"e.ind":[2]}
+,
+{"type":["init_ps"],"time":["2023-04-30 21:46:18"],"user":["default_user"],"umph":[1682883978.614],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-04-30 21:53:12"],"user":["default_user"],"umph":[1682884392.6999],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-04-30 23:27:33"],"user":["default_user"],"umph":[1682890053.5111],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-01 11:13:25"],"user":["default_user"],"umph":[1682932405.0376],"ok":[true]}
+,
+{"type":["check_chunk"],"time":["2023-05-01 11:14:28"],"user":["default_user"],"umph":[1682932468.9351],"ok":[true],"chunk":[1],"ex":[4],"e.ind":[0],"code":["\n#Create a fictive Dataset \n\ndemand <- c(2, 1.5, 1, 0.5, 0)\nxAxis <- c(0, 1,2,3,4)\nsupply <- c(0, 0.5, 1, 1.5, 2)\nxGroup <- c(1, 1, 1, 1, 1)\nDatasetTest <- data.frame(Price = demand, Quantity = xAxis, Supply = supply, Group = xGroup)\n\n#Create a plot\nggplot(data = DatasetTest) +\n  geom_line(aes(x=Quantity, y=Price, group = Group), linetype = 1, size = 0.8) +\n  geom_line(aes(x=Quantity, y=supply, group = Group), linetype = 1, size = 0.8) +\n  geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = \"red\", linetype = \"dashed\") +\n  geom_segment(aes(x = 0, y = 1, xend = 2, yend = 1), color = \"red\", linetype = \"dashed\") +\n\n#Mark Zone A\n  geom_text(aes(x=0.5, y=1.3, label = \"A\"), color = \"black\", hjust=0, size=8, alpha = 0.1) +\n#Mark Zone B\n  geom_text(aes(x=0.5, y=0.7, label = \"B\"), color = \"black\", hjust=0, size=8, alpha = 0.1) +\n#Mark intersection point\n  geom_point(aes(x = 2, y=1), color = \"red\", size=2.5) +\n#Add line description\ngeom_text(aes(x=0.5, y=1.83, label = \"Demand\"), color = \"Black\", angle = 332, size= 4, alpha=0.1) +\ngeom_text(aes(x=3.35, y=1.78, label = \"Supply\"), color = \"Black\", angle = 28, size= 4, alpha=0.1) +\n#Set specific layout\n  theme_bw() +\n  labs(title = \"How is Pre-Purchase Information related to Welfare?\",\n       x = \"Quantity\", \n       y = \"Price\") +\n  scale_x_continuous(labels = c(\"0\", \"\", \"Q*\", \"\", \"\")) +\n  scale_y_continuous(labels = c(\"0\", \"\", \"P*\", \"\", \"\")) +\n  theme(\n # axis.text.y=element_blank(),\n  panel.grid.minor=element_blank(),plot.background=element_blank())"],"message":[""]}
+,
+{"type":["init_ps"],"time":["2023-05-01 11:14:48"],"user":["default_user"],"umph":[1682932488.1104],"ok":[true]}
+,
+{"type":["check_chunk"],"time":["2023-05-01 11:16:09"],"user":["default_user"],"umph":[1682932569.7125],"ok":[true],"chunk":[1],"ex":[4],"e.ind":[0],"code":["\n#Create a fictive Dataset \n\ndemand <- c(2, 1.5, 1, 0.5, 0)\nxAxis <- c(0, 1,2,3,4)\nsupply <- c(0, 0.5, 1, 1.5, 2)\nxGroup <- c(1, 1, 1, 1, 1)\nDatasetTest <- data.frame(Price = demand, Quantity = xAxis, Supply = supply, Group = xGroup)\n\n#Create a plot\nggplot(data = DatasetTest) +\n  geom_line(aes(x=Quantity, y=Price, group = Group), linetype = 1, size = 0.8) +\n  geom_line(aes(x=Quantity, y=supply, group = Group), linetype = 1, size = 0.8) +\n  geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = \"red\", linetype = \"dashed\") +\n  geom_segment(aes(x = 0, y = 1, xend = 2, yend = 1), color = \"red\", linetype = \"dashed\") +\n\n#Mark Zone A\n  geom_text(aes(x=0.5, y=1.3, label = \"A\"), color = \"black\", hjust=0, size=8, alpha = 0.1) +\n#Mark Zone B\n  geom_text(aes(x=0.5, y=0.7, label = \"B\"), color = \"black\", hjust=0, size=8, alpha = 0.1) +\n#Mark intersection point\n  geom_point(aes(x = 2, y=1), color = \"red\", size=2.5) +\n#Add line description\ngeom_text(aes(x=0.5, y=1.83, label = \"Demand\"), color = \"Black\", angle = 332, size= 4, alpha=0.1) +\ngeom_text(aes(x=3.35, y=1.78, label = \"Supply\"), color = \"Black\", angle = 28, size= 4, alpha=0.1) +\n#Set specific layout\n  theme_bw() +\n  labs(title = \"How is Pre-Purchase Information related to Welfare?\",\n       x = \"Quantity\", \n       y = \"Price\") +\n  scale_x_continuous(labels = c(\"0\", \"\", \"Q*\", \"\", \"\")) +\n  scale_y_continuous(labels = c(\"0\", \"\", \"P*\", \"\", \"\")) +\n  theme(\n # axis.text.y=element_blank(),\n  panel.grid.minor=element_blank(),plot.background=element_blank())"],"message":[""]}
+,
+{"type":["init_ps"],"time":["2023-05-01 11:17:06"],"user":["default_user"],"umph":[1682932626.7803],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-01 11:20:57"],"user":["default_user"],"umph":[1682932857.4045],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-01 11:55:09"],"user":["default_user"],"umph":[1682934909.6076],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-01 12:21:51"],"user":["default_user"],"umph":[1682936511.0395],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-01 12:22:36"],"user":["default_user"],"umph":[1682936556.5888],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-01 13:32:41"],"user":["default_user"],"umph":[1682940761.1157],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 08:10:19"],"user":["default_user"],"umph":[1683007819.5404],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 08:49:31"],"user":["default_user"],"umph":[1683010171.1985],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 08:51:07"],"user":["default_user"],"umph":[1683010267.1418],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 08:52:42"],"user":["default_user"],"umph":[1683010362.5745],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 08:55:20"],"user":["default_user"],"umph":[1683010520.6307],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 09:03:16"],"user":["default_user"],"umph":[1683010996.0661],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 09:06:29"],"user":["default_user"],"umph":[1683011189.5046],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 09:08:15"],"user":["default_user"],"umph":[1683011295.3106],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 09:13:34"],"user":["default_user"],"umph":[1683011614.0424],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 10:31:02"],"user":["default_user"],"umph":[1683016262.8231],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 10:55:49"],"user":["default_user"],"umph":[1683017749.5429],"ok":[true]}
+,
+{"type":["init_ps"],"time":["2023-05-02 10:56:37"],"user":["default_user"],"umph":[1683017797.3631],"ok":[true]}
+,

@@ -1,7 +1,7 @@
 
 ```{r 'check_ps', include=FALSE}
 
-user.name = 'Jane Doe'
+user.name = ''
 ```
 
 
@@ -97,12 +97,14 @@ Generally, economists differentiate goods concerning their characteristics, thei
 
 Quiz: What would you guess books belong to?
 
-- Search Goods. [ ]
+[1]: Search Goods.
+[2]: Experience Goods.
+[3]: Credence Goods.
 
-- Experience Goods. [x]
-
-- Credence Goods. [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Books_As_Goods")
+```
 
 The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is particulary the book market that appropriated for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
 
@@ -111,18 +113,17 @@ As explained, professional reviews are defined as periodically appearing reviews
 
 Quiz: What is your suggestion, which of these newspapers has the most impact on the sales quantity?
 
-- The New York Times. [x]
+[1]: The New York Times.
+[2]: The Chicago Tribune.
+[3]: The Boston Globe.
+[4]: The Wall Street Journal.
+[5]: The Los Angeles Times.
+[6]: The Washington Post.
 
-- The Chicago Tribune. [ ]
-
-- The Boston Globe. [ ]
-
-- The Wall Street Journal. [ ]
-
-- The Los Angeles Times. [ ]
-
-- The Washington Post. [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Big_Newspapers")
+```
 
 As well as professional reviews, the Amazon data set also includes information about star ratings from buyers. Identified as buyer on Amazon, everyone is permitted to evaluate the bought product on a five-point scale. Basically, people benefit from other customers reviews. However, in contrast to professional reviews, crowd rating are tending to generate less trust. Crowd ratings are susceptible to fake content for defaming or fraudulent purposes while professional reviews were created by objective and professional reviewers. Therefore, the more ratings exist for the particular product, the more likely the calculated average star rating approximates the "actual" quality. Thus crowd ratings are representing the second pre-purchase information.                                                                 
  
@@ -132,16 +133,16 @@ Hence, Reimers and Waldfogel claim that the consumer interacts with both of thes
 
 Quiz: How many reviews on Amazon are fake or unreliable?
 
-- 61%. [ ]
+[1]: 61%.
+[2]: 23%.
+[3]: 9%.
+[4]: 42%.
+[5]: 15%.
 
-- 23%. [ ]
-
-- 9%. [ ]
-
-- 42%. [x]
-
-- 15%. [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Fakereviews_Amazon")
+```
 
 
 Previously, we mentioned to aim an estimation on so called sales ranks. Sales ranks are the numerical representation of how your products sells in contrast to other products in the same categorie (Wisniach, 2022). Actually, we do not have information about sold quantities so that sales ranks are substituting these values. [Amazon](https://www.amazon.com/gp/help/customer/display.html?nodeId=GGGMZK378RQPATDJ) defined their sales rank as hourly updated calculation to "reflect recent recent and historical sales of every item sold on Amazon". Hence, sales ranks are relative numbers to compare sales activities. To make assumptions regarding to a welfare analysis, the authors of the underlying paper collected more data from New York Times top-100 weekly bestsellers from 2018 to transform ranks into quantities. As a result, we are capable to examine price elasticities. 
@@ -159,18 +160,17 @@ Colloquially, the term "welfare" is associated with many contexts, such as unemp
 
 Quiz: Which of these conditions is **not** relevant for a perfect market?
 
-- Perfect information availability (Knowledge about every price for the underlying good). [ ]
+[1]: Perfect information availability (Knowledge about every price for the underlying good).
+[2]: No personal preferences (Preferences, that prevent you from acting rationally).
+[3]: Homogenous goods (Equal goods).
+[4]: Fast reaction velocity (Changing market conditions are quickly recognized from every market participant).
+[5]: Every good has the same quality.
+[6]: A large number of demanders and suppliers.
 
-- No personal preferences (Preferences, that prevent you from acting rationally). [ ]
-
-- Homogenous goods (Equal goods). [ ]
-
-- Fast reaction velocity (Changing market conditions are quickly recognized from every market participant). [ ]
-
-- Every good has the same quality. [x]
-
-- A large number of demanders and suppliers. [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("perfectMarket_Conditions")
+```
 
 Under these conditions, we apply a graph to illustrate the situation between demand and supply to better understand the added value of pre-purchase information. 
 
@@ -219,12 +219,14 @@ The linear demand curve shows how the consumers act on a perfect market. Obvious
 
 Quiz: Which of these marked triangles represents the consumer surplus?
 
-- A. [x]
+[1]: A.
+[2]: B.
+[3]: C.
 
-- B. [ ]
-
-- C. [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Mark_Surplus")
+```
 
 As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand or supply curve depends on the so called **Price Elasticity**. For the demand side, **Price elasticity** indicates how demand reacts on changes in prices relatively. The formula looks as follows:  
 
@@ -237,37 +239,34 @@ Hence, price elasticity delivers a value ε := [0, ∞] that can also show wheth
 
 Quiz: You are bar owner and you found out that a price increase from 3 Units to 4 Units implies ?
 
-- A. [x]
+[1]: A.
+[2]: B.
+[3]: C.
 
-- B. [ ]
-
-- C. [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Elastic_orInelastic")
+```
 
 
 
 
 Now compute the mean of x.
 ```{r "4_2",optional=TRUE}
-# Note the chunk option optional = TRUE means
-# the user can continue with the next exercise
-# without having solved this one
-#
-#\epsilon = \frac{\%\,\mathrm{Change\,in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
-mean(x)
+# Enter your code here.
 ```
 
 
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
 info("useful functions for numeric vectors")
+```
 
 
 
 b) Let `y` be a vector that contains the squared elements of `x`, i.e. for each element $i$ we want $$y_i = x_i^2.$$ Then show `y`.
 ```{r "4_b"}
-# We should not set this chunk optional
-# since we need y in the next chunk
-y = x^2
-y
+# Enter your code here.
 ```
 
 #c) Now use the function `qplot` from the package `ggplot2` to create a scatter plot of `x` against `y`. You can google `r qplot` to get the help for #the function `qplot`.
@@ -276,29 +275,28 @@ y
 library(ggplot2) # load ggplot2 package
 
 # Enter your call to qplot here...
-qplot(x,y)
-# The block above allows the user to add extra arguments to the call to qplot, i.e. qplot(x,y,xlab="The variable x"), would also pass the test.
 ```
 
 
 
 Quiz: What is the 'oddest' prime?
 
-- 2 [x]
+[1]: 2
+[2]: 3
+[3]: 5
+[4]: 7
 
-- 3 [ ]
-
-- 5 [ ]
-
-- 7 [ ]
-
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("prime")
+```
 
 Note: A quiz as specified below only works in the shiny environment. If you want to design a quiz in an RMarkdown based RTutor problem set, you should use a chunk. E.g. as follows:
 
 Which of the following numbers is the oddest prime? 2,3,5 or 7? Enter you solution in the code below and press "check".
 
 ```{r "4_b_3"}
-2
+# Enter your code here.
 ```
 
 ## Exercise Submitting your solution
