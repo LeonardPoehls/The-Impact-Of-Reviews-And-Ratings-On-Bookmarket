@@ -302,19 +302,19 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
   geom_segment(aes(x = 4, y = 9, xend = 2, yend = 9), color = "red", linetype = "dashed") +
   geom_text(aes(x=2.75, y=9.25, label = "ΔQU = 2"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
   geom_text(aes(x=4.25, y=8.95, label = "ΔPU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=5, y=7.85, label = "ε > 1"), color = "black", angle = 337.5, hjust=0, size=5, alpha = 0.1) +
+  geom_text(aes(x=5, y=7.85, label = "ε = 2"), color = "black", angle = 337.5, hjust=0, size=4, alpha = 0.1) +
   
   geom_segment(aes(x = 4, y = 6, xend = 4, yend = 7), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 7, xend = 3, yend = 7), color = "red", linetype = "dashed") +
   geom_text(aes(x=3.15, y=7.2, label = "ΔQU = 1"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
   geom_text(aes(x=4.25, y=6.9, label = "PU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=5, y=5.45, label = "ε = 1"), color = "black", angle = 315, hjust=0, size=5, alpha = 0.1) +
+  geom_text(aes(x=5, y=5.45, label = "ε = 1"), color = "black", angle = 315, hjust=0, size=4, alpha = 0.1) +
   
   geom_segment(aes(x = 4, y = 2, xend = 4, yend = 4), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 4, xend = 3, yend = 4), color = "red", linetype = "dashed") +
   geom_text(aes(x=3.15, y=4.2, label = "ΔQU = 1"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
   geom_text(aes(x=4.25, y=3.45, label = "ΔPU = 2"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=4.6, y=1.7, label = "ε < 1"), color = "black", angle = 292.5, hjust=0, size=5, alpha = 0.1) +
+  geom_text(aes(x=4.6, y=1.7, label = "ε = 0,5"), color = "black", angle = 292.5, hjust=0, size=4, alpha = 0.1) +
   
   labs(title = "Demand Curves and their Price Elasticities",
        x = "Quantity in QU (Quantity Units)", 
@@ -363,8 +363,8 @@ ggplot(data = DatasetTest) +
   geom_text(aes(x=3.8, y=0.93, label = "P2"), color = "black", hjust=0, size=3, alpha = 0.1) +
 
 #Add line description
-  geom_text(aes(x=0, y=1.55, label = "Without \nPre-Purchase Information\n _ _ _ _ _ _ _ _ _ _ _ _ "), color = "Black", hjust=0, size= 2.2, alpha=0.1) + 
-  geom_text(aes(x=0, y=2.05, label = "With \nPre-Purchase Information\n ___________________"), color = "Black", hjust=0, size= 2.2, alpha=0.1) +
+  geom_text(aes(x=0, y=1.55, label = "Expected Quality without \nPre-Purchase Information\n _  _  _  _  _  _  _  _  _  _  "), color = "Black", hjust=0, size= 2.2, alpha=0.1) + 
+  geom_text(aes(x=0, y=2.05, label = "Actual Quality with \nPre-Purchase Information\n ___________________"), color = "Black", hjust=0, size= 2.2, alpha=0.1) +
   
 #Set specific layout
   theme_bw() +
@@ -377,15 +377,30 @@ ggplot(data = DatasetTest) +
   panel.grid.minor=element_blank(),plot.background=element_blank())
 ```
 
-As visualized in the upper graph, the consumer would choose quantity Q1 for $$(\bar R_{j} < R_{j})$$
+As visualized in the upper graph, the consumer would choose quantity Q1 for $$(\bar R_{j} < R_{j})$$, quantity Q* for $$(\bar R_{j} = R_{j})$$ and quantity Q2 for $$(\bar R_{j} > R_{j})$$. For choosing Q1, the consumer would expect a surplus of triangle A while getting an actual surplus of A + B (ex post recognition of actual quality). A consumer with access to pre-purchase information would always choose Q* with a surplus of A + B + C. Overestimating the books quality, the consumer would buy quantity Q2 and obtains a surplus of A + B + C - D. It is obvious, that quality expectations affect the overall utility of the consumer and thus the demand curve appears to shift without impacting the price elasticity. In fact, the curve merely adjusts to the actual demand. 
 
 
+Quiz: Which triangle represents the value added of pre-purchase information?
+
+- A [ ]
+
+- B [ ]
+
+- C [x]
+
+- D [ ]
 
 
+**Summary**
 
+After looking at a simple market diagram, we learnt to distinguish between demand and supply, to categorize the economic meaning of welfare and the composition of consumer / supplier surpluses and the formation of equilibrium values. Focusing the demand side, we got an insight into the topic of price elasticity to better understand the following examination of price elasticities on books. Hence, after collecting the necessary knowledge, we returned to pre-purchase information and their affects on welfare. We found out that pre-purchase information impacts the expectation for quality and leads to an adjustment of the demand curve. 
+
+In the following chapter 2, we get an introduction to the Amazon dataset followed by descriptive analyses.
+
+## Exercise 2. -- Data and Descriptive Insights
 
 Now compute the mean of x.
-```{r "4_4",optional=TRUE}
+```{r "5_4",optional=TRUE}
 # Note the chunk option optional = TRUE means
 # the user can continue with the next exercise
 # without having solved this one
@@ -400,7 +415,7 @@ mean(x)
 
 ### Info: useful functions for numeric vectors
 Here are examples for useful R functions
-```{r "4_5"}
+```{r "5_5"}
 max(c(1,5,2)) # returns maximum
 min(c(1,5,2)) # returns minimum
 
@@ -423,7 +438,7 @@ Well, in some occasions one can just guess the name of an R function. The functi
 
 
 b) Let `y` be a vector that contains the squared elements of `x`, i.e. for each element $i$ we want $$y_i = x_i^2.$$ Then show `y`.
-```{r "4_b_6"}
+```{r "5_b_6"}
 # We should not set this chunk optional
 # since we need y in the next chunk
 y = x^2
@@ -432,7 +447,7 @@ y
 
 #c) Now use the function `qplot` from the package `ggplot2` to create a scatter plot of `x` against `y`. You can google `r qplot` to get the help for #the function `qplot`.
 
-```{r "4_b_7",optional=TRUE, dev='svg', fig.width=4}
+```{r "5_b_7",optional=TRUE, dev='svg', fig.width=4}
 library(ggplot2) # load ggplot2 package
 
 # Enter your call to qplot here...
@@ -457,7 +472,7 @@ Note: A quiz as specified below only works in the shiny environment. If you want
 
 Which of the following numbers is the oddest prime? 2,3,5 or 7? Enter you solution in the code below and press "check".
 
-```{r "4_b_8"}
+```{r "5_b_8"}
 2
 ```
 
