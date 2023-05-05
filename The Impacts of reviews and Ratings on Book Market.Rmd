@@ -210,6 +210,7 @@ geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 45, si
   theme(
  # axis.text.y=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
+
 ```
 
 The linear demand curve shows how the consumers act on a perfect market. Obviously, a maximum price exists at which no more is consumed. This model likewise assumes unrealistically that free goods are consumed infinitely. On the other side, the linear supply curve illustrates the suppliers point of view. The model concludes that every supplier can offer his good for the maximum price. Vice versa, the more the price falls, the fewer suppliers can still offer their good.     In natural competition, suppliers are forced to align their prices. This is due to the fact that each supplier wants to maximize its revenue, so it is not worthwhile for the suppliers who can offer the lowest price to actually offer the lowest price. In long term, the actual market price will converge to P* and every supplier that can not offer for P* disappears. Finally, P* defines the equilibrium price and Q* the equilibrium quantity.  
@@ -226,6 +227,8 @@ Quiz: Which of these marked triangles represents the consumer surplus?
 answer.quiz("Mark_Surplus")
 ```
 
+**Price Elasticity**
+
 As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand or supply curve depends on the so called **Price Elasticity**. For the demand side, **Price elasticity** indicates how demand reacts on changes in prices relatively. The formula looks as follows:  
 
 $$
@@ -235,7 +238,7 @@ $$
 Hence, price elasticity delivers a value ε := [0, ∞] that can also show whether price increases would be worthwhile. An elasticity of ε = 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of ε < 1 are inelastic and otherwise elastic.   
 
 
-Quiz: You are bar owner and want to maximize your turnover. You found out that the demand on beer is linear and a price increase from 3 Units to 4 Units implies a decreasing sales quantity from 1000 quantity units to 875 quantity units at one evening. Which of the following responses is correct?
+Quiz: You are bar owner and want to maximize your turnover. In a particular period of time, you found out that the demand on beer is linear and a price increase from 3 Units to 4 Units implies a decreasing sales quantity from 1000 quantity units to 875 quantity units. Which of the following responses is correct?
 
 [1]: The price is inelastic - You should not increase the price.
 [2]: The price is elastic - You should increase the price by 47%.
@@ -249,7 +252,7 @@ answer.quiz("Elastic_orInelastic")
 
 Price elasticity can be also shown graphically. The following graph illustrates the difference between elasticities in demand. 
 
-**Task:** Execute the chunk below to see how the demand curve changes with different price elasticities
+**Task:** Execute the chunk below to see how the demand curve slope changes with different price elasticities
 
 ```{r "4_2"}
 #Create a fictive Dataset 
@@ -259,7 +262,7 @@ DatasetPE <- data.frame(
   Demand_1 = 10 - 1*1:10,
   Demand_2 = 10 - 2*1:10
 )
-colnames(DatasetPE) <- c("Price", "ε < 1", "ε = 1", "ε > 1")
+colnames(DatasetPE) <- c("Price", "ε > 1", "ε = 1", "ε < 1")
 
 DatasetPE <- DatasetPE %>% 
   pivot_longer(cols = starts_with("ε"), names_to = "ε", values_to = "Quantity_Value") 
@@ -270,23 +273,38 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
   theme_bw() +
   geom_segment(aes(x = 4, y = 8, xend = 4, yend = 9), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 9, xend = 2, yend = 9), color = "red", linetype = "dashed") +
+  geom_text(aes(x=2.75, y=9.25, label = "ΔQU = 2"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=4.25, y=8.95, label = "ΔPU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=5, y=7.85, label = "ε > 1"), color = "black", angle = 337.5, hjust=0, size=5, alpha = 0.1) +
   
   geom_segment(aes(x = 4, y = 6, xend = 4, yend = 7), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 7, xend = 3, yend = 7), color = "red", linetype = "dashed") +
+  geom_text(aes(x=3.15, y=7.2, label = "ΔQU = 1"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=4.25, y=6.9, label = "PU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=5, y=5.45, label = "ε = 1"), color = "black", angle = 315, hjust=0, size=5, alpha = 0.1) +
   
   geom_segment(aes(x = 4, y = 2, xend = 4, yend = 4), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 4, xend = 3, yend = 4), color = "red", linetype = "dashed") +
+  geom_text(aes(x=3.15, y=4.2, label = "ΔQU = 1"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=4.25, y=3.45, label = "ΔPU = 2"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=4.6, y=1.7, label = "ε < 1"), color = "black", angle = 292.5, hjust=0, size=5, alpha = 0.1) +
   
-  labs(title = "Price Elasticities",
-       x = "Quantity", 
-       y = "Price") +
+  labs(title = "Demand Curves and their Price Elasticities",
+       x = "Quantity in QU (Quantity Units)", 
+       y = "Price in PU (Price Units)") +
   xlim(0, 10) + 
   ylim(0, 10) +
   scale_x_continuous(breaks = 0:10) +
   theme(panel.grid.minor=element_blank(),plot.background=element_blank()) 
 ```
 
-Returning to pre-purchase information at the book market, 
+Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality $$(\bar R_{j} < R_{j})$$, the same quality $$(\bar R_{j} = R_{j})$$ or a higher expected quality than the actual quality $$(\bar R_{j} > R_{j})$$. 
+
+```{r "4_3"}
+# Enter your code here.
+```
+
+As visualized in the upper graph, the consumer would choose quantity Q1 for $$(\bar R_{j} < R_{j})$$
 
 
 
@@ -294,7 +312,7 @@ Returning to pre-purchase information at the book market,
 
 
 Now compute the mean of x.
-```{r "4_3",optional=TRUE}
+```{r "4_4",optional=TRUE}
 # Enter your code here.
 ```
 
