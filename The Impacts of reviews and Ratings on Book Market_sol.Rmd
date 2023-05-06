@@ -104,6 +104,7 @@ In this study, the book market was chosen to determine the impacts from crowd ra
 First of all, the following chapter intends to declare the meaning of "pre-purchase information", the book market situation and why especially this market is predestined for measuring review effects. To find an answer, we focus on newspaper magazines and on the role of Amazon concerning crowd ratings and so called sales ranks. 
 
 In the second part of this chapter, we illustrate potential welfare effects by having access to pre-purchase information with and without the restriction of fixed book prices. Additionally, we explain the transition from sales ranks and sales prices into quantity elasticities.  
+
 After editing this chapter, you gained an insight of the initial situation on the book market and you received deeper knowledge about basic economic issues. Thus you will be well prepared to continue with chapter 2. 
 
 ### Structure
@@ -392,6 +393,27 @@ After looking at a simple market diagram, we learnt to distinguish between deman
 In the following chapter 2, we get an introduction to the Amazon dataset followed by descriptive analyses.
 
 ## Exercise 2. -- Data and Descriptive Insights
+
+The underlying examination by Reimers and Waldfogel is based on a dataset provided by Amazon. 
+
+In the first part, we deepen our understanding and the origin of the underlying dataset and define important attributes that we later use for descriptive and empirical measurements.
+
+Second, we focus on professional reviews and crowd ratings to investigate superficial contexts. To illustrate them, we use descriptive tables. 
+
+Finally, we create an entire overview about descriptive analyses to detect potential effects between professional and non-professional reviews on sales ranks and prices to create a transition to the following empirical part of my Thesis.
+
+After working through this chapter, you are surefooted in dealing with the underlying dataset and thus well prepared to continue with the empirical part in chapter 3. 
+
+
+
+
+
+
+
+
+
+
+
 
 Now compute the mean of x.
 ```{r optional=TRUE}
