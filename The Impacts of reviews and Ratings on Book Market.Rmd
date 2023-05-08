@@ -29,11 +29,11 @@ To examine these effects, this problem set aims to reorganize and replicate part
  
  1.2 Introduction to Welfare, Demand and Price Elasticity
 
-2. Data and Descriptice Insights
+2. Data and Descriptive Insights
 
  2.1 Introduction to the Data Set
  
- 2.2 Professional Reviews and Crowd Ratings
+ 2.2 Analysis of the pre-purchase information
  
  2.3 Recognition of Potential Effects through Descriptive Approaches
  
@@ -81,6 +81,7 @@ In this study, the book market was chosen to determine the impacts from crowd ra
 First of all, the following chapter intends to declare the meaning of "pre-purchase information", the book market situation and why especially this market is predestined for measuring review effects. To find an answer, we focus on newspaper magazines and on the role of Amazon concerning crowd ratings and so called sales ranks. 
 
 In the second part of this chapter, we illustrate potential welfare effects by having access to pre-purchase information with and without the restriction of fixed book prices. Additionally, we explain the transition from sales ranks and sales prices into quantity elasticities.  
+
 After editing this chapter, you gained an insight of the initial situation on the book market and you received deeper knowledge about basic economic issues. Thus you will be well prepared to continue with chapter 2. 
 
 ### Structure
@@ -145,7 +146,7 @@ answer.quiz("Fakereviews_Amazon")
 ```
 
 
-Previously, we mentioned to aim an estimation on so called sales ranks. Sales ranks are the numerical representation of how your products sells in contrast to other products in the same categorie (Wisniach, 2022). Actually, we do not have information about sold quantities so that sales ranks are substituting these values. [Amazon](https://www.amazon.com/gp/help/customer/display.html?nodeId=GGGMZK378RQPATDJ) defined their sales rank as hourly updated calculation to "reflect recent recent and historical sales of every item sold on Amazon". Hence, sales ranks are relative numbers to compare sales activities. To make assumptions regarding to a welfare analysis, the authors of the underlying paper collected more data from New York Times top-100 weekly bestsellers from 2018 to transform ranks into quantities. As a result, we are capable to examine price elasticities. 
+Previously, we mentioned to aim an estimation on so called sales ranks. Sales ranks are the numerical representation of how your products sells in contrast to other products in the same categorie (Wisniach, 2022). Actually, we do not have information about sold quantities so that sales ranks are substituting these values. [Amazon](https://www.amazon.com/gp/help/customer/display.html?nodeId=GGGMZK378RQPATDJ) defined their sales rank as hourly updated calculation to "reflect recent and historical sales of every item sold on Amazon". Hence, sales ranks are relative numbers to compare sales activities. To make assumptions regarding to a welfare analysis, the authors of the underlying paper collected more data from New York Times top-100 weekly bestsellers from 2018 to transform ranks into quantities. As a result, we are capable to examine price elasticities. 
 
 **Summary**
 
@@ -176,8 +177,11 @@ Under these conditions, we apply a graph to illustrate the situation between dem
 
 **Task:** Run the following chunk to create this model. Press `check` to collect your points. 
 
-```{r "4_1"}
-#Create a fictive Dataset 
+```{r "4_1",warning=FALSE}
+
+#load the package "ggplot2"
+library(ggplot2)
+#Create a fictive data set 
 demand <- c(2, 1.5, 1, 0.5, 0)
 xAxis <- c(0, 1,2,3,4)
 supply <- c(0, 0.5, 1, 1.5, 2)
@@ -213,7 +217,7 @@ geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 45, si
 
 ```
 
-The linear demand curve shows how the consumers act on a perfect market. Obviously, a maximum price exists at which no more is consumed. This model likewise assumes unrealistically that free goods are consumed infinitely. On the other side, the linear supply curve illustrates the suppliers point of view. The model concludes that every supplier can offer his good for the maximum price. Vice versa, the more the price falls, the fewer suppliers can still offer their good.     In natural competition, suppliers are forced to align their prices. This is due to the fact that each supplier wants to maximize its revenue, so it is not worthwhile for the suppliers who can offer the lowest price to actually offer the lowest price. In long term, the actual market price will converge to P* and every supplier that can not offer for P* disappears. Finally, P* defines the equilibrium price and Q* the equilibrium quantity.  
+The linear demand curve shows how the consumers act on a perfect market. Obviously, a maximum price exists at which no more is consumed. This model likewise assumes unrealistically that free goods are consumed infinitely. On the other side, the linear supply curve illustrates the suppliers point of view. The model concludes that every supplier can offer his good for the maximum price. Vice versa, the more the price falls, the fewer suppliers can still offer their good. In natural competition, suppliers are forced to align their prices. This is due to the fact that each supplier wants to maximize its turnover, so it is not worthwhile for the suppliers who can offer the lowest price to actually offer the lowest price. In long term, the actual market price will converge to P* and every supplier that can not offer for P* disappears. Finally, P* defines the equilibrium price and Q* the equilibrium quantity.  
 
 
 Quiz: Which of these marked triangles represents the consumer surplus?
@@ -254,8 +258,8 @@ Price elasticity can be also shown graphically. The following graph illustrates 
 
 **Task:** Execute the chunk below to see how the demand curve slope changes with different price elasticities
 
-```{r "4_2"}
-#Create a fictive Dataset 
+```{r "4_2",warning=FALSE}
+#Create a fictive data set 
 DatasetPE <- data.frame(
   Price = 1:10,
   Demand_05 = 10 - 0.5*1:10,
@@ -300,7 +304,7 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
 
 Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality $$(\bar R_{j} < R_{j})$$, the same quality $$(\bar R_{j} = R_{j})$$ or a higher expected quality than the actual quality $$(\bar R_{j} > R_{j})$$. 
 
-```{r "4_3"}
+```{r "4_3",warning=FALSE}
 # Enter your code here.
 ```
 
@@ -323,69 +327,56 @@ answer.quiz("ValueAdded_Triangle")
 
 After looking at a simple market diagram, we learnt to distinguish between demand and supply, to categorize the economic meaning of welfare and the composition of consumer / supplier surpluses and the formation of equilibrium values. Focusing the demand side, we got an insight into the topic of price elasticity to better understand the following examination of price elasticities on books. Hence, after collecting the necessary knowledge, we returned to pre-purchase information and their affects on welfare. We found out that pre-purchase information impacts the expectation for quality and leads to an adjustment of the demand curve. 
 
-In the following chapter 2, we get an introduction to the Amazon dataset followed by descriptive analyses.
+In the following chapter 2, we get an introduction to the Amazon data set followed by descriptive analyses.
 
-## Exercise 2. -- Data and Descriptive Insights
+## Exercise 2 -- Data and Descriptive Insights
 
-Now compute the mean of x.
-```{r "5_1",optional=TRUE}
-# Enter your code here.
+The underlying examination by Reimers and Waldfogel is based on a data set provided by Amazon. 
+
+In the first part, we deepen our understanding and the origin of the underlying data set and define important attributes that we later use for descriptive and empirical measurements.
+
+Second, we focus on professional reviews and crowd ratings to investigate superficial contexts. To illustrate them, we use descriptive tables. 
+
+Finally, we create an entire overview about descriptive analyses to detect potential effects between professional and non-professional reviews on sales ranks and prices to create a transition to the following empirical part of my Thesis.
+
+After working through this chapter, you are surefooted in dealing with the underlying data set and thus well prepared to continue with the empirical part in chapter 3. 
+
+### Structure
+
+2.1 Introduction to the data set
+
+2.2 Analysis of the pre-purchase information
+
+2.3 Recognition of Potential Effects through overall Descriptive Approaches
+
+
+## Exercise 2.1 -- Introduction to the data set
+
+As already mentioned, the entire quantitative calculations are based on a data set provided by Amazon. The data set includes slightly less than 8.8 million observations of non-professional crowd ratings. One observation represents review(s) at one day between 02-01-2018 and 31-12-2018 for very book in every country. Observations were made in the USA, in UK and in Canada. In addition, the data set was merged with newspaper data from every newspaper magazine listed in 1.1 with information on whether the newspaper reviewed the particular book and whether the New York Times recommended the book. In fact, only 3.22 million observations were taken into consideration due to missing values, which reduces the actual market share what we examined. Reimers and Waldfogel claim that Amazon covered about 44.5 percent of the physical book market share in 2017, which we cannot accurately confirm. After removing about 63% of the data set, 44.5 percent cited by Reimers and Waldfogel means that only a little over 16 percent of the book market still covered by the Amazon data set. To improve the problem sets performance, we have already removed observations that are not relevant to our examination. 
+
+To better understand our data set, we categorize some important variables and take a look at an excerpt of it. 
+
+**Task:** Use the function `readRDS` to load the data set called `dataEst.RDS`. Save this data set under the name `data`.
+
+```{r "6_1"}
+#use readRDS("file_name.RDS") to load your data
 ```
 
+You successfully loaded the data set. Now, we want to see how the data set is organized and which values the single attributes can take. 
 
-```{r eval=FALSE}
-# Run for additional info in the Viewer pane
-info("useful functions for numeric vectors")
+**Task:** Use the function `head` to show the first rows from `data`. In addition, use the function `colnames` to list every column name from `data`.
+
+```{r "6_2"}
+#use head(data set name) to show your data set
 ```
 
+As one can see, the main data set consists of 69 variables. Not each of these are essential for the following course and will not be considered further. For those to whom this does not apply will find an explanation below. 
+
+**Identification Variables**
+
+The variable `asin` represents the corporate amazon ID to differentiate between different products. `country` shows us whether the underlying review belongs to the US market (US), the Great Britain market (GB) or to the Canadian market (CA)
 
 
-b) Let `y` be a vector that contains the squared elements of `x`, i.e. for each element $i$ we want $$y_i = x_i^2.$$ Then show `y`.
-```{r "5_b"}
-# Enter your code here.
-```
-
-#c) Now use the function `qplot` from the package `ggplot2` to create a scatter plot of `x` against `y`. You can google `r qplot` to get the help for #the function `qplot`.
-
-```{r "5_b_2",optional=TRUE, dev='svg', fig.width=4}
-library(ggplot2) # load ggplot2 package
-
-# Enter your call to qplot here...
-```
-
-
-
-Quiz: What is the 'oddest' prime?
-
-[1]: 2
-[2]: 3
-[3]: 5
-[4]: 7
-
-```{r eval=FALSE}
-# Run line to answer the quiz above
-answer.quiz("prime")
-```
-
-Note: A quiz as specified below only works in the shiny environment. If you want to design a quiz in an RMarkdown based RTutor problem set, you should use a chunk. E.g. as follows:
-
-Which of the following numbers is the oddest prime? 2,3,5 or 7? Enter you solution in the code below and press "check".
-
-```{r "5_b_3"}
-# Enter your code here.
-```
-
-## Exercise Submitting your solution
-
-To submit your solution please proceed as follows:
-
-1. Scroll to the top and click on the icon with the bars <i class="fa fa-tasks fa-fw"></i> to see how many points you got so far. If you want to have more points you can try to solve the missing tasks.
-
-2. If you want to submit click on the download button <i class="fa  fa-download fa-fw"></i> at the very right.
-
-3. In the opened tab click the button "Download Submission File". Your browser should then download a file with the extension `.sub`.
-
-4. Upload that downloaded file to your course management system like Moodle, as specified by your instructor.
 
 
 
