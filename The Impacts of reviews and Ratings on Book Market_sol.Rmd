@@ -8,7 +8,7 @@ library(xfun)
 library(tidyverse)
  
  #Set Working Directory
- setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket")
+ setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket") 
  
  # Set problem set's name
  ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
@@ -424,6 +424,7 @@ To better understand our data set, we categorize some important variables and ta
 **Task:** Use the function `readRDS` to load the data set called `dataEst.RDS`. Save this data set under the name `data`.
 
 ```{r "2.1.1"}
+setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data")
 #< task
 #use readRDS("file_name.RDS") to load your data
 #>
@@ -431,8 +432,6 @@ data <- readRDS("dataEst.RDS")
 #< hint
 cat("d__a <- re_dR__('da__Es_.RD_'.")
 #>
-
-
 ```
 
 You successfully loaded the data set. Now, we want to see how the data set is organized and which values the single attributes can take. 
@@ -449,15 +448,13 @@ colnames(data)
 cat("h_e_(da__)")
 cat("col_a__s(__ta)")
 #>
-
-
 ```
 
 As one can see, the main data set consists of 69 variables. Not each of these are essential for the following course and will not be considered further. For those to whom this does not apply will find an explanation below. 
 
 **Identification Variables**
 
-The variable `asin` represents the corporate amazon ID to differentiate between different products. `country` shows us whether the underlying review belongs to the US market (US), the Great Britain market (GB) or to the Canadian market (CA). `canum` is our main ID and combines these variables to create a powerful country-dependent identifier. A title-author identifier is stored in the variable `titleno`. 
+The variable `asin` represents the corporate amazon ID to differentiate between different products. `country` shows us whether the underlying review belongs to the US market (US), the Great Britain market (GB) or to the Canadian market (CA). `canum` is our main ID and combines these variables to create a powerful country-dependent identifier. A title-author identifier is stored in the variable `titleno`. Identification variables are indispensable for each data set to clearly distinguish each variable. In this data set, the combination of `ddate` (see below) and `canum` defines each unique observation. 
 
 **Chronological variables**
 
@@ -469,11 +466,21 @@ The variable `rank` stands for the Amazon sales rank, on the basis of which we w
 
 **Dummy Variables** 
 
-Dummy variables are binary variables which can have only two values (here: 1 and 0). Every variable starting with "dnyt" 
+Dummy variables are binary variables that can take only two values (here: 1 and 0). Any variable starting with `dnytpost` indicates "1" if the New York Times has published reviews within the period defined by the following numbers after `dnyt`. For instance, `dnytpost1_5` takes the value 1 if [0 <`NYT_elapse` < 6]. For `dnytpost` and `dnytpost10`, [0 <`NYT_elapse` < 10] and [11 <`NYT_elapse` < 20] holds. `dnytpostpre` takes the value 1 if [-10 < `NYT_elapse` < 20]. The same principle applies to all variables starting with `dothpost` where the variable `OTH_elapse` defines the base instead of `NYT_elapse`. 
+
+To transform sales ranks from our main data set into quantities, the authors provided confidential data to determine quantities. This data got provided by Nielsen, a market research company, and Reimers and Waldfogel have published it only in already edited form. These mentioned confidential data sets contain information about weekly top 100 sold books between 2015 and 2018 while the accessible confidential data only delivers intermediate calculations to determine price elasticities. 
+
+**Note:** In the embedded background of this environment in the further course again and again transformations of data are accomplished, without which many computations would not function. If significant changes of known variables or structures take place, these will be explained again in the course of the future tasks.
+
+**Summary**
+
+Apparently, with the underlying data set, we have not only a very large set of observations in a defined time period, but also a large amount of information in the form of variables. Especially in this case, where an already merged and edited dataset has been published, this large amount of information may also have a detrimental effect on the correct replication of this study. Nevertheless, we continue with the data set provided by Reimers and Waldfogel. In this chapter, we have gained insight into the data set by executing first code chunks in R and the key variables that will continue to guide us throughout the study. Finally, we learned how to define dummy variables and the importance of identifying variables. 
+
+In chapter 2.2, we dare a first dive into the data set by creating descriptive statistics with focus on magazine reviews and Amazon crowd ratings. 
 
 
+## Exercise 2.2 -- Analysis of the Pre-Purchase Information
 
-
-
+In the following part, we want to analyze data to gain a deeper understanding for Amazon star ratings and the occurrence of professional reviews. 
 
 
