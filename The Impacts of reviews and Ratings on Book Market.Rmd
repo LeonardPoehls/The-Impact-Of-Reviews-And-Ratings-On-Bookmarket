@@ -408,7 +408,7 @@ In the following part, we will analyze data to gain a deeper understanding of Am
 
 **Note:** In sum, the underlying data set includes data about **8770 books**. 
 
-```{r "7_1"}
+```{r "7_1",warning=FALSE}
 
 #Creating two new dummy variables to indicate professional reviews from non-NYT Magazines and from all Magazines
 data$DOTH <- ifelse(data$DBG == 1 | data$DCHI == 1 | data$DLAT == 1 | data$DWAPO == 1 | data$DWSJ == 1 , 1, 0)
@@ -427,6 +427,7 @@ Share_of_ALL_Ratings <- paste0(round(mean(data$DALL, na.rm = TRUE)*100, 2), "%")
 #Create a table to illustrate the shares
 DesRat <- data.frame(Share_of_NYT_Ratings = c(Share_of_NYT_Ratings, n_distinct(data$titleno[data$DNYT == 1])), Share_of_BG_Ratings = c(Share_of_BG_Ratings, n_distinct(data$titleno[data$DBG == 1])), Share_of_CHI_Ratings = c(Share_of_CHI_Ratings, n_distinct(data$titleno[data$DCHI == 1])), Share_of_LAT_Ratings = c(Share_of_LAT_Ratings, n_distinct(data$titleno[data$DLAT == 1])), Share_of_WAPO_Ratings = c(Share_of_WAPO_Ratings, n_distinct(data$titleno[data$DWAPO == 1])), Share_of_DWSJ_Ratings = c(Share_of_DWSJ_Ratings, n_distinct(data$titleno[data$DWSJ == 1])), Share_of_OTH_Ratings = c(Share_of_OTH_Ratings, n_distinct(data$titleno[data$DOTH == 1])), Share_of_ALL_Ratings = c(Share_of_ALL_Ratings, n_distinct(data$titleno[data$DALL == 1], n_distinct(data$titleno))))
 
+#Create Row Names
 rownames(DesRat) <- c("Relative share", "Absolut share") 
 
 #Use of kbl() funktion to create a visualable table
@@ -434,21 +435,24 @@ DesRat  %>%
 kbl(col.names = c("Share_of_NYT_Ratings" = "New York Times", "Share_of_BG_Ratings" = "Boston Globe", "Share_of_CHI_Ratings" = "Chicago Tribune", "Share_of_LAT_Ratings" = "Los Angeles Times", "Share_of_WAPO_Ratings" = "Washington Post", "Share_of_DWSJ_Ratings" = "Wall Street Journal", "Share_of_OTH_Ratings" = "Non New York Times", "Share_of_ALL_Ratings" = "All"), caption = "Share of Professional Reviewed Books ") %>%
   kable_paper("striped", full_width = TRUE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
-
-
-
-
 ```
 
-In total, 12.66 percent of all books included in the data set have been professionally reviewed. 
+In total, 12.66 percent of all books (1521) included in the data set have been professionally reviewed. 11 percent (1315) of these books were reviewed by the New York Times, representing the largest percentage of books reviewed by professionals. The second largest percentage provides the Chicago Tribune with only 1.36 percent (139), which is approximately ten times less than the number of reviews published by the New York Times. Overall, non-New York Times magazines account for nearly 3.1 percent of the share. The following calculations distinguish between The New York Times and non-New York Times magazines, so we should note the size of the intersection between these distinctions. 
+
+**Task:** Run the following chunk to determine the intersections between the single magazines. 
+
+```{r "7_2"}
+# Enter your code here.
+```
+
+Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, may be biased by mutual overlays. The sum at the end is not the correct number of books reviewed, as we only observed individual overlays and did not check for overlaps in multiple magazines. 
+
+The advantage for crowd ratings is that we also have the amount of ratings available. We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. If they are not 
 
 
-
-
-
-
-
-
+```{r "7_3"}
+# Enter your code here.
+```
 
 
 
