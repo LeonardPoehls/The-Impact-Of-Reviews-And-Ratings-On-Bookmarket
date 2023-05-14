@@ -554,9 +554,9 @@ kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" 
 
 ```
 
-Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, may be biased by mutual overlays. The sum at the end is not the correct number of books reviewed, as we only observed individual overlays and did not check for overlaps in multiple magazines. 
+Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be biased by mutual overlays. The sum at the end is not the correct number of books reviewed, as we only observed individual overlays and did not check for overlaps in multiple magazines. 
 
-The advantage for crowd ratings is that we also have the amount of ratings available. We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. If they are not 
+The advantage for crowd ratings is that we also have the amount of ratings available. We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. The Graph in the following illustrates that the distributions 
 
 
 ```{r}
@@ -580,15 +580,17 @@ DesCrowd <- rbind(y1, y2)
 
 
 DesCrowd %>%
-ggplot(aes(x = R, y = Number, fill = Group)) +
-  geom_point(color = "blue") +
+ggplot(aes(x = R, fill = Group)) +
+  geom_bar(aes(y = Number), width = 0.5, stat = "identity", color = "black", position = position_dodge()) +
+  geom_vline(xintercept = quantile(data$R, probs = 0.25, na.rm = TRUE)) +
+  geom_text(aes(x=4.23, y=0.5, label = "25%"),angle = 270, color = "black", hjust=0, size=8, alpha = 0.1) +
   theme_bw() +
   labs(title = "Distribution of Professional Reviews on Crowd Ratings",
        x = "Amazon Star Rating", 
        y = "Relative proportion of professional reviews in total reviews") +
-  scale_y_continuous(breaks = seq(0,1,0.1)) +
+  scale_y_continuous(breaks = seq(0,1,0.1), labels=scales::percent) +
   guides(fill=guide_legend(title="")) +
-  theme(legend.position = c(0.75, 0.75),
+  theme(legend.position = c(0.85, 0.75),
   panel.grid.minor=element_blank(),plot.background=element_blank())
   
 
