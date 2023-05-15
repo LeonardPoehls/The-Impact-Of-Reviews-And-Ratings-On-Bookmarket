@@ -484,7 +484,7 @@ In chapter 2.2, we dare a first dive into the data set by creating descriptive s
 
 ## Exercise 2.2 -- Analysis of the Pre-Purchase Information
 
-In the following part, we will analyze data to gain a deeper understanding of Amazon star ratings and the occurrence of professional ratings. 
+In the following part, we will analyze data to gain a deeper understanding of the occurrence of professional ratings. In addition, we want to check whether the collected data from journals appropriates for following estimations. 
 
 **Task:** Run the following chunk to visualize the percentage of books reviewed by magazines, and then `check` it.
 
@@ -568,12 +568,12 @@ question: Focusing the published books, What is your suggestion?
 sc:
 - The more books an author publishes, the more likely these books will be professionally reviewed. 
 - The more books an author publishes, the less likely these books will be professionally reviewed.
-- The distribution is even.*
+- The overall distribution is even.*
 success: Great, your answer is correct!
 failure: Try again.
 #>
 
-**Task:** Replace every ____ gap with ....... and check this chunk to create the data set the 
+**Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
 ```{r}
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
@@ -627,7 +627,7 @@ After we have created the dataset, we can proceed with the creation of the chart
 f1 <- ggplot(aes(x = R, fill = Group), data = DesCrowd) +
   geom_bar(aes(y = Number), width = 0.5, stat = "identity", color = "black", position = position_dodge()) +
   geom_vline(xintercept = quantile(data$R, probs = 0.25, na.rm = TRUE)) +
-  geom_text(aes(x=4.23, y=0.5, label = "25%"),angle = 270, color = "black", hjust=0, size=8, alpha = 0.1) +
+  geom_text(aes(x=4.23, y=0.5, label = "25%"),angle = 270, color = "black", hjust=0, size=6, alpha = 0.1) +
   theme_bw() +
   labs(title = "Crowd Ratings",
        x = "Amazon Star Rating", 
@@ -642,7 +642,7 @@ f1 <- ggplot(aes(x = R, fill = Group), data = DesCrowd) +
 f2 <- ggplot(aes(x = numbooks, fill = Group), data = DesAuth) +
   geom_bar(aes(y = Number), width = 0.5, stat = "identity", color = "black", position = position_dodge()) +
   geom_vline(xintercept = quantile(data$numbooks, probs = 0.25, na.rm = TRUE)) +
-  geom_text(aes(x=4.23, y=0.5, label = "25%"),angle = 270, color = "black", hjust=0, size=8, alpha = 0.1) +
+  geom_text(aes(x=4.23, y=0.35, label = "25%"),angle = 270, color = "black", hjust=0, size=6, alpha = 0.1) +
   theme_bw() +
   labs(title = " Published Books",
        x = "Number of Published Books ", 
@@ -659,7 +659,82 @@ grid.arrange(f1, f2, ncol = 2)
 
 If we focus on the distribution of Amazon star ratings, we recognize a slight leftward skew in the weaker rated books on Amazon. However, this high proportion is to the left of the 25 percent quantile line which states that 75 percent of ratings on Amazon are rated 4.1 stars or even better. In the 75 percent zone, the distribution is rather even while outliers in the 25 percent zone are not unusual. This could be because books that have already been rated poorly on Amazon tend to be rated less often as a result. Hence, we can assume that Amazon star ratings do not visibly influence the book selection of professional reviewers and vice versa. Actually, a remaining risk always exists. 
 
-The on right chart, we notice a quite even distribution among the number of published books between 0 and 21 percent. The 25 percent quantile line is located at two published books which states that a huge amount of 25% percent of all books reviewed on Amazon are written by "inexperienced" authors who published two books or less. 
+The on right chart, we notice a quite even distribution among the number of published books between 0 and 21 percent. The 25 percent quantile line is located at two published books which states that a huge amount of 25 percent of all books reviewed on Amazon are written by "inexperienced" authors who published two books or less. The distribution remains even until 65 published books. After that, almost no more books were reviewed. Because of that, we limited the x-axis. Similar to star ratings, we can assume that the book selection of professional reviewers is less dependent on the number of books published so far. 
+
+**Summary**
+
+In summary, we have gained deeper insights into the relative and absolut numbers of professional reviews. It was illustrated to us that a relatively high proportion, between 30 and 67 percent, of all non-New York Times magazines were also reviewed by the New York Times, which may bias future estimates. To disprove the assumption that the selection of professionally reviewed books is not random, we use two different variables (Amazon Star Rating and Number of previous published books) to check whether the relative distribution on said variables disproves this assumption. In both cases we found out, that the distributions regarding to these variables are more or less even which is why we may assume a random choice of books for the time being. After all, the professional reviewers at the New York Times have discretion over about which books they actually review. Accordingly, we can never assume a 100 percent random distribution.
+
+## Exercise 2.3 -- Recognition of Potential Effects through Descriptive Approaches
+
+Before we start identifying potential effect, we need a good overview of the relevant descriptive values. Generally, descriptive values are based on simple statistics to describe and to visualize contexts, that have already happened. These values are easily understood and can provide sound summaries of high data volumes within seconds. The most powerful function of descriptive analyses is the ability to identify relationships in order to make predictions using more complex statistics. This procedure is exactly the same as what we have already done in chapter 2.2. 
+
+Starting with a good overview, we want to create a table including simple descriptive values distinguished by country. 
+
+**Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
+
+```{r}
+# Descriptive Values differentiated by country
+dataDesKript <- data %>%
+   group_by(country) %>%
+   summarize(Price = round(mean(pamzn),2), 
+            Star_Rating = round(mean(R),2), 
+            Sales_Rank = round(mean(rank),2), 
+            Number_of_Ratings = round(mean(review), 2),
+            Teenth = quantile(R, probs = 0.1, na.rm = TRUE), 
+            Tweentyfifth = quantile(R, probs = 0.25, na.rm = TRUE),
+            Fiftith = quantile(R, probs = 0.5, na.rm = TRUE),
+            Seventyfifth = quantile(R, probs = 0.75, na.rm = TRUE), 
+            Ninetith = quantile(R, probs = 0.9, na.rm = TRUE),
+            Titles = n_distinct(titleno),
+            Observations = NROW(country), 
+            Editions = n_distinct(asin))
+
+# Descriptive Values for all countries
+dataDesKript2 <- data %>%
+   summarize(country = "All",
+            Price = round(mean(pamzn),2), 
+            Star_Rating = round(mean(R),2), 
+            Sales_Rank = round(mean(rank),2),
+            Number_of_Ratings = round(mean(review), 2),
+            Teenth = quantile(R, probs = 0.1, na.rm = TRUE), 
+            Tweentyfifth = quantile(R, probs = 0.25, na.rm = TRUE),
+            Fiftith = quantile(R, probs = 0.5, na.rm = TRUE),
+            Seventyfifth = quantile(R, probs = 0.75, na.rm = TRUE), 
+            Ninetith = quantile(R, probs = 0.9, na.rm = TRUE),
+            Titles = n_distinct(titleno),
+            Observations = length(asin), 
+            Editions = n_distinct(asin))
+
+# Merge Dataframes
+DataDes <- rbind(dataDesKript, dataDesKript2)
+
+# Transform Dataframe into a clearer schema
+DataDesTest <- t(DataDes)
+colnames(DataDesTest) <- rownames(DataDes)
+DataDescriptive <- as.data.frame(DataDesTest)
+colnames(DataDescriptive) <- unlist(DataDescriptive[1,])
+DataDescriptive <- DataDescriptive[-1,]
+
+
+# Change Row Names 
+row.names(DataDescriptive) = c("Price", "Star rating", "Sales rank", "Number of ratings", "10th", "25th", "50th", "75th", "90th", "Titles", "Observations", "Editions")
+
+
+# Kable-Function to create an attractive overview
+
+DataDescriptive %>%
+kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States", "All" = "All"), caption = "Group Rows") %>%
+  kable_paper("striped", full_width = TRUE) %>%
+  pack_rows("Star rating percentiles", 5, 9) %>%
+  pack_rows("", 10, 12)
+
+```
+
+The first four rows return the mean values of the book price, the Amazon Star Rating, the sales rank and the number of ratings per book. The book markets in all three considered countries do not have fixed book prices. Fixed book prices state that
+
+
+
 
 
 
