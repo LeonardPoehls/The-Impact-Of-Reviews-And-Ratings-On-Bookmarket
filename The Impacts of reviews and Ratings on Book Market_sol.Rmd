@@ -7,6 +7,8 @@ library(yaml)
 library(xfun)
 library(tidyverse)
 library(kableExtra)
+library(grid)
+library(gridExtra)
  
  #Set Working Directory
  setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket") 
@@ -554,13 +556,27 @@ kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" 
 
 ```
 
-Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be biased by mutual overlays. The sum at the end is not the correct number of books reviewed, as we only observed individual overlays and did not check for overlaps in multiple magazines. 
+Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be biased by mutual overlays. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
 
-The advantage for crowd ratings is that we also have the amount of ratings available. We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. The Graph in the following illustrates that the distributions 
+The advantage for crowd ratings is that we also have the amount of ratings available. In fact, the selection of books to be evaluated by professional reviewers is not random (Berger, Sorensen, Rasmussen, 2010). We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. If this is not the case, we cannot reject the assumption that journals only review "better" rated books on Amazon and vice versa. The left Graphs in the following illustrates that the distribution of professional reviews among crowd ratings is evenly distributed. 
+
+On the other hand, whether authors are popular also depends on the number of books they have published so far. If the authors name is more popular through previous published books, professional reviewers could potentially tend to prefer those authors. The chart on the right visualizes the proportion of professional reviews among the number of the books previously published by the authors. 
 
 
+#< quiz "Distribution_Guess"
+question: Focusing the published books, What is your suggestion? 
+sc:
+- The more books an author publishes, the more likely these books will be professionally reviewed. 
+- The more books an author publishes, the less likely these books will be professionally reviewed.
+- The distribution is even.*
+success: Great, your answer is correct!
+failure: Try again.
+#>
+
+**Task:** Replace every ____ gap with ....... and check this chunk to create the data set the 
 ```{r}
 
+#Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesCrowd <- data %>%
   group_by(R) %>%
   summarise(Number_Ratings = n(),
@@ -575,29 +591,75 @@ y2 <- DesCrowd[,c(1, 4)] %>%
 colnames(y1) <- c("R", "Number", "Group")
 colnames(y2) <- c("R", "Number", "Group")
 
-
 DesCrowd <- rbind(y1, y2)
 
+#Create Dataset "DesAuth" to show the distribution among authors published books 
 
-DesCrowd %>%
-ggplot(aes(x = R, fill = Group)) +
+DesAuth <- data %>%
+  group_by(numbooks) %>%
+  summarise(Number_Ratings = n(),
+            Number_ = round(sum(DNYT)/ Number_Ratings, 2),
+            Number_1 = round(sum(DOTH)/ Number_Ratings, 2))
+
+
+y1_1 <- DesAuth[,c(1, 3)] %>%
+  mutate(Group = "New York Times")
+y2_1 <- DesAuth[,c(1, 4)] %>%
+  mutate(Group = "Others")     
+
+colnames(y1_1) <- c("numbooks", "Number", "Group")
+colnames(y2_1) <- c("numbooks", "Number", "Group")
+
+DesAuth <- rbind(y1_1, y2_1)
+
+```
+
+After we have created the dataset, we can proceed with the creation of the chart.
+
+**Task:** Execute the following chunk to create two graphs representing the distribution of professional reviews among two variables. 
+
+```{r}
+
+#Create the related Graphs
+
+#Create the graph based on crowd ratings
+
+f1 <- ggplot(aes(x = R, fill = Group), data = DesCrowd) +
   geom_bar(aes(y = Number), width = 0.5, stat = "identity", color = "black", position = position_dodge()) +
   geom_vline(xintercept = quantile(data$R, probs = 0.25, na.rm = TRUE)) +
   geom_text(aes(x=4.23, y=0.5, label = "25%"),angle = 270, color = "black", hjust=0, size=8, alpha = 0.1) +
   theme_bw() +
-  labs(title = "Distribution of Professional Reviews on Crowd Ratings",
+  labs(title = "Crowd Ratings",
        x = "Amazon Star Rating", 
-       y = "Relative proportion of professional reviews in total reviews") +
+       y = "Relative proportion of professional reviews") +
   scale_y_continuous(breaks = seq(0,1,0.1), labels=scales::percent) +
   guides(fill=guide_legend(title="")) +
   theme(legend.position = c(0.85, 0.75),
   panel.grid.minor=element_blank(),plot.background=element_blank())
-  
 
+#Create the graph based on authors number of books 
 
+f2 <- ggplot(aes(x = numbooks, fill = Group), data = DesAuth) +
+  geom_bar(aes(y = Number), width = 0.5, stat = "identity", color = "black", position = position_dodge()) +
+  geom_vline(xintercept = quantile(data$numbooks, probs = 0.25, na.rm = TRUE)) +
+  geom_text(aes(x=4.23, y=0.5, label = "25%"),angle = 270, color = "black", hjust=0, size=8, alpha = 0.1) +
+  theme_bw() +
+  labs(title = " Published Books",
+       x = "Number of Published Books ", 
+       y = "Relative proportion of Professional Reviews") +
+  scale_y_continuous(breaks = seq(0,1,0.1), labels=scales::percent) +
+  scale_x_continuous(breaks = seq(0, 75, 5)) +
+  xlim(0, 75) +
+  guides(fill=guide_legend(title="")) +
+  theme(legend.position = c(0.85, 0.75),
+  panel.grid.minor=element_blank(),plot.background=element_blank())
+
+grid.arrange(f1, f2, ncol = 2)
 ```
 
+If we focus on the distribution of Amazon star ratings, we recognize a slight leftward skew in the weaker rated books on Amazon. However, this high proportion is to the left of the 25 percent quantile line which states that 75 percent of ratings on Amazon are rated 4.1 stars or even better. In the 75 percent zone, the distribution is rather even while outliers in the 25 percent zone are not unusual. This could be because books that have already been rated poorly on Amazon tend to be rated less often as a result. Hence, we can assume that Amazon star ratings do not visibly influence the book selection of professional reviewers and vice versa. Actually, a remaining risk always exists. 
 
+The on right chart, we notice a quite even distribution among the number of published books between 0 and 21 percent. The 25 percent quantile line is located at two published books which states that a huge amount of 25% percent of all books reviewed on Amazon are written by "inexperienced" authors who published two books or less. 
 
 
 
