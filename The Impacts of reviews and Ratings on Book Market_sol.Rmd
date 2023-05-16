@@ -669,7 +669,7 @@ In summary, we have gained deeper insights into the relative and absolut numbers
 
 Before we start identifying potential effect, we need a good overview of the relevant descriptive values. Generally, descriptive values are based on simple statistics to describe and to visualize contexts, that have already happened. These values are easily understood and can provide sound summaries of high data volumes within seconds. The most powerful function of descriptive analyses is the ability to identify relationships in order to make predictions using more complex statistics. This procedure is exactly the same as what we have already done in chapter 2.2. 
 
-Starting with a good overview, we want to create a table including simple descriptive values distinguished by country. 
+Starting with a good overview, we want to create a table including simple descriptive values distinguished by `country`. 
 
 **Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
 
@@ -692,7 +692,7 @@ dataDesKript <- data %>%
 
 # Descriptive Values for all countries
 dataDesKript2 <- data %>%
-   summarize(country = "All",
+  summarize(country = "All",
             Price = round(mean(pamzn),2), 
             Star_Rating = round(mean(R),2), 
             Sales_Rank = round(mean(rank),2),
@@ -731,13 +731,35 @@ kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States
 
 ```
 
-The first four rows return the mean values of the book price, the Amazon Star Rating, the sales rank and the number of ratings per book. The book markets in all three considered countries do not have fixed book prices. Fixed book prices state that
+
+The first four rows return the mean values of the book price, the Amazon Star Rating, the sales rank and the number of ratings per book. The book markets in all three considered countries do not have fixed book prices. Fixed book prices (FBP) means that the publisher has the exclusive right to set the price of his book. The retailer is not permitted to discount more than five percent from this set price (Nakayama, 2015).
+
+#< quiz "Fixed_Prices"
+question: Comparing UK (without FBP) and Germany (with FBP), which country accounted a higher price increase between 1996 (end of FBP in UK) and 2018? 
+sc:
+- United Kingdom (UK).* 
+- Germany.
+success: Great, your answer is correct! The UK accounted a price increase of 80 percent after this period, while Germany accounted an increase of 29 percent (Fuchs, Sprang, Beurich, Götz, 2019)
+failure: Try again.
+#>
+
+Unfortunately, our data set only includes countries data from countries without FBP. Comparing the prices of the three available countries, we recognize a large price difference between Canada (21.07) and Great Britain (13.12) while the US account an average price of 15.86. Possible reasons for those expensive book prices could be that Canada imports many of these books where fees and other costs are incurred (Kwan, 2013), transportation costs over large land masses and a loss of economies of scale due to a smaller book market. The star ratings and their percentiles are quite even while large differences occur in the sales ranks and the number of ratings. Considering the fact that sales ranks are generated on their individual market place and less transparent, we cannot list any specific reasons for this. The high differences in the number of ratings may be due to the level of awareness of Amazon in the individual countries.    
 
 
 
+**Task:** Read the RDS-file `DataDescriptiveJournals` which represents exactly the same facts as above, except for the fact that `DataDescriptiveJournals` is filtered on data where information on the occurrence of journals is available. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
 
+```{r}
+#read out 
+DataDescriptiveJournals <- readRDS("DataDescriptiveJournals.RDS")
+# Kable-Function to create an attractive overview
 
+DataDescriptiveJournals %>%
+kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States", "All" = "All"), caption = "Group Rows") %>%
+  kable_paper("striped", full_width = TRUE) %>%
+  pack_rows("Star rating percentiles", 5, 9) %>%
+  pack_rows("", 10, 12)
 
-
+```
 
 
