@@ -691,7 +691,7 @@ dataDesKript <- data %>%
             Editions = n_distinct(asin))
 
 # Descriptive Values for all countries
-dataDesKript2 <- data %>%
+dataDesKript2 <- data %>% 
   summarize(country = "All",
             Price = round(mean(pamzn),2), 
             Star_Rating = round(mean(R),2), 
@@ -720,6 +720,7 @@ DataDescriptive <- DataDescriptive[-1,]
 # Change Row Names 
 row.names(DataDescriptive) = c("Price", "Star rating", "Sales rank", "Number of ratings", "10th", "25th", "50th", "75th", "90th", "Titles", "Observations", "Editions")
 
+#saveRDS(DataDescriptive, file = "The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data/dataEst.RDS")
 
 # Kable-Function to create an attractive overview
 
@@ -743,11 +744,11 @@ success: Great, your answer is correct! The UK accounted a price increase of 80 
 failure: Try again.
 #>
 
-Unfortunately, our data set only includes countries data from countries without FBP. Comparing the prices of the three available countries, we recognize a large price difference between Canada (21.07) and Great Britain (13.12) while the US account an average price of 15.86. Possible reasons for those expensive book prices could be that Canada imports many of these books where fees and other costs are incurred (Kwan, 2013), transportation costs over large land masses and a loss of economies of scale due to a smaller book market. The star ratings and their percentiles are quite even while large differences occur in the sales ranks and the number of ratings. Considering the fact that sales ranks are generated on their individual market place and less transparent, we cannot list any specific reasons for this. The high differences in the number of ratings may be due to the level of awareness of Amazon in the individual countries.    
+Unfortunately, our data set only includes countries data from countries without FBP. Comparing the prices of the three available countries, we recognize a large price difference between Canada (21.07) and Great Britain (13.12) while the US account an average price of 15.86. Possible reasons for those expensive book prices could be that Canada imports many of these books where fees and other costs are incurred (Kwan, 2013), transportation costs over large land masses and a loss of economies of scale due to a smaller book market. The star ratings and their percentiles are quite even while large differences occur in the sales ranks and the number of ratings. Considering the fact that sales ranks are generated on their individual market place and less transparent, we cannot list any specific reasons for this. The high differences in the number of ratings may be due to the level of awareness of Amazon in the individual countries. Obviously, the US market accounts for more than twice as many observations as Canada or Great Britain.      
 
+Hence, we gained insight into general descriptive values over the entire data set. To elaborate this, let us review the same values for observations where the availability of professional reviews is guaranteed. 
 
-
-**Task:** Read the RDS-file `DataDescriptiveJournals` which represents exactly the same facts as above, except for the fact that `DataDescriptiveJournals` is filtered on data where information on the occurrence of journals is available. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
+**Task:** Use the fuction `readRDS` to read the RDS-file `DataDescriptiveJournals`. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
 
 ```{r}
 #read out 
@@ -761,5 +762,36 @@ kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States
   pack_rows("", 10, 12)
 
 ```
+
+Without differentiating between magazines or knowing whether the review turned out "positive" or "negative", we find an increase of price of about 15 percent, a decrease in average sales rank of about 39 percent, and the average number of ratings of about 86 percent, as well as significantly higher variance in percentiles of star ratings. The Amazon star rating also drops by a smaller percentage of about 2.3 percent. This leads to the assumption that the occurrence of professional reviews extensively affects the price, the sales rank and the number of ratings. 
+
+The variance in percentiles of star ratings could be due to the fact that we have no information about how it has been reviewed, with which a polarization of the reviews may have taken place. For the New York Times reviews, the main data set contains information about whether the New York Times recommended a book using the variable `drecommended`. In the following, we generate two chronological graphs to show the descriptive affects from professional reviews on sales ranks and prices. 
+
+**Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on.
+
+**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings. 
+
+```{r}
+
+dataReviewRec <- data %>%
+  filter(drecommended == 1 & cno == 3) %>%
+  group_by(titleno)
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
