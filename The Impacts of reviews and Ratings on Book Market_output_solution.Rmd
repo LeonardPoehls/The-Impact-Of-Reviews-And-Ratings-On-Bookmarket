@@ -759,24 +759,87 @@ The variance in percentiles of star ratings could be due to the fact that we hav
 
 **Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on.
 
-**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings. 
+**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings (cno == 3 -> US). 
 
 ```{r "8_12"}
 
+#Extracting three different parts from our main data for recommended observations, not recommended observations and non New York Times observations
 dataReviewRec <- data %>%
   filter(drecommended == 1 & cno == 3) %>%
-  group_by(titleno)
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
 
+dataReviewNRec <- data %>%
+  filter(drecommended == 0 & DNYT == 1 & cno == 3) %>%
 
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
 
+dataReviewNNYT <- data %>%
+  filter(drecommended == 0 & DNYT == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE)) 
+            
+
+dataNYTPrice <- data.frame(Price = c(dataReviewRec$AVGPrice, dataReviewNRec$AVGPrice, dataReviewNNYT$AVGPrice), SalesRank = c(dataReviewRec$AVGSalesRank, dataReviewNRec$AVGSalesRank, dataReviewNNYT$AVGSalesRank), Category = c("Recommended", "Not Recommended", "Not NYT"))
+
+#Plot 1: Mean Prices
+f3 <- dataNYTPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = Price, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = Price - 1.5, label = round(Price, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+   ylim(0, 21) +
+  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+ scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
+  labs(title = "Differences in mean prices (US Data only)",
+       x = "", 
+       y = "Price in $US") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom", 
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+#Plot 2: Mean Sales Ranks
+f4 <- dataNYTPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = SalesRank - 75000, label = round(SalesRank, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+#   ylim(0, 21) +
+  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+ scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
+  labs(title = "Differences in mean Sales Ranks (US Data only)",
+       x = "", 
+       y = "Sales Rank") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom",
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+grid.arrange(f3, f4, ncol = 2)
 
 ```
 
+The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8US cheaper books mentioned in the New York Times.                          Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
 
 
+Quiz: Which of the following statements is correct?
 
+- With the information of these graphs we can assume a price elasticity ε < 1 for the US book market. [ ]
 
+- None of those listed. [ ]
 
+- With the information of these graphs we can assume a price elasticity ε > 1 for the US book market. [ ]
+
+- The effect of professional reviews on sales ranks (quantities) could be higher than the effect on prices. [x]
 
 
 

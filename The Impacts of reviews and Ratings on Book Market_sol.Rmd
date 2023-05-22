@@ -527,7 +527,7 @@ In total, 12.66 percent of all books (1521) included in the data set have been p
 
 **Task:** Run the following chunk to determine the intersections between the single magazines. 
 
-```{r "2.2.2"}
+```{r "2.2.2", warning=FALSE}
 
 #gt_table
 
@@ -574,7 +574,7 @@ failure: Try again.
 #>
 
 **Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
-```{r}
+```{r "2.2.3", warning=FALSE}
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesCrowd <- data %>%
@@ -618,7 +618,7 @@ After we have created the dataset, we can proceed with the creation of the chart
 
 **Task:** Execute the following chunk to create two graphs representing the distribution of professional reviews among two variables. 
 
-```{r}
+```{r "2.2.4", warning=FALSE}
 
 #Create the related Graphs
 
@@ -673,7 +673,7 @@ Starting with a good overview, we want to create a table including simple descri
 
 **Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
 
-```{r}
+```{r "2.3.1", warning=FALSE}
 # Descriptive Values differentiated by country
 dataDesKript <- data %>%
    group_by(country) %>%
@@ -750,7 +750,7 @@ Hence, we gained insight into general descriptive values over the entire data se
 
 **Task:** Use the fuction `readRDS` to read the RDS-file `DataDescriptiveJournals`. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
 
-```{r}
+```{r "2.3.2", warning=FALSE}
 #read out 
 DataDescriptiveJournals <- readRDS("DataDescriptiveJournals.RDS")
 # Kable-Function to create an attractive overview
@@ -769,29 +769,120 @@ The variance in percentiles of star ratings could be due to the fact that we hav
 
 **Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on.
 
-**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings. 
+**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings (cno == 3 -> US). 
 
-```{r}
+```{r "2.3.3", warning=FALSE}
 
+#Extracting three different parts from our main data for recommended observations, not recommended observations and non New York Times observations
 dataReviewRec <- data %>%
   filter(drecommended == 1 & cno == 3) %>%
-  group_by(titleno)
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
 
+dataReviewNRec <- data %>%
+  filter(drecommended == 0 & DNYT == 1 & cno == 3) %>%
 
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
 
+dataReviewNNYT <- data %>%
+  filter(drecommended == 0 & DNYT == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE)) 
+            
+
+dataNYTPrice <- data.frame(Price = c(dataReviewRec$AVGPrice, dataReviewNRec$AVGPrice, dataReviewNNYT$AVGPrice), SalesRank = c(dataReviewRec$AVGSalesRank, dataReviewNRec$AVGSalesRank, dataReviewNNYT$AVGSalesRank), Category = c("Recommended", "Not Recommended", "Not NYT"))
+
+#Plot 1: Mean Prices
+f3 <- dataNYTPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = Price, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = Price - 1.5, label = round(Price, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+   ylim(0, 21) +
+  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+ scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
+  labs(title = "Differences in mean prices (US Data only)",
+       x = "", 
+       y = "Price in $US") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom", 
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+#Plot 2: Mean Sales Ranks
+f4 <- dataNYTPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = SalesRank - 75000, label = round(SalesRank, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+#   ylim(0, 21) +
+  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+ scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
+  labs(title = "Differences in mean Sales Ranks (US Data only)",
+       x = "", 
+       y = "Sales Rank") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom",
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+grid.arrange(f3, f4, ncol = 2)
 
 ```
 
+The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8 US cheaper than books mentioned in the New York Times.                          Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
+
+#< quiz "Prices_and_SalesRanks"
+question: Which of the following statements may be made? 
+sc:
+- With the information of these graphs we can assume a price elasticity ε < 1 for the US book market. 
+- None of those listed.
+- With the information of these graphs we can assume a price elasticity ε > 1 for the US book market.
+- The effect of professional reviews on sales ranks (quantities) could be higher than the effect on prices.*
+success: Great, your answer is correct! 
+failure: Try again.
+#>
+
+We want to conduct a similar examination for crowd ratings, with the difference that we have information not only on the occurrence of these ratings, but also on their level on the five-point scale. Above, we already noted a negative association between the Amazon star rating and the occurrence of professional reviews. 
+
+Before we start, let us divide Amazon star ratings into three categories: less than three stars, three and four stars, and more than four stars. 
+
+**Task:** Create three dummy variables that show `1` when the star rating is between one and three, three and four and more than five. Orientate on exercise `2.2.1` to create a dummy variable. Then, try to replace the ___ gaps to create three filtered data sets according to `2.3.3`. Name these data sets `dataCR1_3`, `dataCR3_4` and `dataCR4_5`.
 
 
+```{r}
+
+data$starRating1_3 <- ifelse(data$R >= 1 & data$R < 3, 1, 0)
+data$starRating3_4 <- ifelse(data$R >= 3 & data$R < 4, 1, 0)
+data$starRating4_5 <- ifelse(data$R >= 4 & data$R < 5, 1, 0)
+
+dataCR1_3 <- data %>%
+  filter(data$starRating1_3 == 1 & DALL == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
+
+dataCR3_4 <- data %>%
+  filter(data$starRating3_4 == 1 & DALL == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
+
+dataCR4_5 <- data %>%
+  filter(data$starRating4_5 == 1 & DALL == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
 
 
-
-
-
-
-
-
-
+```
 
 
