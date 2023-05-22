@@ -488,7 +488,7 @@ In total, 12.66 percent of all books (1521) included in the data set have been p
 
 **Task:** Run the following chunk to determine the intersections between the single magazines. 
 
-```{r "7_2"}
+```{r "7_2",warning=FALSE}
 
 #gt_table
 
@@ -535,7 +535,7 @@ Quiz: Focusing the published books, What is your suggestion?
 
 
 **Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
-```{r "7_3"}
+```{r "7_3",warning=FALSE}
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesCrowd <- data %>%
@@ -579,7 +579,7 @@ After we have created the dataset, we can proceed with the creation of the chart
 
 **Task:** Execute the following chunk to create two graphs representing the distribution of professional reviews among two variables. 
 
-```{r "7_4"}
+```{r "7_4",warning=FALSE}
 
 #Create the related Graphs
 
@@ -634,7 +634,7 @@ Starting with a good overview, we want to create a table including simple descri
 
 **Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
 
-```{r "8_1"}
+```{r "8_1",warning=FALSE}
 # Descriptive Values differentiated by country
 dataDesKript <- data %>%
    group_by(country) %>%
@@ -710,7 +710,7 @@ Hence, we gained insight into general descriptive values over the entire data se
 
 **Task:** Use the fuction `readRDS` to read the RDS-file `DataDescriptiveJournals`. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
 
-```{r "8_2"}
+```{r "8_2",warning=FALSE}
 #read out 
 DataDescriptiveJournals <- readRDS("DataDescriptiveJournals.RDS")
 # Kable-Function to create an attractive overview
@@ -727,11 +727,11 @@ Without differentiating between magazines or knowing whether the review turned o
 
 The variance in percentiles of star ratings could be due to the fact that we have no information about how it has been reviewed, with which a polarization of the reviews may have taken place. For the New York Times reviews, the main data set contains information about whether the New York Times recommended a book using the variable `drecommended`. In the following, we generate two chronological graphs to show the descriptive affects from professional reviews on sales ranks and prices. 
 
-**Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on.
-
 **Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings (cno == 3 -> US). 
 
-```{r "8_3"}
+**Task:** Execute the following chunk to create three different filtered data sets. Press `check` to collect your points.
+
+```{r "8_3",warning=FALSE}
 
 #Extracting three different parts from our main data for recommended observations, not recommended observations and non New York Times observations
 dataReviewRec <- data %>%
@@ -742,7 +742,6 @@ dataReviewRec <- data %>%
 
 dataReviewNRec <- data %>%
   filter(drecommended == 0 & DNYT == 1 & cno == 3) %>%
-
   summarise(AVGPrice = mean(pamzn), 
             AVGSalesRank = mean(rank, na.rm = TRUE), 
             AVGCR = mean(R, na.rm = TRUE))
@@ -753,7 +752,13 @@ dataReviewNNYT <- data %>%
             AVGSalesRank = mean(rank, na.rm = TRUE), 
             AVGCR = mean(R, na.rm = TRUE)) 
             
-
+```
+ 
+After creating these three datasets, proceed to transform the data by creating the final dataset to visualize the results. 
+ 
+**Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on. 
+ 
+```{r "8_4",warning=FALSE}
 dataNYTPrice <- data.frame(Price = c(dataReviewRec$AVGPrice, dataReviewNRec$AVGPrice, dataReviewNNYT$AVGPrice), SalesRank = c(dataReviewRec$AVGSalesRank, dataReviewNRec$AVGSalesRank, dataReviewNNYT$AVGSalesRank), Category = c("Recommended", "Not Recommended", "Not NYT"))
 
 #Plot 1: Mean Prices
@@ -795,13 +800,12 @@ f4 <- dataNYTPrice %>%
    panel.grid.minor=element_blank(),plot.background=element_blank())
 
 grid.arrange(f3, f4, ncol = 2)
-
 ```
 
-The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8US cheaper books mentioned in the New York Times.                          Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
+The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8 US cheaper than books mentioned in the New York Times.                    Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
 
 
-Quiz: Which of the following statements is correct?
+Quiz: Which of the following statements may be made?
 
 - With the information of these graphs we can assume a price elasticity ε < 1 for the US book market. [ ]
 
@@ -812,6 +816,116 @@ Quiz: Which of the following statements is correct?
 - The effect of professional reviews on sales ranks (quantities) could be higher than the effect on prices. [x]
 
 
+We want to conduct a similar examination for crowd ratings, with the difference that we have information not only on the occurrence of these ratings, but also on their level on the five-point scale. Above, we already noted a negative association between the Amazon star rating and the occurrence of professional reviews. 
+
+Before we start, let us divide Amazon star ratings into three categories: less than three stars, three and four stars, and more than four stars. 
+
+**Task:** Create three dummy variables that show `1` when the star rating is between one and three, three and four and more than five. Orientate on exercise `2.2.1` to create a dummy variable. Then, try to replace the ___ gaps to create three filtered data sets according to `2.3.3`. Name these data sets `dataCR1_3`, `dataCR3_4` and `dataCR4_5`.
+
+
+```{r "8_5",warning=FALSE}
+
+data$starRating1_3 <- ifelse(data$R >= 1 & data$R < 3, 1, 0)
+data$starRating3_4 <- ifelse(data$R >= 3 & data$R < 4, 1, 0)
+data$starRating4_5 <- ifelse(data$R >= 4 & data$R < 5, 1, 0)
+
+dataCR1_3 <- data %>%
+  filter(data$starRating1_3 == 1 & DALL == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE))
+
+dataCR3_4 <- data %>%
+  filter(data$starRating3_4 == 1 & DALL == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE))
+
+dataCR4_5 <- data %>%
+  filter(data$starRating4_5 == 1 & DALL == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE))
+
+
+```
+
+**Task:** Now run the following chunk to see how crowd ratings affect the price and sales ranks. Press `check` to confirm. 
+
+```{r "8_6",warning=FALSE}
+
+dataCRPrice <- data.frame(Price = c(dataCR1_3$AVGPrice, dataCR3_4$AVGPrice, dataCR4_5$AVGPrice), SalesRank = c(dataCR1_3$AVGSalesRank, dataCR3_4$AVGSalesRank, dataCR4_5$AVGSalesRank), Category = c("1-3 stars", "3-4 Stars", "more than 4 stars"))
+
+#Plot 1: Mean Prices
+f5 <- dataCRPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = Price, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = Price - 1.5, label = round(Price, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+   ylim(0, 21) +
+  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+ scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
+  labs(title = "Differences in mean prices (US Data only)",
+       x = "", 
+       y = "Price in $US") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom", 
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+#Plot 2: Mean Sales Ranks
+f6 <- dataCRPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = SalesRank - 220000, label = round(SalesRank)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+ scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
+  labs(title = "Differences in mean Sales Ranks (US Data only)",
+       x = "", 
+       y = "Sales Rank") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom",
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+grid.arrange(f5, f6, ncol = 2)
+
+```
+
+In contrast to the affects of professional reviews, the mean price exhibits an inverse behavior. The Price seems to decrease the more stars a rating has while sales ranks generally behave according to the occurrence of professional reviews. Obviously, crowd ratings affect prices differently than professional reviews in magazines. This could be due to professional reviews triggering a (short-term) increase in demand that may not be served in the short term, leading to a price increase. On the other hand, higher crowd ratings on Amazon could rather resulting in long-term increase in demand, which leads to more contested competition, where everyone has to reduce their prices.                                                                                           In fact, book pricing depends on more factors than are included in our data set. 
+
+The mean sales rank decreases the more stars were given. As we noticed, more than 75 percent of all observations were rated with four stars or higher, so we can assume a similar percentage of observations in the upper bar (565063). Nevertheless, the mean sales rank for books recommended by the New York Times is significantly lower than the mean sales rank of books rated more than four stars by the crowd. Nevertheless, the mean sales rank for New York Times-recommended books is significantly lower than the mean sales rank for crowd ratings rated higher than four stars. 
+
+**task:** Try to list every book (on the US market) that has been listed as a sales ranker at least once (rank == 1). In addition, we need information about the average `NYT_elapse`, `OTH_elapse`, `pamzn`, and `R`. Group your table by `titleno` and keep the name of the average variables. 
+
+```{r "8_7",warning=FALSE}
+
+dataTop10 <- data %>%
+  filter(cno == 3 & rank == 1) %>%
+  group_by(titleno) %>%
+  summarise(NYT_elapse = mean(NYT_elapse, na.rm = TRUE), 
+            OTH_elapse = mean(OTH_elapse, na.rm = TRUE),
+            pamzn = mean(pamzn, na.rm = TRUE), 
+            R = mean(R, na.rm = TRUE))
+
+dataTop10 %>%
+  kbl(col.names = c("titleno" = "Title ID", "NYT_elapse" = "Days until/since New York Times review", "OTH_elapse" = "Days until/since other magazines review", "pamzn" = "Amazon Sales Price", "R" = "Star Rating"), caption = "Group Rows") %>%
+  kable_paper("striped", full_width = TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks).
 
 
 
