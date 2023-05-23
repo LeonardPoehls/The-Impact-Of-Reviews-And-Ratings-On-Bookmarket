@@ -64,11 +64,11 @@ To examine these effects, this problem set aims to reorganize and replicate part
  
 3. Empirical Strategies on Sales Ranks 
 
- 3.1 Introduction and Implementation of Event Studies
+ 3.1 Regressions, Robust Standard Errors and Fixed Effects 
  
- 3.2 Robust Standard Errors, Fixed Effects and Logarithmized Estimates
+ 3.2 Estimation of the Effects on Sales Ranks and Prices
  
- 3.3 Estimation of the Effects on Sales Ranks
+ 3.3 Introduction and Implementation of Event Studies
  
 4. Translating Sales Ranks into Quantities and Price Elasticity
  
@@ -99,7 +99,7 @@ Press `Go to next exercise...` to continue and to find further instructive compe
 <br/>
 
 
-## Exercise 1 -- Motivation
+## Exercise 1 -- Motivation (3018 Words)
 
 In this study, the book market was chosen to determine the impacts from crowd ratings and professional reviews. 
 
@@ -109,7 +109,7 @@ In the second part of this chapter, we illustrate potential welfare effects by h
 
 After editing this chapter, you gained an insight of the initial situation on the book market and you received deeper knowledge about basic economic issues. Thus you will be well prepared to continue with chapter 2. 
 
-### Structure
+### Structure 
 
 1.1 Book Market, Professional Reviews and Crowd Ratings
 
@@ -397,7 +397,7 @@ After looking at a simple market diagram, we learnt to distinguish between deman
 
 In the following chapter 2, we get an introduction to the Amazon data set followed by descriptive analyses.
 
-## Exercise 2 -- Data and Descriptive Insights
+## Exercise 2 -- Data and Descriptive Insights (3814)
 
 The underlying examination by Reimers and Waldfogel is based on a data set provided by Amazon. 
 
@@ -931,7 +931,7 @@ grid.arrange(f5, f6, ncol = 2)
 
 ```
 
-In contrast to the affects of professional reviews, the mean price exhibits an inverse behavior. The Price seems to decrease the more stars a rating has while sales ranks generally behave according to the occurrence of professional reviews. Obviously, crowd ratings affect prices differently than professional reviews in magazines. This could be due to professional reviews triggering a (short-term) increase in demand that may not be served in the short term, leading to a price increase. On the other hand, higher crowd ratings on Amazon could rather resulting in long-term increase in demand, which leads to more contested competition, where everyone has to reduce their prices.                                                                                           In fact, book pricing depends on more factors than are included in our data set. 
+In contrast to the affects of professional reviews, the mean price exhibits an inverse behavior. The Price seems to decrease the more stars a rating has while sales ranks generally behave according to the occurrence of professional reviews. Obviously, crowd ratings affect prices differently than professional reviews in magazines. This could be due to professional reviews triggering a (short-term) increase in demand that may not be served in the short term, leading to a price increase. On the other hand, higher crowd ratings on Amazon could rather resulting in long-term increase in demand, which leads to more contested competition, where everyone has to reduce their prices.                                                                           In fact, book pricing depends on more factors than are included in our data set. 
 
 The mean sales rank decreases the more stars were given. As we noticed, more than 75 percent of all observations were rated with four stars or higher, so we can assume a similar percentage of observations in the upper bar (565063). Nevertheless, the mean sales rank for books recommended by the New York Times is significantly lower than the mean sales rank of books rated more than four stars by the crowd. Nevertheless, the mean sales rank for New York Times-recommended books is significantly lower than the mean sales rank for crowd ratings rated higher than four stars. 
 
@@ -970,11 +970,31 @@ Overall, prices rise within one year by approximately $1.5 US. Price collapses c
 
 **Summary**
 
-Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks.                                                                           we have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
+Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks.                                                            We have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
 
 In the following chapter, we start with the empirical part of this problem set. 
 
 ## Exercise 3 -- Empirical Strategies on Sales Ranks and Prices
+
+In following chapter *Empirical Strategies on Sales Ranks and Prices* we focus on empirical methods in general and their application to real data from Amazon. 
+
+First, we give an introduction to empirical basics about the subject of regressions and the specific methods that come along with it. In general, it deals with control variables, fixed effects, robust standard errors, and the use of logarithmic estimates. 
+
+In chapter 3.2, we focus on the replication of the main regression originally created by Reimers and Waldfogel. We discuss different of those effects and deepen the examination with further regressions. Based on these regressions on real data, we also focus on the validity of regressions and the explanation of values that inform them. 
+
+Chapter 3.3 explains the subject of event studies. We also conduct two event studies based on the underlying data set to identify long- and short-term reactions of sales ranks and prices to professional reviews. 
+
+Working through this chapter will provide fundamentals to advanced empirical strategies that are used to make predictive statements in science. 
+
+### Structure
+
+3.1 Regressions, Robust Standard Errors and Fixed Effects 
+ 
+3.2 Estimation of the Effects on Sales Ranks and Prices
+ 
+3.3 Introduction and Implementation of Event Studies
+
+## Exercise 3.1 -- Regressions, Robust Standard Errors and Fixed Effects
 
 
 

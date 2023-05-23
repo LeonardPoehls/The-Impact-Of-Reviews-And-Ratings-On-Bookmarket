@@ -39,11 +39,11 @@ To examine these effects, this problem set aims to reorganize and replicate part
  
 3. Empirical Strategies on Sales Ranks 
 
- 3.1 Introduction and Implementation of Event Studies
+ 3.1 Regressions, Robust Standard Errors and Fixed Effects 
  
- 3.2 Robust Standard Errors, Fixed Effects and Logarithmized Estimates
+ 3.2 Estimation of the Effects on Sales Ranks and Prices
  
- 3.3 Estimation of the Effects on Sales Ranks
+ 3.3 Introduction and Implementation of Event Studies
  
 4. Translating Sales Ranks into Quantities and Price Elasticity
  
@@ -74,7 +74,7 @@ Press `Go to next exercise...` to continue and to find further instructive compe
 <br/>
 
 
-## Exercise 1 -- Motivation
+## Exercise 1 -- Motivation (3018 Words)
 
 In this study, the book market was chosen to determine the impacts from crowd ratings and professional reviews. 
 
@@ -84,7 +84,7 @@ In the second part of this chapter, we illustrate potential welfare effects by h
 
 After editing this chapter, you gained an insight of the initial situation on the book market and you received deeper knowledge about basic economic issues. Thus you will be well prepared to continue with chapter 2. 
 
-### Structure
+### Structure 
 
 1.1 Book Market, Professional Reviews and Crowd Ratings
 
@@ -329,7 +329,7 @@ After looking at a simple market diagram, we learnt to distinguish between deman
 
 In the following chapter 2, we get an introduction to the Amazon data set followed by descriptive analyses.
 
-## Exercise 2 -- Data and Descriptive Insights
+## Exercise 2 -- Data and Descriptive Insights (3814)
 
 The underlying examination by Reimers and Waldfogel is based on a data set provided by Amazon. 
 
@@ -402,7 +402,7 @@ In chapter 2.2, we dare a first dive into the data set by creating descriptive s
 
 ## Exercise 2.2 -- Analysis of the Pre-Purchase Information
 
-In the following part, we will analyze data to gain a deeper understanding of Amazon star ratings and the occurrence of professional ratings. 
+In the following part, we will analyze data to gain a deeper understanding of the occurrence of professional ratings. In addition, we want to check whether the collected data from journals appropriates for following estimations. 
 
 **Task:** Run the following chunk to visualize the percentage of books reviewed by magazines, and then `check` it.
 
@@ -441,20 +441,179 @@ In total, 12.66 percent of all books (1521) included in the data set have been p
 
 **Task:** Run the following chunk to determine the intersections between the single magazines. 
 
-```{r "7_2"}
+```{r "7_2",warning=FALSE}
 # Enter your code here.
 ```
 
-Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, may be biased by mutual overlays. The sum at the end is not the correct number of books reviewed, as we only observed individual overlays and did not check for overlaps in multiple magazines. 
+Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be biased by mutual overlays. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
 
-The advantage for crowd ratings is that we also have the amount of ratings available. We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. If they are not 
+The advantage for crowd ratings is that we also have the amount of ratings available. In fact, the selection of books to be evaluated by professional reviewers is not random (Berger, Sorensen, Rasmussen, 2010). We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. If this is not the case, we cannot reject the assumption that journals only review "better" rated books on Amazon and vice versa. The left Graphs in the following illustrates that the distribution of professional reviews among crowd ratings is evenly distributed. 
+
+On the other hand, whether authors are popular also depends on the number of books they have published so far. If the authors name is more popular through previous published books, professional reviewers could potentially tend to prefer those authors. The chart on the right visualizes the proportion of professional reviews among the number of the books previously published by the authors. 
 
 
-```{r "7_3"}
+
+Quiz: Focusing the published books, What is your suggestion?
+
+[1]: The more books an author publishes, the more likely these books will be professionally reviewed.
+[2]: The more books an author publishes, the less likely these books will be professionally reviewed.
+[3]: The overall distribution is even.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Distribution_Guess")
+```
+
+**Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
+```{r "7_3",warning=FALSE}
+# Enter your code here.
+```
+
+After we have created the dataset, we can proceed with the creation of the chart.
+
+**Task:** Execute the following chunk to create two graphs representing the distribution of professional reviews among two variables. 
+
+```{r "7_4",warning=FALSE}
+# Enter your code here.
+```
+
+If we focus on the distribution of Amazon star ratings, we recognize a slight leftward skew in the weaker rated books on Amazon. However, this high proportion is to the left of the 25 percent quantile line which states that 75 percent of ratings on Amazon are rated 4.1 stars or even better. In the 75 percent zone, the distribution is rather even while outliers in the 25 percent zone are not unusual. This could be because books that have already been rated poorly on Amazon tend to be rated less often as a result. Hence, we can assume that Amazon star ratings do not visibly influence the book selection of professional reviewers and vice versa. Actually, a remaining risk always exists. 
+
+The on right chart, we notice a quite even distribution among the number of published books between 0 and 21 percent. The 25 percent quantile line is located at two published books which states that a huge amount of 25 percent of all books reviewed on Amazon are written by "inexperienced" authors who published two books or less. The distribution remains even until 65 published books. After that, almost no more books were reviewed. Because of that, we limited the x-axis. Similar to star ratings, we can assume that the book selection of professional reviewers is less dependent on the number of books published so far. 
+
+**Summary**
+
+In summary, we have gained deeper insights into the relative and absolut numbers of professional reviews. It was illustrated to us that a relatively high proportion, between 30 and 67 percent, of all non-New York Times magazines were also reviewed by the New York Times, which may bias future estimates. To disprove the assumption that the selection of professionally reviewed books is not random, we use two different variables (Amazon Star Rating and Number of previous published books) to check whether the relative distribution on said variables disproves this assumption. In both cases we found out, that the distributions regarding to these variables are more or less even which is why we may assume a random choice of books for the time being. After all, the professional reviewers at the New York Times have discretion over about which books they actually review. Accordingly, we can never assume a 100 percent random distribution.
+
+## Exercise 2.3 -- Recognition of Potential Effects through Descriptive Approaches
+
+Before we start identifying potential effect, we need a good overview of the relevant descriptive values. Generally, descriptive values are based on simple statistics to describe and to visualize contexts, that have already happened. These values are easily understood and can provide sound summaries of high data volumes within seconds. The most powerful function of descriptive analyses is the ability to identify relationships in order to make predictions using more complex statistics. This procedure is exactly the same as what we have already done in chapter 2.2. 
+
+Starting with a good overview, we want to create a table including simple descriptive values distinguished by `country`. 
+
+**Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
+
+```{r "8_1",warning=FALSE}
 # Enter your code here.
 ```
 
 
+The first four rows return the mean values of the book price, the Amazon Star Rating, the sales rank and the number of ratings per book. The book markets in all three considered countries do not have fixed book prices. Fixed book prices (FBP) means that the publisher has the exclusive right to set the price of his book. The retailer is not permitted to discount more than five percent from this set price (Nakayama, 2015).
+
+
+Quiz: Comparing UK (without FBP) and Germany (with FBP), which country accounted a higher price increase between 1996 (end of FBP in UK) and 2018?
+
+[1]: United Kingdom (UK).
+[2]: Germany.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Fixed_Prices")
+```
+
+Unfortunately, our data set only includes countries data from countries without FBP. Comparing the prices of the three available countries, we recognize a large price difference between Canada (21.07) and Great Britain (13.12) while the US account an average price of 15.86. Possible reasons for those expensive book prices could be that Canada imports many of these books where fees and other costs are incurred (Kwan, 2013), transportation costs over large land masses and a loss of economies of scale due to a smaller book market. The star ratings and their percentiles are quite even while large differences occur in the sales ranks and the number of ratings. Considering the fact that sales ranks are generated on their individual market place and less transparent, we cannot list any specific reasons for this. The high differences in the number of ratings may be due to the level of awareness of Amazon in the individual countries. Obviously, the US market accounts for more than twice as many observations as Canada or Great Britain.      
+
+Hence, we gained insight into general descriptive values over the entire data set. To elaborate this, let us review the same values for observations where the availability of professional reviews is guaranteed. 
+
+**Task:** Use the fuction `readRDS` to read the RDS-file `DataDescriptiveJournals`. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
+
+```{r "8_2",warning=FALSE}
+# Enter your code here.
+```
+
+Without differentiating between magazines or knowing whether the review turned out "positive" or "negative", we find an increase of price of about 15 percent, a decrease in average sales rank of about 39 percent, and the average number of ratings of about 86 percent, as well as significantly higher variance in percentiles of star ratings. The Amazon star rating also drops by a smaller percentage of about 2.3 percent. This leads to the assumption that the occurrence of professional reviews extensively affects the price, the sales rank and the number of ratings. 
+
+The variance in percentiles of star ratings could be due to the fact that we have no information about how it has been reviewed, with which a polarization of the reviews may have taken place. For the New York Times reviews, the main data set contains information about whether the New York Times recommended a book using the variable `drecommended`. In the following, we generate two chronological graphs to show the descriptive affects from professional reviews on sales ranks and prices. 
+
+**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings (cno == 3 -> US). 
+
+**Task:** Execute the following chunk to create three different filtered data sets. Press `check` to collect your points.
+
+```{r "8_3",warning=FALSE}
+# Enter your code here.
+```
+ 
+After creating these three datasets, proceed to transform the data by creating the final dataset to visualize the results. 
+ 
+**Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on. 
+ 
+```{r "8_4",warning=FALSE}
+# Enter your code here.
+```
+
+The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8 US cheaper than books mentioned in the New York Times.                    Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
+
+
+Quiz: Which of the following statements may be made?
+
+[1]: With the information of these graphs we can assume a price elasticity ε < 1 for the US book market.
+[2]: None of those listed.
+[3]: With the information of these graphs we can assume a price elasticity ε > 1 for the US book market.
+[4]: The effect of professional reviews on sales ranks (quantities) could be higher than the effect on prices.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Prices_and_SalesRanks")
+```
+
+We want to conduct a similar examination for crowd ratings, with the difference that we have information not only on the occurrence of these ratings, but also on their level on the five-point scale. Above, we already noted a negative association between the Amazon star rating and the occurrence of professional reviews. 
+
+Before we start, let us divide Amazon star ratings into three categories: less than three stars, three and four stars, and more than four stars. 
+
+**Task:** Create three dummy variables that show `1` when the star rating is between one and three, three and four and more than five. Orientate on exercise `2.2.1` to create a dummy variable. Then, try to replace the ___ gaps to create three filtered data sets according to `2.3.3`. Name these data sets `dataCR1_3`, `dataCR3_4` and `dataCR4_5`.
+
+
+```{r "8_5",warning=FALSE}
+# Enter your code here.
+```
+
+**Task:** Now run the following chunk to see how crowd ratings affect the price and sales ranks. Press `check` to confirm. 
+
+```{r "8_6",warning=FALSE}
+# Enter your code here.
+```
+
+In contrast to the affects of professional reviews, the mean price exhibits an inverse behavior. The Price seems to decrease the more stars a rating has while sales ranks generally behave according to the occurrence of professional reviews. Obviously, crowd ratings affect prices differently than professional reviews in magazines. This could be due to professional reviews triggering a (short-term) increase in demand that may not be served in the short term, leading to a price increase. On the other hand, higher crowd ratings on Amazon could rather resulting in long-term increase in demand, which leads to more contested competition, where everyone has to reduce their prices.                                                                           In fact, book pricing depends on more factors than are included in our data set. 
+
+The mean sales rank decreases the more stars were given. As we noticed, more than 75 percent of all observations were rated with four stars or higher, so we can assume a similar percentage of observations in the upper bar (565063). Nevertheless, the mean sales rank for books recommended by the New York Times is significantly lower than the mean sales rank of books rated more than four stars by the crowd. Nevertheless, the mean sales rank for New York Times-recommended books is significantly lower than the mean sales rank for crowd ratings rated higher than four stars. 
+
+To verify whether absolut book prices remain constant over time, we create a timeline for the average book price. We only observe for top 10000 and top 1000 sales ranks because we claim higher time based dependencies the 
+
+**task:** Replace every ___ gap with the correct code. Use `left_join` to merge the data sets `dataTop10000` and `dataTop1000` by `ddate`
+
+```{r "8_7",warning=FALSE}
+# Enter your code here.
+```
+
+Overall, prices rise within one year by approximately $1.5 US. Price collapses can be observed in the spring, and there is a massive drop in prices in the summer months from June to September, with average prices (Top 1.000) falling by around 14 percent. The slump at the end of November is more like an outlier value. Obviously, better sold books tend to vary in price due to specific seasons. Lower prices in summer could be due to lower demand, as people prefer to read during the winter months. For the following event study in chapter 3.3 we have to take into account that there are fluctuations in book prices within a year and that these can be attributed to various factors. 
+
+**Summary**
+
+Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks.                                                                           we have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
+
+In the following chapter, we start with the empirical part of this problem set. 
+
+## Exercise 3 -- Empirical Strategies on Sales Ranks and Prices
+
+In following chapter *Empirical Strategies on Sales Ranks and Prices* we focus on empirical methods in general and their application to real data from Amazon. 
+
+First, we give an introduction to empirical basics about the subject of regressions and the specific methods that come along with it. In general, it deals with control variables, fixed effects, robust standard errors, and the use of logarithmic estimates. 
+
+In chapter 3.2, we focus on the replication of the main regression originally created by Reimers and Waldfogel. We discuss different of those effects and deepen the examination with further regressions. Based on these regressions on real data, we also focus on the validity of regressions and the explanation of values that inform them. 
+
+chapter 3.3 explains the subject of event studies. We also conduct two event studies based on the underlying data set to identify long- and short-term reactions of sales ranks and prices to professional reviews. 
+
+Working through this chapter will provide fundamentals to advanced empirical strategies that are used to make predictive statements in science. 
+
+### Structure
+
+3.1 Regressions, Robust Standard Errors and Fixed Effects 
+ 
+3.2 Estimation of the Effects on Sales Ranks and Prices
+ 
+3.3 Introduction and Implementation of Event Studies
+
+## Exercise 3.1 -- Regressions, Robust Standard Errors and Fixed Efects
 
 
 
