@@ -333,6 +333,7 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
 Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality $$(\bar R_{j} < R_{j})$$, the same quality $$(\bar R_{j} = R_{j})$$ or a higher expected quality than the actual quality $$(\bar R_{j} > R_{j})$$. 
 
 ```{r "4_3",warning=FALSE}
+
 #Create a fictive data set 
 yPredQualityPrice <- c(1.6,1.0,0.50,0.15,-0.10)
 xQuan <- c(1,2,3,4,5)
@@ -380,6 +381,8 @@ ggplot(data = DatasetTest) +
   theme(
   axis.text.y=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+  
 ```
 
 As visualized in the upper graph, the consumer would choose quantity Q1 for $$(\bar R_{j} < R_{j})$$, quantity Q* for $$(\bar R_{j} = R_{j})$$ and quantity Q2 for $$(\bar R_{j} > R_{j})$$. For choosing Q1, the consumer would expect a surplus of triangle A while getting an actual surplus of A + B (ex post recognition of actual quality). A consumer with access to pre-purchase information would always choose Q* with a surplus of A + B + C. Overestimating the books quality, the consumer would buy quantity Q2 and obtains a surplus of A + B + C - D. It is obvious, that quality expectations affect the overall utility of the consumer and thus the demand curve appears to shift without impacting the price elasticity. In fact, the curve merely adjusts to the actual demand. 
@@ -431,7 +434,7 @@ To better understand our data set, we categorize some important variables and ta
 
 **Task:** Use the function `readRDS` to load the data set called `dataEst.RDS`. Save this data set under the name `data`.
 
-```{r "6_4"}
+```{r "6_4",warning=FALSE}
 setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data")
 #use readRDS("file_name.RDS") to load your data
 data <- readRDS("dataEst.RDS")
@@ -480,7 +483,7 @@ In chapter 2.2, we dare a first dive into the data set by creating descriptive s
 
 In the following part, we will analyze data to gain a deeper understanding of the occurrence of professional ratings. In addition, we want to check whether the collected data from journals appropriates for following estimations. 
 
-**Task:** Run the following chunk to visualize the percentage of books reviewed by magazines, and then `check` it.
+**Task:** Replace the ___ gaps in the following chunk to visualize the percentage of books reviewed by magazines, and then `check` it.
 
 **Note:** In sum, the underlying data set includes data about **8770 books**. 
 
@@ -922,7 +925,7 @@ grid.arrange(f5, f6, ncol = 2)
 
 ```
 
-In contrast to the affects of professional reviews, the mean price exhibits an inverse behavior. The Price seems to decrease the more stars a rating has while sales ranks generally behave according to the occurrence of professional reviews. Obviously, crowd ratings affect prices differently than professional reviews in magazines. This could be due to professional reviews triggering a (short-term) increase in demand that may not be served in the short term, leading to a price increase. On the other hand, higher crowd ratings on Amazon could rather resulting in long-term increase in demand, which leads to more contested competition, where everyone has to reduce their prices.                                                                           In fact, book pricing depends on more factors than are included in our data set. 
+In contrast to the affects of professional reviews, the mean price exhibits an inverse behavior. The Price seems to decrease the more stars a rating has while sales ranks generally behave according to the occurrence of professional reviews. Obviously, crowd ratings affect prices differently than professional reviews in magazines. This could be due to professional reviews triggering a (short-term) increase in demand that may not be served in the short term, leading to a price increase. On the other hand, higher crowd ratings on Amazon could rather resulting in long-term increase in demand, which leads to more contested competition, where everyone has to reduce their prices.                                                                 In fact, book pricing depends on more factors than are included in our data set. 
 
 The mean sales rank decreases the more stars were given. As we noticed, more than 75 percent of all observations were rated with four stars or higher, so we can assume a similar percentage of observations in the upper bar (565063). Nevertheless, the mean sales rank for books recommended by the New York Times is significantly lower than the mean sales rank of books rated more than four stars by the crowd. Nevertheless, the mean sales rank for New York Times-recommended books is significantly lower than the mean sales rank for crowd ratings rated higher than four stars. 
 
@@ -961,7 +964,7 @@ Overall, prices rise within one year by approximately $1.5 US. Price collapses c
 
 **Summary**
 
-Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks.                                                                           we have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
+Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks.                                                            We have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
 
 In the following chapter, we start with the empirical part of this problem set. 
 
@@ -973,9 +976,9 @@ First, we give an introduction to empirical basics about the subject of regressi
 
 In chapter 3.2, we focus on the replication of the main regression originally created by Reimers and Waldfogel. We discuss different of those effects and deepen the examination with further regressions. Based on these regressions on real data, we also focus on the validity of regressions and the explanation of values that inform them. 
 
-chapter 3.3 explains the subject of event studies. We also conduct two event studies based on the underlying data set to identify long- and short-term reactions of sales ranks and prices to professional reviews. 
+Chapter 3.3 explains the subject of event studies. We also conduct two event studies based on the underlying data set to identify long- and short-term reactions of sales ranks and prices to professional reviews. 
 
-Working through this chapter will provide fundamentals to advanced empirical strategies that are used to make predictive statements in science. 
+Working through this chapter will provide fundamentals to advanced empirical strategies that are used to make predictive statements in economic science. 
 
 ### Structure
 
@@ -985,10 +988,29 @@ Working through this chapter will provide fundamentals to advanced empirical str
  
 3.3 Introduction and Implementation of Event Studies
 
-## Exercise 3.1 -- Regressions, Robust Standard Errors and Fixed Efects
+## Exercise 3.1 -- Regressions, Robust Standard Errors and Fixed Effects
+
+Before we get into the subject matter of regressions, we learn how to classify this topic. In general, Regressions describe a quantitative statistical approach to explaining associations between a dependent variable and one (linear) or more (multiple) independent (explanatory) variables in order to gain predictive information. The formula for a linear regression is as follows:
+
+$$ y = x_0 + ß_1x_1 + \varepsilon $$
+
+where y indicates the dependent variable and x1 represents the explanation variable. x0 denotes the so called intercept on the y-axis, id est the average value of y if the explanatory variable x1 has no influence. ε is the error term and shows the sum of the residuals from the regression. Finally, β1 indicates the average increase or decrease of y for every unit increase of x1. Here, the value of β1 is determined by the Ordinary least squares method (OLS). Further information about this method you find [here](https://www.mathsisfun.com/data/least-squares-regression.html).                                      
 
 
+Quiz: We want to estimate the effect from years of education (x1) on the income (y). We determined the following formula for 1.000 people with ŷ = 500 + 300*x1. What is the correct answer?
 
+- With ten years of education you exactly earn 3500 monetary units. [ ]
+
+- Within the 1.000 individuals, each additional year in education results in 300 more monetary units. [ ]
+
+- We only have 1.000 observations - we cannot make a statement. [ ]
+
+- Within the 1.000 individuals, each additional year in education results in an average of 300 more monetary units -> to make statements beyond our sample, we rather need more data and more variables. [x]
+
+
+Obviously, the amount of income depends not only on the years of education (yoe). In reality, many more measurable variables affect the amount of income. For instance, the older people get the more they tend to earn. Hence, the age also effects the amount of income. In following we add the variable age as a so called *control variable* to the regression from the quiz:  
+
+$$ y = x_0 + ß_1yoe + ß_2age + \varepsilon $$
 
 
 
