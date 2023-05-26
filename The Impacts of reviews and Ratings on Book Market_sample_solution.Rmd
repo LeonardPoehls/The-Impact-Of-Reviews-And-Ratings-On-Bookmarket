@@ -960,9 +960,9 @@ Working through this chapter will provide fundamentals to advanced empirical str
 
 ## Exercise 3.1 -- Regressions, Robust Standard Errors and Fixed Effects
 
-Before we get into the subject matter of regressions, we learn how to classify this topic. In general, Regressions describe a quantitative statistical approach to explaining associations between a dependent variable and one (linear) or more (multiple) independent (explanatory) variables in order to gain predictive information. The formula for a linear regression is as follows:
+Before we get into the subject matter of regressions, we learn how to classify this topic. In general, regressions describe a quantitative statistical approach to explaining associations between a dependent variable and one (linear) or more (multiple) independent (explanatory) variables in order to gain predictive information. The formula for a linear regression is as follows:
 
-$$ y = x_0 + ß_1x_1 + \varepsilon $$
+$$ y = x_0 + β_1x_1 + \varepsilon $$
 
 where y indicates the dependent variable and x1 represents the explanation variable. x0 denotes the so called intercept on the y-axis, id est the average value of y if the explanatory variable x1 has no influence. ε is the error term and shows the sum of the residuals from the regression. Finally, β1 indicates the average increase or decrease of y for every unit increase of x1. Here, the value of β1 is determined by the Ordinary least squares method (OLS). Further information about this method you find [here](https://www.mathsisfun.com/data/least-squares-regression.html).                                      
 
@@ -980,7 +980,43 @@ Quiz: We want to estimate the effect from years of education (x1) on the income 
 
 Obviously, the amount of income depends not only on the years of education (yoe). In reality, many more measurable variables affect the amount of income. For instance, the older people get the more they tend to earn. Hence, the age also effects the amount of income. In following we add the variable age as a so called *control variable* to the regression from the quiz:  
 
-$$ y = x_0 + ß_1yoe + ß_2age + \varepsilon $$
+$$ y = x_0 + β_1yoe + β_2age + \varepsilon $$
+
+Now we directly control for the effect of age on income, so that age no longer affects the coefficient on price. However, adding to many control variables could lead to over fitting, which means that the model is overfitted to the specific sample, so that the model reacts to random variation instead of actual contexts. 
+
+
+Quiz: What is the correct answer?
+
+- Adding the age to the regression increases the value of β1. [ ]
+
+- Adding the age to the regression decreases the value of β1. [ ]
+
+- Adding the age to the regression does not influence the coefficient of yoe. [x]
+
+
+The ideal number of control variables generally depends on the research question and the number of observations. But even with a high frequently data set like the Amazon data set it would be recommended not to control for too many variables (Kranz, 2022). 
+
+We then perform a multiple regression in R. Regression results are usually presented in the form of tables, listing the values of the coefficients. For illustration, we regress the sales rank on the price from the main Amazon data set. 
+
+**Task:** Run the following code chunk to understand how regression tables look like and how to implement them in R. Do not forget to press `check`.
+
+```{r "10_1",warning=FALSE}
+regFirstStep <- lm(rank ~ pamzn + R, data = data)
+summary(regFirstStep)
+
+```
+
+
+
+
+**Fixed Effects**
+
+
+
+
+
+
+
 
 
 
