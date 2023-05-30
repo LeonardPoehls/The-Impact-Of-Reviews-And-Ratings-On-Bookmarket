@@ -727,25 +727,76 @@ answer.quiz("Multiple_Regression")
 
 The ideal number of control variables generally depends on the research question and the number of observations. But even with a high frequently data set like the Amazon data set it would be recommended not to control for too many variables (Kranz, 2022). 
 
-We then perform a multiple regression in R. Regression results are usually presented in the form of tables, listing the values of the coefficients. For illustration, we regress the sales rank on the price from the main Amazon data set. 
+We then perform a multiple regression in R. Regression results are usually presented in the form of tables, listing the values of the coefficients. For illustration, we regress the sales rank on the price from the main Amazon data set:  
 
-**Task:** Run the following code chunk to understand how regression tables look like and how to implement them in R. Do not forget to press `check`.
+$$ y = x_0 + β_1Price + β_2StarRating + \varepsilon $$
+
+**Task:** Replace the ___ gaps with the correct code. Do not forget to press `check`.
 
 ```{r "10_1",warning=FALSE}
-# Enter your code here.
+# We draw a sample of 100.000 observations for performance purposes from `data`
+dataLite <- data[sample(nrow(____), size = _____, replace = TRUE),]
+# We use the function lm() to regress `pamzn` and `R` on `rank`
+regFirstStep <- __(rank ~ _____ + _, data = dataLite)
+# The function summary() creates a regression table
+summary(regFirstStep)
 ```
 
+The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies. The t-value is the estimate divided by its individual standard error. The formula is as follows and can be found [here](https://bookdown.org/mike/data_analysis/linear-regression.html).
+
+$$\widehat{SE}(\hat\beta_k)=s\sqrt{[(\mathbf{X}^T\mathbf{X})^{-1}]_{kk}}$$
+
+Where $s$ is the standard error of the entire regression, $X$ the the covariance matrix, and $\hat\beta_k$ the regression coefficient. 
+
+The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance.
 
 
+Quiz: What is the correct answer?
+
+[1]: A high level on significance indicates an expressive model.
+[2]: The significance level gives no information about the expressiveness of the model.
+[3]: To determine the expressiveness, we need a combination of the significance level and other values.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("t_value")
+```
+
+The R-squared value in the regression table below indicates a coefficient of determination within [0,1], which provides information on how the explanatory variables fit the respective model. In this context, a perfect R-squared value of 1 means a perfect coefficient of determination. In practice, the R-squared value increases with a higher number of observations and more or better chosen explanatory variables. Adding too many variables to the regression might give the illusion of a higher R-squared value, but it also leads to overfitting. 
+
+**Robust Standard Errors**
+
+To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homescedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
+
+**Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
+
+```{r "10_2",warning=FALSE}
+# Load the package `fixest` to use the following functions feols()
+________(fixest)
+# We use the function feols() to add Fixed Effects and Robust Standard Errors. Use `dataLite` for your estimate.
+regRSE <- _____(____ ~ pamzn + R, vcov = "hetero", data = ________)
+# The function summary() creates a regression table
+_______(regRSE)
+```
+
+There are almost no differences in the coefficients for `pamzn` and `R`, while there are large differences in the standard errors. If the assumption of homescedasticity is fulfilled, estimators without robust standard errors tend to have lower standard errors. This could be due to the fact, that Robust Standard Errors take uncertainties into consideration which makes the estimate somewhat less imprecise. However, Robust Standard Errors should still be used to guarantee homoscedasticity. 
+
+
+Quiz: We assume that (for the same regression) the standard errors for the regular regression are lower than for the regression where robust standard errors were used. Whats is the correct answer?
+
+[1]: You can omit the robust standard errors, as they reduce the accuracy of the coefficients.
+[2]: Robust standard errors should generally be added to any regression, as regressions without them are generally inaccurate.
+[3]: It is advisable to add robust standard errors but not necessary. Even with higher standard errors, it may be important to avoid heteroscedasticity.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Robust_standard_errors")
+```
+
+**Note:** Heteroscedasticity is the opposite of homescedasticity.
 
 **Fixed Effects**
 
-
-
-
-
-
-
-
+To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. For instance, the amazon sales rank                                                  To use Fixed Effects in regressions, 
 
 

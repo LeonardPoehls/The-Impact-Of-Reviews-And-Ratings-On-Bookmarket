@@ -1041,13 +1041,19 @@ $$ y = x_0 + β_1Price + β_2StarRating + \varepsilon $$
 # summary(regFirstStep)
 
 
-dataLite <- data[sample(nrow(data), size = 100000, replace = TRUE),]
+dataLite <- data[sample(nrow(data), size = 500000, replace = TRUE),]
 regFirstStep <- lm(rank ~ pamzn + R, data = dataLite)
 summary(regFirstStep)
 
 ```
 
-The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies.         The t-value is the estimate divided by its individual standard error. The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance. 
+The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies. The t-value is the estimate divided by its individual standard error. The formula is as follows and can be found [here](https://bookdown.org/mike/data_analysis/linear-regression.html).
+
+$$\widehat{SE}(\hat\beta_k)=s\sqrt{[(\mathbf{X}^T\mathbf{X})^{-1}]_{kk}}$$
+
+Where $s$ is the standard error of the entire regression, $X$ the the covariance matrix, and $\hat\beta_k$ the regression coefficient. 
+
+The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance.
 
 
 Quiz: What is the correct answer?
@@ -1063,20 +1069,40 @@ The R-squared value in the regression table below indicates a coefficient of det
 
 **Robust Standard Errors**
 
-To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homeskedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values. 
+To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homescedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
 
 **Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
 
 ```{r "10_18",warning=FALSE}
-# Load the package `fixest` to use the following functions feols()
+# # Load the package `fixest` to use the following functions feols()
+# ________(fixest)
+# # We use the function feols() to add Fixed Effects and Robust Standard Errors. Use `dataLite` for your estimate.
+# regRSE <- _____(____ ~ pamzn + R, vcov = "hetero", data = ________)
+# # The function summary() creates a regression table
+# _______(regRSE)
+
+
 library(fixest)
-# We use the function feols() to add Fixed Effects and Robust Standard Errors
 regRSE <- feols(rank ~ pamzn + R, vcov = "hetero", data = dataLite)
-# The function summary() creates a regression table
 summary(regRSE)
 ```
 
+There are almost no differences in the coefficients for `pamzn` and `R`, while there are large differences in the standard errors. If the assumption of homescedasticity is fulfilled, estimators without robust standard errors tend to have lower standard errors. This could be due to the fact, that Robust Standard Errors take uncertainties into consideration which makes the estimate somewhat less imprecise. However, Robust Standard Errors should still be used to guarantee homoscedasticity. 
 
 
+Quiz: We assume that (for the same regression) the standard errors for the regular regression are lower than for the regression where robust standard errors were used. Whats is the correct answer?
+
+- You can omit the robust standard errors, as they reduce the accuracy of the coefficients. [ ]
+
+- Robust standard errors should generally be added to any regression, as regressions without them are generally inaccurate. [ ]
+
+- It is advisable to add robust standard errors but not necessary. Even with higher standard errors, it may be important to avoid heteroscedasticity. [x]
+
+
+**Note:** Heteroscedasticity is the opposite of homescedasticity.
+
+**Fixed Effects**
+
+To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. For instance, the amazon sales rank                                                  To use Fixed Effects in regressions, 
 
 
