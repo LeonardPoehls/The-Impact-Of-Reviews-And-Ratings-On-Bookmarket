@@ -3,6 +3,7 @@
 
 ```{r "setup", eval=FALSE}
 library(RTutor)
+library(modelsummary)
 library(yaml)
 library(xfun)
 library(tidyverse)
@@ -1038,27 +1039,58 @@ failure: Try again.
 
 The ideal number of control variables generally depends on the research question and the number of observations. But even with a high frequently data set like the Amazon data set it would be recommended not to control for too many variables (Kranz, 2022). 
 
-We then perform a multiple regression in R. Regression results are usually presented in the form of tables, listing the values of the coefficients. For illustration, we regress the sales rank on the price from the main Amazon data set. 
+We then perform a multiple regression in R. Regression results are usually presented in the form of tables, listing the values of the coefficients. For illustration, we regress the sales rank on the price from the main Amazon data set:  
 
-**Task:** Run the following code chunk to understand how regression tables look like and how to implement them in R. Do not forget to press `check`.
+$$ y = x_0 + β_1Price + β_2StarRating + \varepsilon $$
+
+**Task:** Replace the ___ gaps with the correct code. Do not forget to press `check`.
 
 ```{r "3.1.1", warning = FALSE}
-#< task 
+#< fill_in
+# We draw a sample of 100.000 observations for performance purposes from `data`
+dataLite <- data[sample(nrow(____), size = _____, replace = TRUE),]
+# We use the function lm() to regress `pamzn` and `R` on `rank`
+regFirstStep <- __(rank ~ _____ + _, data = dataLite)
+# The function summary() creates a regression table
+summary(regFirstStep)
 #>
-regFirstStep <- lm(rank ~ pamzn + R, data = data)
+
+dataLite <- data[sample(nrow(data), size = 100000, replace = TRUE),]
+regFirstStep <- lm(rank ~ pamzn + R, data = dataLite)
 summary(regFirstStep)
 
 ```
 
+The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies.         The t-value is the estimate divided by its individual standard error. The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance. 
 
+#< quiz "t_value"
+question: What is the correct answer? 
+sc:
+- A high level on significance indicates an expressive model. 
+- The significance level gives no information about the expressiveness of the model.
+- To determine the expressiveness, we need a combination of the significance level and other values.*  
+success: Great, your answer is correct! Standard errors, the number of observations and the R-squared value also affect the expressiveness of a model. 
+failure: Try again.
+#>
 
+The R-squared value in the regression table below indicates a coefficient of determination within [0,1], which provides information on how the explanatory variables fit the respective model. In this context, a perfect R-squared value of 1 means a perfect coefficient of determination. In practice, the R-squared value increases with a higher number of observations and more or better chosen explanatory variables. Adding too many variables to the regression might give the illusion of a higher R-squared value, but it also leads to overfitting. 
 
-**Fixed Effects**
+**Robust Standard Errors**
 
+To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homeskedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values. 
 
+**Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
 
-
-
+```{r "3.1.2", warning=FALSE}
+#< task
+# Load the package `fixest` to use the following functions feols()
+library(fixest)
+# We use the function feols() to add Fixed Effects and Robust Standard Errors
+regRSE <- feols(rank ~ pamzn + R, vcov = "hetero", data = dataLite)
+# The function summary() creates a regression table
+summary(regRSE)
+#>
+```
 
 
 
