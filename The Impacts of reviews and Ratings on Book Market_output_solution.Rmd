@@ -265,7 +265,7 @@ Quiz: Which of these marked triangles represents the consumer surplus?
 As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand or supply curve depends on the so called **Price Elasticity**. For the demand side, **Price elasticity** indicates how demand reacts on changes in prices relatively. The formula looks as follows:  
 
 $$
- \epsilon = \frac{\Delta Q/Q}{\Delta P/P} =  \frac{\%\,\mathrm{Change\,in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
+ \epsilon = \frac{\Delta Q/Q}{\Delta P/P} =  \frac{\%\,\mathrm{Change\, in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
 $$
 
 Hence, price elasticity delivers a value ε := [0, ∞] that can also show whether price increases would be worthwhile. An elasticity of ε = 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of ε < 1 are inelastic and otherwise elastic.   
@@ -330,7 +330,7 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
   theme(panel.grid.minor=element_blank(),plot.background=element_blank()) 
 ```
 
-Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality $$(\bar R_{j} < R_{j})$$, the same quality $$(\bar R_{j} = R_{j})$$ or a higher expected quality than the actual quality $$(\bar R_{j} > R_{j})$$. 
+Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ($\bar R_{j}$ < $R_{j}$), the same quality ($\bar R_{j}$ = $R_{j}$) or a higher expected quality than the actual quality ($\bar R_{j}$ > $R_{j}$). 
 
 ```{r "4_3",warning=FALSE}
 
@@ -1041,19 +1041,17 @@ $$ y = x_0 + β_1Price + β_2StarRating + \varepsilon $$
 # summary(regFirstStep)
 
 
-dataLite <- data[sample(nrow(data), size = 500000, replace = TRUE),]
+dataLite <- data[sample(nrow(data), size = 100000, replace = TRUE),]
 regFirstStep <- lm(rank ~ pamzn + R, data = dataLite)
 summary(regFirstStep)
 
 ```
 
-The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies. The t-value is the estimate divided by its individual standard error. The formula is as follows and can be found [here](https://bookdown.org/mike/data_analysis/linear-regression.html).
+The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies. The formula is as follows and can be found [here](https://bookdown.org/mike/data_analysis/linear-regression.html).
 
 $$\widehat{SE}(\hat\beta_k)=s\sqrt{[(\mathbf{X}^T\mathbf{X})^{-1}]_{kk}}$$
 
-Where $s$ is the standard error of the entire regression, $X$ the the covariance matrix, and $\hat\beta_k$ the regression coefficient. 
-
-The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance.
+Where $s$ is the standard error of the entire regression, $X$ the the covariance matrix, and $\hat\beta_k$ the regression coefficient. The t-value is the estimate divided by its individual standard error. The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance.
 
 
 Quiz: What is the correct answer?
@@ -1065,11 +1063,11 @@ Quiz: What is the correct answer?
 - To determine the expressiveness, we need a combination of the significance level and other values. [x]
 
 
-The R-squared value in the regression table below indicates a coefficient of determination within [0,1], which provides information on how the explanatory variables fit the respective model. In this context, a perfect R-squared value of 1 means a perfect coefficient of determination. In practice, the R-squared value increases with a higher number of observations and more or better chosen explanatory variables. Adding too many variables to the regression might give the illusion of a higher R-squared value, but it also leads to overfitting. 
+The R-squared value in the regression table below indicates a coefficient of determination within $[0;1]$, which provides information on how the explanatory variables fit the respective model. In this context, a perfect R-squared value of 1 means a perfect coefficient of determination. In practice, the R-squared value increases with a higher number of observations and more or better chosen explanatory variables. Adding too many variables to the regression might give the illusion of a higher R-squared value, but it also leads to overfitting. 
 
-**Robust Standard Errors**
+#### **Robust Standard Errors**
 
-To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homescedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
+To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homoskedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
 
 **Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
 
@@ -1087,7 +1085,7 @@ regRSE <- feols(rank ~ pamzn + R, vcov = "hetero", data = dataLite)
 summary(regRSE)
 ```
 
-There are almost no differences in the coefficients for `pamzn` and `R`, while there are large differences in the standard errors. If the assumption of homescedasticity is fulfilled, estimators without robust standard errors tend to have lower standard errors. This could be due to the fact, that Robust Standard Errors take uncertainties into consideration which makes the estimate somewhat less imprecise. However, Robust Standard Errors should still be used to guarantee homoscedasticity. 
+There are almost no differences in the coefficients for `pamzn` and `R`, while there are large differences in the standard errors. If the assumption of homoskedasticity is fulfilled, estimators without robust standard errors tend to have lower standard errors. This could be due to the fact, that Robust Standard Errors take uncertainties into consideration which makes the estimate somewhat less imprecise. However, Robust Standard Errors should still be used to guarantee homoscedasticity. 
 
 
 Quiz: We assume that (for the same regression) the standard errors for the regular regression are lower than for the regression where robust standard errors were used. Whats is the correct answer?
@@ -1099,10 +1097,59 @@ Quiz: We assume that (for the same regression) the standard errors for the regul
 - It is advisable to add robust standard errors but not necessary. Even with higher standard errors, it may be important to avoid heteroscedasticity. [x]
 
 
-**Note:** Heteroscedasticity is the opposite of homescedasticity.
+**Note:** Heteroscedasticity is the opposite of homoskedasticity.
 
-**Fixed Effects**
+#### **Fixed Effects**
 
-To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. For instance, the amazon sales rank                                                  To use Fixed Effects in regressions, 
+To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. The endogeneity problem occurs when the explanatory variable $x_k$ depends on the error term $\varepsilon $. For instance, we examine the effect of price (as the only explanatory variable) on the sales rank. Since the book price is determined by many other factors, the price appears to be an endogenous variable. As a result, biases arise and the respective coefficient could become inaccurate. When using fixed effects, we select certain variables to control for. These fixed effects are kept constant and do not affect the estimation. Using this method, we attempt to reduce the variation within explanatory variables by minimizing the potential for bias from omitted variables (Hill, Davis, Roos and French, 2020).
+
+
+Quiz: What is your suggestion, does the implementation of fixed effects significantly affect the value of the coefficients of the explanatory variable(s)?
+
+- Yes. [x]
+
+- No. [ ]
+
+
+Let us look at an example for this. We want to create a regression where the sales rank indicates the dependent variables $y$ and $x_1$  as explanatory variable for the Amazon book price. The formula looks as follows:  
+
+$$ y = x_0 + β_1 * x_1 + \varepsilon $$
+
+In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable canum as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
+
+**Task:** Replace the ___ gaps to create a regressions with fixed effects. Compare this regression `regFirstStep` with a regression without differences occur. Press `check` after solving this exercise. 
+
+```{r "10_19",warning=FALSE}
+# 
+# # Load the package `modelsummary` to gain a more handsome regression table
+# library(____________) 
+# # Create a regression using `canum` as fixed effects. Add robust standard errors. 
+# regFE <- feols(____ ~ pamzn | _____, ____ = "he____", data = dataLite)
+# # Create a regular regression without robust standard errors and fixed effects.
+# regWFE <- lm(rank ~ pamzn, data = dataLite)
+# modelsummary(list(regWFE, regFE), statistic = "({std.error})", coef_rename = c("pamzn" = "Amazon Price"))
+
+
+library(modelsummary) 
+regFE <- feols(rank ~ pamzn | canum, vcov = "hetero", data = dataLite)
+regWFE <- lm(rank ~ pamzn, data = dataLite)
+modelsummary(list(regWFE, regFE), statistic = "({std.error})", coef_rename = c("pamzn" = "Amazon Price"))
+
+```
+
+Column two shows the fixed-effects estimate with robust standard errors, while column one shows the regular regression. It is noticeable that the regressions estimate completely different values for the coefficients. Chapter 2.3 showed price differences that can be attributed to the respective country in which the book was rated. The regular regression seems to show exactly this endogeneity problem, that the Amazon price also depends on the country where the book was rated, as well as many other factors. Using fixed effects, we eliminated the country-specific effect and obtained the information that the Amazon price and the sales rank are negatively related. 
+
+The fixed-effects model requires a so-called panel data structure that has data available for each individual (here: Books) at different points in time. However, the addition of fixed effects can also lead to inaccuracies and biases.                                        The disadvantage is that the variables used as fixed effects can no longer be included in the regression as explanatory variables. This model also assumes that the explanatory variable is not collinear (perfectly correlated) to the fixed effects, otherwise this explanatory variable would be determined purely by the fixed effects. Finally, the endogeneity problem can not get completely eliminated by a fixed-effects model. Better suited for this purpose is the Difference-in-Difference approach or Instrumental Variable Estimation, which are not further discussed in the course of this problem set.                                                      
+
+**Summary**
+
+To sum up, this chapter has given us a handsome overview about some basics and advanced methods and tools for working with regressions. First, we learned how regressions basically work, how to interpret them using particular values, and how they are implemented in R. We distinguished between linear and multiple regressions and how control variables potentially affect multiple regressions. We found multiple differences in the regression coefficients and the coefficients of determination when we added control variables. Second, the effect of Robust Standard Errors was discussed and implemented in R. We extracted the information that inserting Robust Standard Errors can be quite useful to ensure homoskedasticity. Finally, we learned how to explain and to implement fixed effects. Application on the Amazon data set underscored the utility and potential of fixed effects for subsequent examinations. 
+
+In the following chapter, we apply the methods and tools from this chapter to examine the overall effects on sales ranks and prices.
+
+## Exercise 3.2 -- Estimation of the Effects on Sales Ranks and Prices
+
+
+
 
 
