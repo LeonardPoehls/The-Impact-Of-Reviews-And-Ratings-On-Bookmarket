@@ -21,7 +21,6 @@ library(cowplot)
 library(ivreg)
 library(tinytex)
 library(lfe)
-library(plm)
 library(dplyr)
 library(zoo)
 library(broom)
@@ -186,12 +185,13 @@ data$L1.rank <- new_lrank
 data <- data %>%
     mutate(dnytpost1 = ifelse(NYT_elapse >= 1 & NYT_elapse <= 5, 1, 0), 
            dnytpost6 = ifelse(NYT_elapse >= 6 & NYT_elapse <= 10, 1, 0),
-           dnytpost10Test = ifelse(NYT_elapse >= 11 & NYT_elapse <= 20, 1, 0),
-           dnytpostpreTest = ifelse(NYT_elapse >= -10 & NYT_elapse <= 20, 1, 0),
-           dothpostTest = ifelse(OTH_elapse >= 1 & OTH_elapse <= 10, 1, 0), 
-           dothpost10Test = ifelse(OTH_elapse >= 11 & OTH_elapse <= 20, 1, 0), 
-           dothpostpreTest = ifelse(OTH_elapse >= -10 & OTH_elapse <= 20, 1, 0),
- 
+    #       dnytpost10Test = ifelse(NYT_elapse >= 11 & NYT_elapse <= 20, 1, 0),
+  
+    #      dnytpostpreTest = ifelse(NYT_elapse >= -10 & NYT_elapse <= 20, 1, 0),
+    #      dothpostTest = ifelse(OTH_elapse >= 1 & OTH_elapse <= 10, 1, 0), 
+    #      dothpost10Test = ifelse(OTH_elapse >= 11 & OTH_elapse <= 20, 1, 0), 
+    #      dothpostpreTest = ifelse(OTH_elapse >= -10 & OTH_elapse <= 20, 1, 0),
+   
           dnytpost1 = ifelse(is.na(NYT_elapse), 0, dnytpost1), 
           dnytpost6 = ifelse(is.na(NYT_elapse), 0, dnytpost6),
           dnytpost10 = ifelse(is.na(NYT_elapse), 0, dnytpost10), 

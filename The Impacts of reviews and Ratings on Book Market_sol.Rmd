@@ -1167,7 +1167,33 @@ In the following chapter, we apply the methods and tools from this chapter to ex
 
 ## Exercise 3.2 -- Estimation of the Effects on Sales Ranks and Prices
 
-After the introduction for regressions, we focus on the research question to estimate the effect from professional reviews and crowd ratings on the book market. 
+After the introduction for regressions, we focus on the research question to estimate the effect from professional reviews and crowd ratings on the book market. Replicating the underlying regressions by Reimers and Waldfogel, the data set must first be transformed.  
+
+**Task:** Create the data set `dataUS` that only includes observations from the US market. To enable this, use the condition `cno == 3`. Finally, use `arrange()` to sort the data by `canum` and then by `ddate`. Press `check` to confirm your solution. 
+
+```{r "3.2.1", warning=FALSE}
+
+#< task
+
+#>
+
+dataUS <- data %>%
+    filter(cno == 3) %>%
+    arrange(canum, ddate)
+
+```
+
+In practice, logarithmic 
+
+
+
+
+
+
+
+
+
+
 
 
 
