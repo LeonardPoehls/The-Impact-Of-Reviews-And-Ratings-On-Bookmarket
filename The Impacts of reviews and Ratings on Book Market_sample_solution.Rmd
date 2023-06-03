@@ -1069,7 +1069,7 @@ Quiz: What is your suggestion, does the implementation of fixed effects signific
 
 Let us look at an example for this. We want to create a regression where the sales rank indicates the dependent variables $y$ and $x_1$  as explanatory variable for the Amazon book price. The formula looks as follows:  
 
-$$ y = x_0 + β_1 * x_1 + \varepsilon $$
+$$ y = β_0 + β_1 x_1 + \varepsilon $$
 
 In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable canum as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
 
@@ -1095,6 +1095,26 @@ To sum up, this chapter has given us a handsome overview about some basics and a
 In the following chapter, we apply the methods and tools from this chapter to examine the overall effects on sales ranks and prices.
 
 ## Exercise 3.2 -- Estimation of the Effects on Sales Ranks and Prices
+
+After the introduction for regressions, we focus on the research question to estimate the effect from professional reviews and crowd ratings on the book market. Replicating the underlying regressions by Reimers and Waldfogel, the data set must first be transformed.  
+
+**Task:** Create the data set `dataUS` that only includes observations from the US market. To enable this, use the condition `cno == 3`. Finally, use `arrange()` to sort the data by `canum` and then by `ddate`. Press `check` to confirm your solution. 
+
+```{r "11_1",warning=FALSE}
+dataUS <- data %>%
+    filter(cno == 3) %>%
+    arrange(canum, ddate)
+```
+
+In their paper, Reimers and Waldfogel used logarithmic values for their estimation. The logarithmization of dependent or explanatory variables can be associated with many advantages. First, logarithmization can be used to stabilize the variance of the residuals to avoid heteroskedasticity. Further, outlier values are mitigated in their effect so that they have less influence on the magnitude of the regression coefficient. The third advantage is due to interpretation of the regression coefficients. Logarithmized coefficients allow us to interpret these coefficients as percentages for simplicity. The possible interpretation are as follows:
+
+* **log - log**: log y = $β_0$ + log $β_1 x_1$
+
+
+
+
+
+
 
 
 

@@ -1129,7 +1129,7 @@ failure: Try again.
 
 Let us look at an example for this. We want to create a regression where the sales rank indicates the dependent variables $y$ and $x_1$  as explanatory variable for the Amazon book price. The formula looks as follows:  
 
-$$ y = x_0 + β_1 * x_1 + \varepsilon $$
+$$ y = β_0 + β_1 x_1 + \varepsilon $$
 
 In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable canum as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
 
@@ -1172,18 +1172,16 @@ After the introduction for regressions, we focus on the research question to est
 **Task:** Create the data set `dataUS` that only includes observations from the US market. To enable this, use the condition `cno == 3`. Finally, use `arrange()` to sort the data by `canum` and then by `ddate`. Press `check` to confirm your solution. 
 
 ```{r "3.2.1", warning=FALSE}
-
 #< task
-
 #>
-
 dataUS <- data %>%
     filter(cno == 3) %>%
     arrange(canum, ddate)
-
 ```
 
-In practice, logarithmic 
+In their paper, Reimers and Waldfogel used logarithmic values for their estimation. The logarithmization of dependent or explanatory variables can be associated with many advantages. First, logarithmization can be used to stabilize the variance of the residuals to avoid heteroskedasticity. Further, outlier values are mitigated in their effect so that they have less influence on the magnitude of the regression coefficient. The third advantage is due to interpretation of the regression coefficients. Logarithmized coefficients allow us to interpret these coefficients as percentages for simplicity. The possible interpretation are as follows:
+
+* **log - log**: log $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, an increase of one percent of $x_1$ the predicted value of $y$ increases by approximately  
 
 
 
