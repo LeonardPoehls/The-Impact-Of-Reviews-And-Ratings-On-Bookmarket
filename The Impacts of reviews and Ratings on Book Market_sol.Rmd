@@ -12,7 +12,7 @@ library(grid)
 library(gridExtra)
  
  #Set Working Directory
- setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket") 
+# setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket") 
  
  # Set problem set's name
  ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
@@ -21,10 +21,10 @@ library(gridExtra)
  libs = c("ggplot2", "tidyverse", "kableExtra", "modelsummary") 
  
  # Create Problem Set
- create.ps(sol.file=sol.file, user.name = NULL, ps.name=ps.name,libs=libs,stop.when.finished=FALSE, addons="quiz")
+ create.ps(sol.file=sol.file, user.name = NULL, ps.name=ps.name,libs=libs,stop.when.finished=FALSE, addons = "quiz")
  
  #open problem set in web browser
-show.ps(ps.name,launch.browser=TRUE, auto.save.code=FALSE, sample.solution=FALSE)
+show.ps(ps.name,launch.browser=TRUE, auto.save.code=FALSE, sample.solution=FALSE, load.sav=FALSE,  is.solved=FALSE)
  
  stop.without.error()
 
@@ -132,7 +132,7 @@ failure: Try again.
 
 #>
 
-The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is particulary the book market that appropriated for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
+The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is the book market particularly suitable for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
 
 As explained, professional reviews are defined as periodically appearing reviews in daily newspaper articles. The data set includes information about the appearance of professional reviews from the New York Times, the Chicago Tribune, the Boston Globe, the Wall Street Journal, the Los Angeles Times and the Washington Post. However, quantitative information as well as star ratings are not available. Additionally, The New York Times recommends nine books every week (New York Times, 2023). Professional reviews enable access to pre-purchase information. 
 
@@ -199,8 +199,8 @@ Under these conditions, we apply a graph to illustrate the situation between dem
 
 **Task:** Run the following chunk to create this model. Press `check` to collect your points. 
 
-```{r "1.2.1", warning=FALSE}
-#< task
+```{r "1.2.1"}
+#< task_notest
 
 #load the package "ggplot2"
 library(ggplot2)
@@ -259,7 +259,7 @@ failure: Try again.
 As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand or supply curve depends on the so called **Price Elasticity**. For the demand side, **Price elasticity** indicates how demand reacts on changes in prices relatively. The formula looks as follows:  
 
 $$
- \epsilon = \frac{\Delta Q/Q}{\Delta P/P} =  \frac{\%\,\mathrm{Change\, in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
+ \epsilon = \frac{\Delta Q/Q}{\Delta P/P} =  \frac{\%\,\mathrm{Change\,in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
 $$
 
 Hence, price elasticity delivers a value ε := [0, ∞] that can also show whether price increases would be worthwhile. An elasticity of ε = 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of ε < 1 are inelastic and otherwise elastic.   
@@ -1179,12 +1179,49 @@ dataUS <- data %>%
     arrange(canum, ddate)
 ```
 
-In their paper, Reimers and Waldfogel used logarithmic values for their estimation. The logarithmization of dependent or explanatory variables can be associated with many advantages. First, logarithmization can be used to stabilize the variance of the residuals to avoid heteroskedasticity. Further, outlier values are mitigated in their effect so that they have less influence on the magnitude of the regression coefficient. The third advantage is due to interpretation of the regression coefficients. Logarithmized coefficients allow us to interpret these coefficients as percentages for simplicity. The possible interpretation are as follows:
+In their paper, Reimers and Waldfogel used logarithmic values for their estimation. The logarithmization of dependent or explanatory variables can be associated with many advantages. First, logarithmization can be used to stabilize the variance of the residuals to avoid heteroskedasticity. Further, outlier values are mitigated in their effect so that they have less influence on the magnitude of the regression coefficient. The third advantage is due to interpretation of the regression coefficients. Logarithmized coefficients allow us to interpret these coefficients as percentages for simplicity. The possible interpretation are as follows (Kranz, 2022):
 
-* **log - log**: log $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, an increase of one percent of $x_1$ the predicted value of $y$ increases by approximately  
+* **log - log**: log $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, for a one percent increase in $x_1$, the predicted value of $y$ increases by approximately $β_1$ percent. 
+
+* **log - level**: log $\hat/y$ = $\hat\beta_0$ + $β_1 x_1$, for a one unit increase in $x_1$, the predicted value of $y$ increases by approximately 100 * $β_1$ percent.
+
+* **level - log**: $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, for a one percent increase in $x_1$, the predicted value of $y$ increases by approximately 0.01 * $β_1$ units. 
 
 
-
+## Exercise 4 -- Summary statistics
+a) We often want to compute some summary statistic of a vector.
+For example:
+```{r "1 a)"}
+#< task_notest
+x = 10:20
+# Computing the sum of x
+sum(x)
+#>
+```
+Now compute the mean of x.
+```{r "1 a) 2"}
+mean(x)
+#< hint
+display("Use Google, e.g. search for 'R compute mean'.")
+#>
+```
+#< award "mean means mean"
+Well, in some occasions one can just guess the name of an R function.
+The function to compute the mean of a vector, or matrix is called 'mean'.
+Usually, it is much quicker to goggle than to guess function names, however.
+#>
+## Exercise 5 -- Computing with vectors
+```{r "2 "}
+#< settings
+import.var = c("x")
+#>
+```
+a) Let y be a vector that contains the squared elements of x. Show y
+```{r "2 a)"}
+3
+y = x^2
+y
+```
 
 
 
