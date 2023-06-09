@@ -59,6 +59,12 @@ A2. tbd.
 
 A3. tbd.
 
+```{r "1_1"}
+getwd()
+
+```
+
+
 ## An Instruction how to work with Problem sets
 
 As already mentioned above, the manner of this problem set is to create an interactive environment for its readers. Thus, sometimes appear different Types of exercises with a so called chunk (window) below. Basically, there are three different type of exercises:   
@@ -266,11 +272,11 @@ DatasetPE <- data.frame(
 )
 colnames(DatasetPE) <- c("Price", "ε > 1", "ε = 1", "ε < 1")
 
-DatasetPE <- DatasetPE %>% 
+DatasetPEN <- DatasetPE %>% 
   pivot_longer(cols = starts_with("ε"), names_to = "ε", values_to = "Quantity_Value") 
 
 # Umwandeln der Daten in "long format"
-ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
+ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
   geom_line() +
   theme_bw() +
   geom_segment(aes(x = 4, y = 8, xend = 4, yend = 9), color = "red", linetype = "dashed") +
@@ -1113,6 +1119,44 @@ In their paper, Reimers and Waldfogel used logarithmic values for their estimati
 * **log - level**: log $\hat/y$ = $\hat\beta_0$ + $β_1 x_1$, for a one unit increase in $x_1$, the predicted value of $y$ increases by approximately 100 * $β_1$ percent.
 
 * **level - log**: $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, for a one percent increase in $x_1$, the predicted value of $y$ increases by approximately 0.01 * $β_1$ units. 
+
+The regressions created by Reimers and Waldfogel are based on the **log - log** method. In their main regression table, they created five different regressions using `lrank` as dependent variable. The variable `L1.lrank` specified the lagged sales rank from the last date documented in the data set. The addition of `L1.lrank` has the advantage that seasonal fluctuations are included in the regression. Similarly, this variable is predestined for estimates such as this one because the variable can capture short-term (triggered by professional reviews) increases in sales rank.    
+
+**Task:** Run the following chunk to create `reg2` with `ano` as fixed effects and robust standard errors. . 
+
+```{r "11_2",warning=FALSE}
+
+#read the package `fixest`
+library(fixest)
+#Create the regression `reg2`
+reg2 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+```
+
+Computing regressions in this high-frequency data set requires high computational power. For this reason, we compute only two of these regressions within the problem set. Now, we want to generate the second regression using more explanatory variables. 
+
+**Task:** Create `reg3` according to `reg2` above. Add the explanatory variables `lrR`, `dnytpost10_1`, `dnytpost10_2`, `dothpost_1`, `dothpost_2`, `dothpost_3`, `dothpost10_1` and `dothpost10_2`. Remove the explanatory variables `dothpostpre_1`,`dothpostpre_2` and `dothpostpre_3`.
+
+```{r "11_3",warning=FALSE}
+# Create reg3 here
+reg3 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + lrR + dnytpost1_3 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+
+```
+
+The variable `ano` gives an Amazon identifier (asin) and the numbers `1`, `2` and `3` after the dummy variables `dnytpost` and `dothpost` provide information about which country the observation belongs to. U.S. Data were used for both regressions.  
+
+Subsequently, the three remaining regressions are then read in. To the first regression `reg1` some dummy variables were added as control variables. These dummy variables  For performance reasons we have omitted these variables in this task, but they are stored in `reg1` which we will read in. In the interval [-20;40] for `NYT_elapse` and `OTH_elapse` all expressions were stored individually in different dummy variables, in sum 120 control variables.  
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Exercise 4 -- Summary statistics

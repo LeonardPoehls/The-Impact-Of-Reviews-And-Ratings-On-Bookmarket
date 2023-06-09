@@ -90,6 +90,12 @@ A2. tbd.
 
 A3. tbd.
 
+```{r "1_1"}
+getwd()
+
+```
+
+
 ## An Instruction how to work with Problem sets
 
 As already mentioned above, the manner of this problem set is to create an interactive environment for its readers. Thus, sometimes appear different Types of exercises with a so called chunk (window) below. Basically, there are three different type of exercises:   
@@ -208,7 +214,7 @@ Under these conditions, we apply a graph to illustrate the situation between dem
 
 **Task:** Run the following chunk to create this model. Press `check` to collect your points. 
 
-```{r "4_1"}
+```{r "4_2"}
 
 #load the package "ggplot2"
 library(ggplot2)
@@ -287,7 +293,7 @@ Price elasticity can be also shown graphically. The following graph illustrates 
 
 **Task:** Execute the chunk below to see how the demand curve slope changes with different price elasticities
 
-```{r "4_2",warning=FALSE}
+```{r "4_3",warning=FALSE}
 #Create a fictive data set 
 DatasetPE <- data.frame(
   Price = 1:10,
@@ -297,11 +303,11 @@ DatasetPE <- data.frame(
 )
 colnames(DatasetPE) <- c("Price", "ε > 1", "ε = 1", "ε < 1")
 
-DatasetPE <- DatasetPE %>% 
+DatasetPEN <- DatasetPE %>% 
   pivot_longer(cols = starts_with("ε"), names_to = "ε", values_to = "Quantity_Value") 
 
 # Umwandeln der Daten in "long format"
-ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
+ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
   geom_line() +
   theme_bw() +
   geom_segment(aes(x = 4, y = 8, xend = 4, yend = 9), color = "red", linetype = "dashed") +
@@ -333,7 +339,7 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
 
 Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ($\bar R_{j}$ < $R_{j}$), the same quality ($\bar R_{j}$ = $R_{j}$) or a higher expected quality than the actual quality ($\bar R_{j}$ > $R_{j}$). 
 
-```{r "4_3",warning=FALSE}
+```{r "4_4",warning=FALSE}
 
 #Create a fictive data set 
 yPredQualityPrice <- c(1.6,1.0,0.50,0.15,-0.10)
@@ -435,7 +441,7 @@ To better understand our data set, we categorize some important variables and ta
 
 **Task:** Use the function `readRDS` to load the data set called `dataEst.RDS`. Save this data set under the name `data`.
 
-```{r "6_4",warning=FALSE}
+```{r "6_5",warning=FALSE}
 setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data")
 #use readRDS("file_name.RDS") to load your data
 data <- readRDS("dataEst.RDS")
@@ -445,7 +451,7 @@ You successfully loaded the data set. Now, we want to see how the data set is or
 
 **Task:** Use the function `head` to show the first rows from `data`. In addition, use the function `colnames` to list every column name from `data`.
 
-```{r "6_5"}
+```{r "6_6"}
 #use head(data set name) to show your data set
 head(data)
 colnames(data)
@@ -488,7 +494,7 @@ In the following part, we will analyze data to gain a deeper understanding of th
 
 **Note:** In sum, the underlying data set includes data about **8770 books**. 
 
-```{r "7_6",warning=FALSE}
+```{r "7_7",warning=FALSE}
 
 #Creating two new dummy variables to indicate professional reviews from non-NYT Magazines and from all Magazines
 data$DOTH <- ifelse(data$DBG == 1 | data$DCHI == 1 | data$DLAT == 1 | data$DWAPO == 1 | data$DWSJ == 1 , 1, 0)
@@ -522,7 +528,7 @@ In total, 12.66 percent of all books (1521) included in the data set have been p
 
 **Task:** Run the following chunk to determine the intersections between the single magazines. 
 
-```{r "7_7",warning=FALSE}
+```{r "7_8",warning=FALSE}
 
 #gt_table
 
@@ -569,7 +575,7 @@ Quiz: Focusing the published books, What is your suggestion?
 
 
 **Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
-```{r "7_8",warning=FALSE}
+```{r "7_9",warning=FALSE}
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesCrowd <- data %>%
@@ -613,7 +619,7 @@ After we have created the dataset, we can proceed with the creation of the chart
 
 **Task:** Execute the following chunk to create two graphs representing the distribution of professional reviews among two variables. 
 
-```{r "7_9",warning=FALSE}
+```{r "7_10",warning=FALSE}
 
 #Create the related Graphs
 
@@ -668,7 +674,7 @@ Starting with a good overview, we want to create a table including simple descri
 
 **Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
 
-```{r "8_10",warning=FALSE}
+```{r "8_11",warning=FALSE}
 # Descriptive Values differentiated by country
 dataDesKript <- data %>%
    group_by(country) %>%
@@ -744,7 +750,7 @@ Hence, we gained insight into general descriptive values over the entire data se
 
 **Task:** Use the fuction `readRDS` to read the RDS-file `DataDescriptiveJournals`. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
 
-```{r "8_11",warning=FALSE}
+```{r "8_12",warning=FALSE}
 #read out 
 DataDescriptiveJournals <- readRDS("DataDescriptiveJournals.RDS")
 # Kable-Function to create an attractive overview
@@ -765,7 +771,7 @@ The variance in percentiles of star ratings could be due to the fact that we hav
 
 **Task:** Execute the following chunk to create three different filtered data sets. Press `check` to collect your points.
 
-```{r "8_12",warning=FALSE}
+```{r "8_13",warning=FALSE}
 
 #Extracting three different parts from our main data for recommended observations, not recommended observations and non New York Times observations
 dataReviewRec <- data %>%
@@ -792,7 +798,7 @@ After creating these three datasets, proceed to transform the data by creating t
  
 **Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on. 
  
-```{r "8_13",warning=FALSE}
+```{r "8_14",warning=FALSE}
 dataNYTPrice <- data.frame(Price = c(dataReviewRec$AVGPrice, dataReviewNRec$AVGPrice, dataReviewNNYT$AVGPrice), SalesRank = c(dataReviewRec$AVGSalesRank, dataReviewNRec$AVGSalesRank, dataReviewNNYT$AVGSalesRank), Category = c("Recommended", "Not Recommended", "Not NYT"))
 
 #Plot 1: Mean Prices
@@ -857,7 +863,7 @@ Before we start, let us divide Amazon star ratings into three categories: less t
 **Task:** Create three dummy variables that show `1` when the star rating is between one and three, three and four and more than five. Orientate on exercise `2.2.1` to create a dummy variable. Then, try to replace the ___ gaps to create three filtered data sets according to `2.3.3`. Name these data sets `dataCR1_3`, `dataCR3_4` and `dataCR4_5`.
 
 
-```{r "8_14",warning=FALSE}
+```{r "8_15",warning=FALSE}
 
 data$starRating1_3 <- ifelse(data$R >= 1 & data$R < 3, 1, 0)
 data$starRating3_4 <- ifelse(data$R >= 3 & data$R < 4, 1, 0)
@@ -883,7 +889,7 @@ dataCR4_5 <- data %>%
 
 **Task:** Now run the following chunk to see how crowd ratings affect the price and sales ranks. Press `check` to confirm. 
 
-```{r "8_15",warning=FALSE}
+```{r "8_16",warning=FALSE}
 
 dataCRPrice <- data.frame(Price = c(dataCR1_3$AVGPrice, dataCR3_4$AVGPrice, dataCR4_5$AVGPrice), SalesRank = c(dataCR1_3$AVGSalesRank, dataCR3_4$AVGSalesRank, dataCR4_5$AVGSalesRank), Category = c("1-3 stars", "3-4 Stars", "more than 4 stars"))
 
@@ -934,7 +940,7 @@ To verify whether absolut book prices remain constant over time, we create a tim
 
 **task:** Replace every ___ gap with the correct code. Use `left_join` to merge the data sets `dataTop10000` and `dataTop1000` by `ddate`
 
-```{r "8_16",warning=FALSE}
+```{r "8_17",warning=FALSE}
 
 dataTop10000 <- data %>%
   filter(cno == 3 & rank <= 10000) %>%
@@ -1033,7 +1039,7 @@ $$ y = x_0 + β_1Price + β_2StarRating + \varepsilon $$
 
 **Task:** Replace the ___ gaps with the correct code. Do not forget to press `check`.
 
-```{r "10_17",warning=FALSE}
+```{r "10_18",warning=FALSE}
 # # We draw a sample of 100.000 observations for performance purposes from `data`
 # dataLite <- data[sample(nrow(____), size = _____, replace = TRUE),]
 # # We use the function lm() to regress `pamzn` and `R` on `rank`
@@ -1072,7 +1078,7 @@ To apply regressions correctly, certain assumptions must be made. One of these a
 
 **Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
 
-```{r "10_18",warning=FALSE}
+```{r "10_19",warning=FALSE}
 # # Load the package `fixest` to use the following functions feols()
 # ________(fixest)
 # # We use the function feols() to add Fixed Effects and Robust Standard Errors. Use `dataLite` for your estimate.
@@ -1120,7 +1126,7 @@ In the following, the variable `canum` (chapter 2.1) serves us as fixed effects.
 
 **Task:** Replace the ___ gaps to create a regressions with fixed effects. Compare this regression `regFirstStep` with a regression without differences occur. Press `check` after solving this exercise. 
 
-```{r "10_19",warning=FALSE}
+```{r "10_20",warning=FALSE}
 # 
 # # Load the package `modelsummary` to gain a more handsome regression table
 # library(____________) 
@@ -1154,7 +1160,7 @@ After the introduction for regressions, we focus on the research question to est
 
 **Task:** Create the data set `dataUS` that only includes observations from the US market. To enable this, use the condition `cno == 3`. Finally, use `arrange()` to sort the data by `canum` and then by `ddate`. Press `check` to confirm your solution. 
 
-```{r "11_20",warning=FALSE}
+```{r "11_21",warning=FALSE}
 dataUS <- data %>%
     filter(cno == 3) %>%
     arrange(canum, ddate)
@@ -1168,17 +1174,55 @@ In their paper, Reimers and Waldfogel used logarithmic values for their estimati
 
 * **level - log**: $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, for a one percent increase in $x_1$, the predicted value of $y$ increases by approximately 0.01 * $β_1$ units. 
 
+The regressions created by Reimers and Waldfogel are based on the **log - log** method. In their main regression table, they created five different regressions using `lrank` as dependent variable. The variable `L1.lrank` specified the lagged sales rank from the last date documented in the data set. The addition of `L1.lrank` has the advantage that seasonal fluctuations are included in the regression. Similarly, this variable is predestined for estimates such as this one because the variable can capture short-term (triggered by professional reviews) increases in sales rank.    
+
+**Task:** Run the following chunk to create `reg2` with `ano` as fixed effects and robust standard errors. . 
+
+```{r "11_22",warning=FALSE}
+
+#read the package `fixest`
+library(fixest)
+#Create the regression `reg2`
+reg2 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+```
+
+Computing regressions in this high-frequency data set requires high computational power. For this reason, we compute only two of these regressions within the problem set. Now, we want to generate the second regression using more explanatory variables. 
+
+**Task:** Create `reg3` according to `reg2` above. Add the explanatory variables `lrR`, `dnytpost10_1`, `dnytpost10_2`, `dothpost_1`, `dothpost_2`, `dothpost_3`, `dothpost10_1` and `dothpost10_2`. Remove the explanatory variables `dothpostpre_1`,`dothpostpre_2` and `dothpostpre_3`.
+
+```{r "11_23",warning=FALSE}
+# Create reg3 here
+reg3 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + lrR + dnytpost1_3 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+
+```
+
+The variable `ano` gives an Amazon identifier (asin) and the numbers `1`, `2` and `3` after the dummy variables `dnytpost` and `dothpost` provide information about which country the observation belongs to. U.S. Data were used for both regressions.  
+
+Subsequently, the three remaining regressions are then read in. To the first regression `reg1` some dummy variables were added as control variables. These dummy variables  For performance reasons we have omitted these variables in this task, but they are stored in `reg1` which we will read in. In the interval [-20;40] for `NYT_elapse` and `OTH_elapse` all expressions were stored individually in different dummy variables, in sum 120 control variables.  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Exercise 4 -- Summary statistics
 a) We often want to compute some summary statistic of a vector.
 For example:
-```{r "12_a_21"}
+```{r "12_a_24"}
 x = 10:20
 # Computing the sum of x
 sum(x)
 ```
 Now compute the mean of x.
-```{r "12_a_22"}
+```{r "12_a_25"}
 mean(x)
 ```
 
@@ -1193,7 +1237,7 @@ Usually, it is much quicker to goggle than to guess function names, however.
 
 ## Exercise 5 -- Computing with vectors
 a) Let y be a vector that contains the squared elements of x. Show y
-```{r "13_a_23"}
+```{r "13_a_26"}
 3
 y = x^2
 y
