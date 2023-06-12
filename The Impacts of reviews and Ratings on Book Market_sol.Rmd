@@ -500,30 +500,32 @@ In chapter 2.2, we dare a first dive into the data set by creating descriptive s
 
 In the following part, we will analyze data to gain a deeper understanding of the occurrence of professional ratings. In addition, we want to check whether the collected data from journals appropriates for following estimations. 
 
-**Task:** Replace the ___ gaps in the following chunk to visualize the percentage of books reviewed by magazines, and then `check` it.
+**Task:** Create two dummy variables that indicate `1` when an observation belongs to a book that has been reviewed. Additionally, read in the data set `DesRat` and save it accordingly, and then `check` the chunk.
 
 **Note:** In sum, the underlying data set includes data about **8770 books**. 
 
 ```{r "2.2.1", warning=FALSE}
 
-#< task
+#< fill_in
+
+#Creating two new dummy variables to indicate professional reviews from non-NYT Magazines and from all Magazines
+data$____ <- ifelse(data$DBG == 1 | data$DCHI == 1 | data$DLAT == 1 | data$DWAPO == 1 | data$DWSJ == 1 , _, _)
+data$DALL <- ifelse(data$DBG == 1 | data$DCHI == 1 | data$DLAT == 1 | data$DWAPO == 1 | data$DWSJ == 1 | data$DNYT == 1 , __ 0)
+
+DesRat <- r____DS(_________DS_)
+
+#>
 
 #Creating two new dummy variables to indicate professional reviews from non-NYT Magazines and from all Magazines
 data$DOTH <- ifelse(data$DBG == 1 | data$DCHI == 1 | data$DLAT == 1 | data$DWAPO == 1 | data$DWSJ == 1 , 1, 0)
 data$DALL <- ifelse(data$DBG == 1 | data$DCHI == 1 | data$DLAT == 1 | data$DWAPO == 1 | data$DWSJ == 1 | data$DNYT == 1 , 1, 0)
 
-#Calculate professional review shares 
-Share_of_NYT_Ratings <- paste0(round(mean(data$DNYT, na.rm = TRUE)*100, 2), "%") 
-Share_of_BG_Ratings <- paste0(round(mean(data$DBG, na.rm = TRUE)*100, 2), "%") 
-Share_of_CHI_Ratings <- paste0(round(mean(data$DCHI, na.rm = TRUE)*100, 2), "%")
-Share_of_LAT_Ratings <- paste0(round(mean(data$DLAT, na.rm = TRUE)*100, 2), "%") 
-Share_of_WAPO_Ratings <- paste0(round(mean(data$DWAPO, na.rm = TRUE)*100, 2), "%") 
-Share_of_DWSJ_Ratings <- paste0(round(mean(data$DWSJ, na.rm = TRUE)*100, 2), "%") 
-Share_of_OTH_Ratings <- paste0(round(mean(data$DOTH, na.rm = TRUE)*100, 2), "%") 
-Share_of_ALL_Ratings <- paste0(round(mean(data$DALL, na.rm = TRUE)*100, 2), "%")
+DesRat <- readRDS("DesRat.RDS")
+```
 
-#Create a table to illustrate the shares
-DesRat <- data.frame(Share_of_NYT_Ratings = c(Share_of_NYT_Ratings, n_distinct(data$titleno[data$DNYT == 1])), Share_of_BG_Ratings = c(Share_of_BG_Ratings, n_distinct(data$titleno[data$DBG == 1])), Share_of_CHI_Ratings = c(Share_of_CHI_Ratings, n_distinct(data$titleno[data$DCHI == 1])), Share_of_LAT_Ratings = c(Share_of_LAT_Ratings, n_distinct(data$titleno[data$DLAT == 1])), Share_of_WAPO_Ratings = c(Share_of_WAPO_Ratings, n_distinct(data$titleno[data$DWAPO == 1])), Share_of_DWSJ_Ratings = c(Share_of_DWSJ_Ratings, n_distinct(data$titleno[data$DWSJ == 1])), Share_of_OTH_Ratings = c(Share_of_OTH_Ratings, n_distinct(data$titleno[data$DOTH == 1])), Share_of_ALL_Ratings = c(Share_of_ALL_Ratings, n_distinct(data$titleno[data$DALL == 1], n_distinct(data$titleno))))
+**Task:** Press `check` to visualize the percentage of books reviewed by magazines.
+
+```{r "2.2.2", warning=FALSE}
 
 #Create Row Names
 rownames(DesRat) <- c("Relative share", "Absolut share") 
@@ -533,43 +535,42 @@ DesRat  %>%
 kbl(col.names = c("Share_of_NYT_Ratings" = "New York Times", "Share_of_BG_Ratings" = "Boston Globe", "Share_of_CHI_Ratings" = "Chicago Tribune", "Share_of_LAT_Ratings" = "Los Angeles Times", "Share_of_WAPO_Ratings" = "Washington Post", "Share_of_DWSJ_Ratings" = "Wall Street Journal", "Share_of_OTH_Ratings" = "Non New York Times", "Share_of_ALL_Ratings" = "All"), caption = "Share of Professional Reviewed Books ") %>%
   kable_paper("striped", full_width = TRUE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
-#>
+
 
 ```
 
+
+
 In total, 12.66 percent of all books (1521) included in the data set have been professionally reviewed. 11 percent (1315) of these books were reviewed by the New York Times, representing the largest percentage of books reviewed by professionals. The second largest percentage provides the Chicago Tribune with only 1.36 percent (139), which is approximately ten times less than the number of reviews published by the New York Times. Overall, non-New York Times magazines account for nearly 3.1 percent of the share. The following calculations distinguish between The New York Times and non-New York Times magazines, so we should note the size of the intersection between these distinctions. 
 
-**Task:** Run the following chunk to determine the intersections between the single magazines. 
+**Task:** Create according to chunk `2.2.2` a table based on the function `kbl()` to visualize the intersections between the single magazines. 
 
-```{r "2.2.2", warning=FALSE}
-#< task
+```{r "2.2.3", warning=FALSE}
+#< fill_in
 
 #gt_table
 
-#Create a table to illustrate the shares
-DesIntersection <- data.frame(Intersection_NYT = c(NA, n_distinct(data$titleno[data$DNYT == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DWSJ == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DOTH== 0])),
-  
-                              Intersection_LAT = c(n_distinct(data$titleno[data$DLAT == 1 & data$DNYT == 1]), NA, n_distinct(data$titleno[data$DLAT == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DWSJ == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DWSJ == 0 & data$DWAPO == 0 & data$DCHI == 0 & data$DBG == 0 & data$DNYT == 0])),
-                              
-                              
-                              Intersection_BG = c(n_distinct(data$titleno[data$DBG == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DBG == 1 & data$DLAT == 1]),  NA, n_distinct(data$titleno[data$DBG == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DBG == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DBG == 1 & data$DWSJ == 1]),n_distinct(data$titleno[data$DBG == 1 & data$DWSJ == 0 & data$DWAPO == 0 & data$DCHI == 0 & data$DLAT == 0 & data$DNYT == 0])),
-                              
-                              Intersection_CHI = c(n_distinct(data$titleno[data$DCHI == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DCHI == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DCHI == 1 & data$DBG == 1]), NA, n_distinct(data$titleno[data$DCHI == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DCHI == 1 & data$DWSJ == 1]),n_distinct(data$titleno[data$DCHI == 1 & data$DWSJ == 0 & data$DWAPO == 0 & data$DLAT== 0 & data$DBG == 0 & data$DNYT == 0])),
-                              
-                              Intersection_WAPO = c(n_distinct(data$titleno[data$DWAPO == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DCHI == 1]), NA, n_distinct(data$titleno[data$DWAPO == 1 & data$DWSJ == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DWSJ == 0 & data$DLAT == 0 & data$DCHI == 0 & data$DBG == 0 & data$DNYT == 0])),
-                              
-                              Intersection_DWSJ = c(n_distinct(data$titleno[data$DWSJ == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DWAPO == 1]), NA, n_distinct(data$titleno[data$DWSJ == 1 & data$DWAPO == 0 & data$DLAT == 0 & data$DCHI == 0 & data$DBG == 0 & data$DNYT == 0])))
-                    
-#DesIntersection <- rbind(DesIntersection, colSums(DesIntersection, na.rm = TRUE))
+DesIntersection <- re___D_("DesIntersection.RDS")
 
-row.names(DesIntersection) <- c("New York Times", "Los Angeles Times", "Boston Globe", "Chicago Tribune", "Washington Post", "Wall Street Journal", "Without Intersections")
+row.names(_______________) <- c("New York Times", "Los Angeles Times", "Boston Globe", "Chicago Tribune", "Washington Post", "Wall Street Journal", "Without Intersections", "Sum")
+
+DesIntersection  %>%
+kbl(__l_n____ = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" = "∩ Los Angeles Times", "Intersection_BG" = "∩ Boston Globe",  "∩ Intersection_CHI" = "∩ Chicago Tribune", "∩ Intersection_WAPO" = "∩ Washington Post", "Intersection_DWSJ" = "∩ Wall Street Journal"), ______ = "Intersections between New York Times and other magazines ") %>%
+  kable_paper("striped", full_width = TRUE) %>%
+  pack_rows("", 8, 8) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
+
+#>
+
+DesIntersection <- readRDS("DesIntersection.RDS")
+
+row.names(DesIntersection) <- c("New York Times", "Los Angeles Times", "Boston Globe", "Chicago Tribune", "Washington Post", "Wall Street Journal", "Without Intersections", "Sum")
 
 DesIntersection  %>%
 kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" = "∩ Los Angeles Times", "Intersection_BG" = "∩ Boston Globe",  "∩ Intersection_CHI" = "∩ Chicago Tribune", "∩ Intersection_WAPO" = "∩ Washington Post", "Intersection_DWSJ" = "∩ Wall Street Journal"), caption = "Intersections between New York Times and other magazines ") %>%
   kable_paper("striped", full_width = TRUE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
-
-#>
+  pack_rows("", 8, 8) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be biased by mutual overlays. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
@@ -590,7 +591,7 @@ failure: Try again.
 #>
 
 **Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
-```{r "2.2.3", warning=FALSE}
+```{r "2.2.4", warning=FALSE}
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesCrowd <- data %>%
@@ -634,7 +635,7 @@ After we have created the dataset, we can proceed with the creation of the chart
 
 **Task:** Execute the following chunk to create two graphs representing the distribution of professional reviews among two variables. 
 
-```{r "2.2.4", warning=FALSE}
+```{r "2.2.5", warning=FALSE}
 
 #Create the related Graphs
 
@@ -1319,8 +1320,10 @@ reg7 <- feols(lpamzn ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 + dnytp
 
 ```{r "3.2.7"}
 
+#< task_notest
 RegTable2 <- modelsummary(list(reg6, reg7), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
  RegTable2 
+#>
 
 ```
 
@@ -1337,60 +1340,54 @@ failure: Try again.
 
 **Summary**
 
-After expanding our methodological knowledge in empirical economics in Section 3.1, we replicated the main regression table (with log sales rank as the dependent variable) from the underlying paper, and found that the coefficients differed from the original estimation results. These differences are due to the lagged sales rank, which was not replicatable. However, the regression from this problem shew similar coefficients but with higher standard errors. We found large short-term effects of New York Times reviews, while the overall effect of other professional reviews was less present. In addition, we learned how interaction terms work and how they are implemented in R. Second, we examined the effects on the Amazon price. We found overall small but positive effects from New York Times reviews and negative effects from other journals. By using an interaction term, we discarded the assumption that an increase in Amazon star ratings is associated with a decrease in Amazon prices.
+After expanding our methodical knowledge in empirical economics in Section 3.1, we replicated the main regression table (with log sales rank as the dependent variable) from the underlying paper, and found that the coefficients differed from the original estimation results. These differences are due to the lagged sales rank, which was not replicatable. However, the regression from this problem shew similar coefficients but with higher standard errors. We found large short-term effects of New York Times reviews, while the overall effect of other professional reviews was less present. In addition, we learned how interaction terms work and how they are implemented in R. Second, we examined the effects on the Amazon price. We found overall small but positive effects from New York Times reviews and negative effects from other journals. By using an interaction term, we discarded the assumption that an increase in Amazon star ratings is associated with a decrease in Amazon prices.
 
 In the following chapter event studies are explained and implemented in R.
 
 ## Exercise 3.3 -- Introduction and Implementation of Event Studies
 
+In their paper, Reimers and Waldfogel used an so-called **Event Study** to illustrate and estimate the impact of events (here: publication of professional reviews) that took place. Originally, Event Studies come from the financial sector from James Dolly in 1933. He examined the price effects of stock splits, studying the occurrence of price changes at the time of the split (MacKinley, 1997, ppt. 13). MacKinley listed several methods for applying Event Studies, including *Cross-Sectional Models* that use regressions (MacKinley, 1997, ppt. 33). Reimers and Waldfogel also used such an approach to visualize short-term effects on the Amazon sales rank.
 
+The first step of the authors procedure is to place all books chronologically on top of each other. For this purpose, the variables `NYT_elapse` and `OTH_elapse` are suitable. For both scenarios, the variable is filtered 20 days before and 40 days after the review is published. Before implementing this Event Study, the data structure need to get reviewed. 
 
+**Task:** Create the data set `dataESNYT` and `dataESOTH` to count the number of books with information about 20 days before and 40 days after the review is published.
 
+```{r "3.3.1", warning=FALSE}
+#< task
+dataESNYT <- data %>%
+  filter(cno == 3 & NYT_elapse >= -20 & NYT_elapse <= 40) %>%
+  group_by(titleno) %>%
+  summarize(Sum_observations = n())
 
+nrow(dataESNYT)
+sum(dataESNYT$Sum_observations)
 
+dataESOTH <- data %>%
+  filter(cno == 3 & OTH_elapse >= -20 & OTH_elapse <= 40) %>%
+  group_by(titleno) %>%
+  summarize(Sum_observations = n())
 
-
-
-
-
-## Exercise 4 -- Summary statistics
-a) We often want to compute some summary statistic of a vector.
-For example:
-```{r "1 a)"}
-#< task_notest
-x = 10:20
-# Computing the sum of x
-sum(x)
+nrow(dataESOTH)
+sum(dataESOTH$Sum_observations)
 #>
-```
-Now compute the mean of x.
-```{r "1 a) 2"}
-mean(x)
-#< hint
-display("Use Google, e.g. search for 'R compute mean'.")
-#>
-```
-#< award "mean means mean"
-Well, in some occasions one can just guess the name of an R function.
-The function to compute the mean of a vector, or matrix is called 'mean'.
-Usually, it is much quicker to goggle than to guess function names, however.
-#>
-## Exercise 5 -- Computing with vectors
-```{r "2 "}
-#< settings
-import.var = c("x")
-#>
-```
-a) Let y be a vector that contains the squared elements of x. Show y
-```{r "2 a)"}
-3
-y = x^2
-y
+
 ```
 
+A total of 46641 observations are available for the New York Times and 11917 observations are available for other magazines in the U.S. during this period. This corresponds to a number of 1193 and 322 books. The next step is to create a regression as follows:    
+
+$$ y = β_0 + β_1LaggedSalesRank + β_2Price + β_3NumberOfReviews + β_4StarRating + \varepsilon $$
 
 
+**Task:** Implement the regression above in R and save this regression under `reg7`. Use Robust Standard Errors and `canum` as fixed effects.
 
+```{r "3.3.2", warning = FALSE}
+#< task
+# Create `reg7` here
+#>
+reg7 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR | canum, vcov = "hetero", data = dataUS)
+
+
+```
 
 
 

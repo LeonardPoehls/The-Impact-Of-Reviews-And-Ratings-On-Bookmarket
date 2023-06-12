@@ -1,0 +1,15 @@
+#Create a table to illustrate the shares
+DesIntersection <- data.frame(Intersection_NYT = c(NA, n_distinct(data$titleno[data$DNYT == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DWSJ == 1]), n_distinct(data$titleno[data$DNYT == 1 & data$DOTH== 0])),
+  
+                              Intersection_LAT = c(n_distinct(data$titleno[data$DLAT == 1 & data$DNYT == 1]), NA, n_distinct(data$titleno[data$DLAT == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DWSJ == 1]), n_distinct(data$titleno[data$DLAT == 1 & data$DWSJ == 0 & data$DWAPO == 0 & data$DCHI == 0 & data$DBG == 0 & data$DNYT == 0])),
+                              
+                              
+                              Intersection_BG = c(n_distinct(data$titleno[data$DBG == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DBG == 1 & data$DLAT == 1]),  NA, n_distinct(data$titleno[data$DBG == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DBG == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DBG == 1 & data$DWSJ == 1]),n_distinct(data$titleno[data$DBG == 1 & data$DWSJ == 0 & data$DWAPO == 0 & data$DCHI == 0 & data$DLAT == 0 & data$DNYT == 0])),
+                              
+                              Intersection_CHI = c(n_distinct(data$titleno[data$DCHI == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DCHI == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DCHI == 1 & data$DBG == 1]), NA, n_distinct(data$titleno[data$DCHI == 1 & data$DWAPO == 1]), n_distinct(data$titleno[data$DCHI == 1 & data$DWSJ == 1]),n_distinct(data$titleno[data$DCHI == 1 & data$DWSJ == 0 & data$DWAPO == 0 & data$DLAT== 0 & data$DBG == 0 & data$DNYT == 0])),
+                              
+                              Intersection_WAPO = c(n_distinct(data$titleno[data$DWAPO == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DCHI == 1]), NA, n_distinct(data$titleno[data$DWAPO == 1 & data$DWSJ == 1]), n_distinct(data$titleno[data$DWAPO == 1 & data$DWSJ == 0 & data$DLAT == 0 & data$DCHI == 0 & data$DBG == 0 & data$DNYT == 0])),
+                              
+                              Intersection_DWSJ = c(n_distinct(data$titleno[data$DWSJ == 1 & data$DNYT == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DLAT == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DBG == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DCHI == 1]), n_distinct(data$titleno[data$DWSJ == 1 & data$DWAPO == 1]), NA, n_distinct(data$titleno[data$DWSJ == 1 & data$DWAPO == 0 & data$DLAT == 0 & data$DCHI == 0 & data$DBG == 0 & data$DNYT == 0])))
+                    
+DesIntersection <- rbind(DesIntersection, colSums(DesIntersection, na.rm = TRUE))
