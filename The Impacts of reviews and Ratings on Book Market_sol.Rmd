@@ -1165,7 +1165,7 @@ modelsummary(list(regWFE, regFE), statistic = "({std.error})", coef_rename = c("
 
 Column two shows the fixed-effects estimate with robust standard errors, while column one shows the regular regression. It is noticeable that the regressions estimate completely different values for the coefficients. Chapter 2.3 showed price differences that can be attributed to the respective country in which the book was rated. The regular regression seems to show exactly this endogeneity problem, that the Amazon price also depends on the country where the book was rated, as well as many other factors. Using fixed effects, we eliminated the country-specific effect and obtained the information that the Amazon price and the sales rank are negatively related. 
 
-The fixed-effects model requires a so-called panel data structure that has data available for each individual (here: Books) at different points in time. However, the addition of fixed effects can also lead to inaccuracies and biases.                                        The disadvantage is that the variables used as fixed effects can no longer be included in the regression as explanatory variables. This model also assumes that the explanatory variable is not collinear (perfectly correlated) to the fixed effects, otherwise this explanatory variable would be determined purely by the fixed effects. Finally, the endogeneity problem can not get completely eliminated by a fixed-effects model. Better suited for this purpose is the Difference-in-Difference approach or Instrumental Variable Estimation, which are not further discussed in the course of this problem set.                                                      
+The fixed-effects model requires a so-called panel data structure that has data available for each individual (here: Books) at different points in time. However, the addition of fixed effects can also lead to inaccuracies and biases. The disadvantage is that the variables used as fixed effects can no longer be included in the regression as explanatory variables. This model also assumes that the explanatory variable is not collinear (perfectly correlated) to the fixed effects, otherwise this explanatory variable would be determined purely by the fixed effects. Finally, the endogeneity problem can not get completely eliminated by a fixed-effects model. Better suited for this purpose is the Difference-in-Difference approach or Instrumental Variable Estimation, which are not further discussed in the course of this problem set.                                                      
 
 **Summary**
 
@@ -1197,7 +1197,7 @@ In their paper, Reimers and Waldfogel used logarithmic values for their estimati
 
 The regressions created by Reimers and Waldfogel are based on the **log - log** method. In their main regression table, they created five different regressions using `lrank` as dependent variable. The variable `L1.lrank` specified the lagged sales rank from the last date documented in the data set. The addition of `L1.lrank` has the advantage that seasonal fluctuations are included in the regression. Similarly, this variable is predestined for estimates such as this one because the variable can capture short-term (triggered by professional reviews) increases in sales rank.    
 
-**Task:** Run the following chunk to create `reg2` with `ano` as fixed effects and robust standard errors. . 
+**Task:** Run the following chunk to create `reg2` with `ano` as fixed effects and robust standard errors. 
 
 ```{r "3.2.2", warning=FALSE}
 
@@ -1224,13 +1224,13 @@ reg3 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + lrR + dnytpost1_3 + dny
 
 The variable `ano` gives an Amazon identifier (asin) and the numbers `1`, `2` and `3` after the dummy variables `dnytpost` and `dothpost` provide information about which country the observation belongs to. U.S. Data were used for both regressions.  
 
-Subsequently, the three remaining regressions are then read in. To the first regression `reg1` some dummy variables were added as control variables. These dummy variables  For performance reasons we have omitted these variables in this task, but they are stored in `reg1` which we will read in. In the interval [-20;40] for `NYT_elapse` and `OTH_elapse` all expressions were stored individually in different dummy variables, in sum 120 control variables.
+Subsequently, the three remaining regressions are then read in. To the first regression `reg1` some dummy variables were added as control variables. These dummy variables  For performance reasons we have omitted these variables in this task, but they are stored in `reg1` which we will read in. In the interval $[-20;40]$ for `NYT_elapse` and `OTH_elapse` all expressions were stored individually in different dummy variables, in sum 120 control variables.
 
 **Task:** Read in the files `reg1.RDS`, `reg4.RDS`, and `reg5.RDS` and save them also like this. Do not forget to press `check`. 
 
-```{r}
+```{r "3.2.4"}
 #< task
-
+# Enter your code here
 #>
 
 reg1 <- readRDS("reg1.RDS")
@@ -1241,7 +1241,107 @@ reg5 <- readRDS("reg5.RDS")
 
 ```
 
+After all regressions are available, proceed with the generation of a regression table for comparison purposes. For this purpose, we use the function `modelsummary`, which can display multiple regressions more clearly and with more possibilities than `summary`.
 
+**Task:** Use the function `modelsummary` from the R package `modelsummary` to display the five regressions `reg1`, `reg2`, `reg3`, `reg4` and `reg5`. Do not forget to `check` this chunk. 
+
+```{r "3.2.5"}
+
+#< fill_in
+
+RegTable <- ____________(list(____, reg2, ____, ____, ____), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("L1.lrank" = "Lagged log sales rank", "lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
+ RegTable 
+
+#>
+
+RegTable <- modelsummary(list(reg1, reg2, reg3, reg4, reg5), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("L1.lrank" = "Lagged log sales rank", "lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
+ RegTable 
+
+```
+
+The results of the upper estimation deviate visibly  from the underlying results of Reimers and Waldfogel. This deviation is likely due to the variable `L1.lrank`, which is originally calculated with an specific Stata (the programming language used by the authors for the original data processing) function called `L1`. For my calculation of this variable I created a manual function, which can be found [here](t.b.d.). Visibly, the coefficient for `L1.lrank` turns out to be lower than calculated by the authors. Consequently, the actual effect of seasonal effects emanating from the variable `L1.lrank` could potentially be smaller than calculated by Reimers and Waldfogel. 
+
+#< quiz "Reg_Assumptions"
+question: Which of these assumptions can be made? 
+sc:
+- The impact of the New York Times is only short-term, as the coefficient becomes smaller over time.
+- The R-squared error of over 0.95 is due to overfitting after adding these amount of explanatory variables. 
+- Log Amazon price (the coefficient) > 0, so an increasing price appears to increase sales rank and implies a decrease in sales volume.*
+success: Great, your answer is correct!  
+failure: Try again.
+#>
+
+The coefficient for `NYT: 0-5 days` represents the occurrence of a New York Times review in the US within the first five days of its publication.
+
+#< quiz "Coeff_Interpretation"
+question: How should the coefficient for column 2 `NYT 0-5 days` be interpreted? 
+sc:
+- A professional review in the New York Times lowers the sales rank by an average of 0.28 percent within the first five days of publication.
+- A professional review from the New York Times lowers the sales rank by an average of 0.280*100 units within the first five days of publication.
+- A professional review from the New York Times lowers the sales rank by an average of 28 percent within the first five days of publication.*
+success: Great, your answer is correct!  
+failure: Try again.
+#>
+
+The coefficient for `Log Amazon Price` is 0.083. This value indicates that a price increase on average increases the sales rank.
+
+#< quiz "Coeff_Interpretation2"
+question: How should the coefficient for column 2 `Log Amazon Price` be interpreted? 
+sc:
+- By increasing the price for one unit, the sales rank increases by an average of 0.084*100 units.
+- By increasing the price for one percent, the sales rank increases by an average of 0.084 percent. As a result, the price is definitely elastic.
+- By increasing the price for one percent, the sales rank increases by an average of 0.084 percent. There is no information about price elasticity.
+success: Great, your answer is correct! Concrete quantities are needed to measure price elasticity.   
+failure: Try again.
+#>
+
+Expectedly, the New York Times recommendations are associated with the greatest effect on sales ranks. The coefficient accounts approximately -0.34 for U.S. data and about -0.36 for all data. In column three, an *interaction term* between `lR` and `lreview` was used. Generally, interaction terms are used to control for bias when an explanatory variable also depends on another independent variable. In this case, the addition of these interaction term implies a shrinking effect of the star ratings. This suggests that star ratings have more influence depending on multiple underlying ratings (Reimers, Waldfogel, 2021).  
+
+In the following, price is examined as independent variable. In chapter 2.3, the assumption was made that New York Times reviews could increases the price in the short-term. To investigate this further, we regress price on similar explanatory variables as in the regression above.        
+
+**Task:** Create an according regression by filling in the gaps. Use the variable `canum` as fixed effects.
+
+```{r "3.2.6"}
+#< fill_in
+reg6 <- fe___(______ ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | _____, vcov = ________, data = dataUS)
+
+reg7 <- feols(lpamzn ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 + dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+
+#>
+
+reg6 <- feols(lpamzn ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 + lrR + dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+
+reg7 <- feols(lpamzn ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 + dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+
+```
+
+**Task:** Run the following chunk to visualize the regression with `modelsummary`.
+
+```{r "3.2.7"}
+
+RegTable2 <- modelsummary(list(reg6, reg7), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
+ RegTable2 
+
+```
+
+The occurrence of New York Times reviews within the first five days of publication is associated with a 0.01 percent price increase. This price increase remains relatively even over time looking at review occurrence within five days to 20 days of publication. Chapter 2.3 also assumed that Amazon star ratings tend to increase demand in long-term, which may lead to lower prices due to more competition. As above, I added an interaction term for "reg7" to illustrate the dependence of Amazon star ratings on the number of reviews. When estimating the effect on the Amazon price, the addition of this interaction term results in a positive coefficient on the `log star rating` of 0.045 instead of a negative coefficient of -0.007. 
+
+#< quiz "Des_vs_Pred"
+question: What does this mean for the assumption of a long-term price increase? 
+sc:
+- The assumption is incorrect because descriptive analyzes cannot account for dependencies between different effects.*
+- The assumption is correct and the interaction term is inappropriate for this situation.
+success: Great, your answer is correct! As a rule, descriptive analyses do not take into account the dependencies of the variables. In this case, the descriptive analysis leads to a false assumption.    
+failure: Try again.
+#>
+
+**Summary**
+
+After expanding our methodological knowledge in empirical economics in Section 3.1, we replicated the main regression table (with log sales rank as the dependent variable) from the underlying paper, and found that the coefficients differed from the original estimation results. These differences are due to the lagged sales rank, which was not replicatable. However, the regression from this problem shew similar coefficients but with higher standard errors. We found large short-term effects of New York Times reviews, while the overall effect of other professional reviews was less present. In addition, we learned how interaction terms work and how they are implemented in R. Second, we examined the effects on the Amazon price. We found overall small but positive effects from New York Times reviews and negative effects from other journals. By using an interaction term, we discarded the assumption that an increase in Amazon star ratings is associated with a decrease in Amazon prices.
+
+In the following chapter event studies are explained and implemented in R.
+
+## Exercise 3.3 -- Introduction and Implementation of Event Studies
 
 
 

@@ -59,6 +59,11 @@ A2. tbd.
 
 A3. tbd.
 
+```{r "1_1"}
+getwd()
+```
+
+
 ## An Instruction how to work with Problem sets
 
 As already mentioned above, the manner of this problem set is to create an interactive environment for its readers. Thus, sometimes appear different Types of exercises with a so called chunk (window) below. Basically, there are three different type of exercises:   
@@ -107,7 +112,7 @@ Quiz: What would you guess books belong to?
 answer.quiz("Books_As_Goods")
 ```
 
-The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is particulary the book market that appropriated for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
+The underlying paper focuses the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is the book market particularly suitable for this study? In the underlying paper, Reimers and Waldfogel enumerated three main reasons for this claim. First, books belong to experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed across a few big newspapers. The third reason refers to the data set on which the entire examination is based on. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, what is approximately comparable to Mcloughlins numbers from 2022. 
 
 As explained, professional reviews are defined as periodically appearing reviews in daily newspaper articles. The data set includes information about the appearance of professional reviews from the New York Times, the Chicago Tribune, the Boston Globe, the Wall Street Journal, the Los Angeles Times and the Washington Post. However, quantitative information as well as star ratings are not available. Additionally, The New York Times recommends nine books every week (New York Times, 2023). Professional reviews enable access to pre-purchase information. 
 
@@ -177,7 +182,7 @@ Under these conditions, we apply a graph to illustrate the situation between dem
 
 **Task:** Run the following chunk to create this model. Press `check` to collect your points. 
 
-```{r "4_1",warning=FALSE}
+```{r "4_1"}
 
 #load the package "ggplot2"
 library(ggplot2)
@@ -268,11 +273,11 @@ DatasetPE <- data.frame(
 )
 colnames(DatasetPE) <- c("Price", "ε > 1", "ε = 1", "ε < 1")
 
-DatasetPE <- DatasetPE %>% 
+DatasetPEN <- DatasetPE %>% 
   pivot_longer(cols = starts_with("ε"), names_to = "ε", values_to = "Quantity_Value") 
 
 # Umwandeln der Daten in "long format"
-ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
+ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
   geom_line() +
   theme_bw() +
   geom_segment(aes(x = 4, y = 8, xend = 4, yend = 9), color = "red", linetype = "dashed") +
@@ -302,7 +307,7 @@ ggplot(data = DatasetPE, aes(x = Price, y = Quantity_Value, group = ε)) +
   theme(panel.grid.minor=element_blank(),plot.background=element_blank()) 
 ```
 
-Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality $$(\bar R_{j} < R_{j})$$, the same quality $$(\bar R_{j} = R_{j})$$ or a higher expected quality than the actual quality $$(\bar R_{j} > R_{j})$$. 
+Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ($\bar R_{j}$ < $R_{j}$), the same quality ($\bar R_{j}$ = $R_{j}$) or a higher expected quality than the actual quality ($\bar R_{j}$ > $R_{j}$). 
 
 ```{r "4_3",warning=FALSE}
 
@@ -742,13 +747,11 @@ regFirstStep <- __(rank ~ _____ + _, data = dataLite)
 summary(regFirstStep)
 ```
 
-The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies. The t-value is the estimate divided by its individual standard error. The formula is as follows and can be found [here](https://bookdown.org/mike/data_analysis/linear-regression.html).
+The first column, starting from row two, contains the estimated coefficients for `pamzn` and `R`. The value of 14052.8 indicates that an increase of `pamzn` by one unit on average results in an increase of the sales rank by 14052.8 positions. In the second column, the standard error is given. This is a calculation to determine the accuracy of the individual estimator. Basically, the lower the standard error is, the less the estimator varies. The formula is as follows and can be found [here](https://bookdown.org/mike/data_analysis/linear-regression.html).
 
 $$\widehat{SE}(\hat\beta_k)=s\sqrt{[(\mathbf{X}^T\mathbf{X})^{-1}]_{kk}}$$
 
-Where $s$ is the standard error of the entire regression, $X$ the the covariance matrix, and $\hat\beta_k$ the regression coefficient. 
-
-The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance.
+Where $s$ is the standard error of the entire regression, $X$ the the covariance matrix, and $\hat\beta_k$ the regression coefficient. The t-value is the estimate divided by its individual standard error. The last column shows the significance level, which indicates the probability of the estimator being exactly as high as it is merely by chance.
 
 
 Quiz: What is the correct answer?
@@ -762,11 +765,11 @@ Quiz: What is the correct answer?
 answer.quiz("t_value")
 ```
 
-The R-squared value in the regression table below indicates a coefficient of determination within [0,1], which provides information on how the explanatory variables fit the respective model. In this context, a perfect R-squared value of 1 means a perfect coefficient of determination. In practice, the R-squared value increases with a higher number of observations and more or better chosen explanatory variables. Adding too many variables to the regression might give the illusion of a higher R-squared value, but it also leads to overfitting. 
+The R-squared value in the regression table below indicates a coefficient of determination within $[0;1]$, which provides information on how the explanatory variables fit the respective model. In this context, a perfect R-squared value of 1 means a perfect coefficient of determination. In practice, the R-squared value increases with a higher number of observations and more or better chosen explanatory variables. Adding too many variables to the regression might give the illusion of a higher R-squared value, but it also leads to overfitting. 
 
-**Robust Standard Errors**
+#### **Robust Standard Errors**
 
-To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homescedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
+To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homoskedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
 
 **Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
 
@@ -779,7 +782,7 @@ regRSE <- _____(____ ~ pamzn + R, vcov = "hetero", data = ________)
 _______(regRSE)
 ```
 
-There are almost no differences in the coefficients for `pamzn` and `R`, while there are large differences in the standard errors. If the assumption of homescedasticity is fulfilled, estimators without robust standard errors tend to have lower standard errors. This could be due to the fact, that Robust Standard Errors take uncertainties into consideration which makes the estimate somewhat less imprecise. However, Robust Standard Errors should still be used to guarantee homoscedasticity. 
+There are almost no differences in the coefficients for `pamzn` and `R`, while there are large differences in the standard errors. If the assumption of homoskedasticity is fulfilled, estimators without robust standard errors tend to have lower standard errors. This could be due to the fact, that Robust Standard Errors take uncertainties into consideration which makes the estimate somewhat less imprecise. However, Robust Standard Errors should still be used to guarantee homoscedasticity. 
 
 
 Quiz: We assume that (for the same regression) the standard errors for the regular regression are lower than for the regression where robust standard errors were used. Whats is the correct answer?
@@ -793,10 +796,227 @@ Quiz: We assume that (for the same regression) the standard errors for the regul
 answer.quiz("Robust_standard_errors")
 ```
 
-**Note:** Heteroscedasticity is the opposite of homescedasticity.
+**Note:** Heteroscedasticity is the opposite of homoskedasticity.
 
-**Fixed Effects**
+#### **Fixed Effects**
 
-To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. For instance, the amazon sales rank                                                  To use Fixed Effects in regressions, 
+To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. The endogeneity problem occurs when the explanatory variable $x_k$ depends on the error term $\varepsilon $. For instance, we examine the effect of price (as the only explanatory variable) on the sales rank. Since the book price is determined by many other factors, the price appears to be an endogenous variable. As a result, biases arise and the respective coefficient could become inaccurate. When using fixed effects, we select certain variables to control for. These fixed effects are kept constant and do not affect the estimation. Using this method, we attempt to reduce the variation within explanatory variables by minimizing the potential for bias from omitted variables (Hill, Davis, Roos and French, 2020).
+
+
+Quiz: What is your suggestion, does the implementation of fixed effects significantly affect the value of the coefficients of the explanatory variable(s)?
+
+[1]: Yes.
+[2]: No.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Fixed_Effects")
+```
+
+Let us look at an example for this. We want to create a regression where the sales rank indicates the dependent variables $y$ and $x_1$  as explanatory variable for the Amazon book price. The formula looks as follows:  
+
+$$ y = β_0 + β_1 x_1 + \varepsilon $$
+
+In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable canum as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
+
+**Task:** Replace the ___ gaps to create a regressions with fixed effects. Compare this regression `regFirstStep` with a regression without differences occur. Press `check` after solving this exercise. 
+
+```{r "10_3",warning=FALSE}
+
+# Load the package `modelsummary` to gain a more handsome regression table
+library(____________) 
+# Create a regression using `canum` as fixed effects. Add robust standard errors. 
+regFE <- feols(____ ~ pamzn | _____, ____ = "he____", data = dataLite)
+# Create a regular regression without robust standard errors and fixed effects.
+regWFE <- lm(rank ~ pamzn, data = dataLite)
+modelsummary(list(regWFE, regFE), statistic = "({std.error})", coef_rename = c("pamzn" = "Amazon Price"))
+```
+
+Column two shows the fixed-effects estimate with robust standard errors, while column one shows the regular regression. It is noticeable that the regressions estimate completely different values for the coefficients. Chapter 2.3 showed price differences that can be attributed to the respective country in which the book was rated. The regular regression seems to show exactly this endogeneity problem, that the Amazon price also depends on the country where the book was rated, as well as many other factors. Using fixed effects, we eliminated the country-specific effect and obtained the information that the Amazon price and the sales rank are negatively related. 
+
+The fixed-effects model requires a so-called panel data structure that has data available for each individual (here: Books) at different points in time. However, the addition of fixed effects can also lead to inaccuracies and biases. The disadvantage is that the variables used as fixed effects can no longer be included in the regression as explanatory variables. This model also assumes that the explanatory variable is not collinear (perfectly correlated) to the fixed effects, otherwise this explanatory variable would be determined purely by the fixed effects. Finally, the endogeneity problem can not get completely eliminated by a fixed-effects model. Better suited for this purpose is the Difference-in-Difference approach or Instrumental Variable Estimation, which are not further discussed in the course of this problem set.                                                      
+
+**Summary**
+
+To sum up, this chapter has given us a handsome overview about some basics and advanced methods and tools for working with regressions. First, we learned how regressions basically work, how to interpret them using particular values, and how they are implemented in R. We distinguished between linear and multiple regressions and how control variables potentially affect multiple regressions. We found multiple differences in the regression coefficients and the coefficients of determination when we added control variables. Second, the effect of Robust Standard Errors was discussed and implemented in R. We extracted the information that inserting Robust Standard Errors can be quite useful to ensure homoskedasticity. Finally, we learned how to explain and to implement fixed effects. Application on the Amazon data set underscored the utility and potential of fixed effects for subsequent examinations. 
+
+In the following chapter, we apply the methods and tools from this chapter to examine the overall effects on sales ranks and prices.
+
+## Exercise 3.2 -- Estimation of the Effects on Sales Ranks and Prices
+
+After the introduction for regressions, we focus on the research question to estimate the effect from professional reviews and crowd ratings on the book market. Replicating the underlying regressions by Reimers and Waldfogel, the data set must first be transformed.  
+
+**Task:** Create the data set `dataUS` that only includes observations from the US market. To enable this, use the condition `cno == 3`. Finally, use `arrange()` to sort the data by `canum` and then by `ddate`. Press `check` to confirm your solution. 
+
+```{r "11_1",warning=FALSE}
+# Enter your code here.
+```
+
+In their paper, Reimers and Waldfogel used logarithmic values for their estimation. The logarithmization of dependent or explanatory variables can be associated with many advantages. First, logarithmization can be used to stabilize the variance of the residuals to avoid heteroskedasticity. Further, outlier values are mitigated in their effect so that they have less influence on the magnitude of the regression coefficient. The third advantage is due to interpretation of the regression coefficients. Logarithmized coefficients allow us to interpret these coefficients as percentages for simplicity. The possible interpretation are as follows (Kranz, 2022):
+
+* **log - log**: log $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, for a one percent increase in $x_1$, the predicted value of $y$ increases by approximately $β_1$ percent. 
+
+* **log - level**: log $\hat/y$ = $\hat\beta_0$ + $β_1 x_1$, for a one unit increase in $x_1$, the predicted value of $y$ increases by approximately 100 * $β_1$ percent.
+
+* **level - log**: $\hat/y$ = $\hat\beta_0$ + log $β_1 x_1$, for a one percent increase in $x_1$, the predicted value of $y$ increases by approximately 0.01 * $β_1$ units. 
+
+The regressions created by Reimers and Waldfogel are based on the **log - log** method. In their main regression table, they created five different regressions using `lrank` as dependent variable. The variable `L1.lrank` specified the lagged sales rank from the last date documented in the data set. The addition of `L1.lrank` has the advantage that seasonal fluctuations are included in the regression. Similarly, this variable is predestined for estimates such as this one because the variable can capture short-term (triggered by professional reviews) increases in sales rank.    
+
+**Task:** Run the following chunk to create `reg2` with `ano` as fixed effects and robust standard errors. 
+
+```{r "11_2",warning=FALSE}
+
+#read the package `fixest`
+library(fixest)
+#Create the regression `reg2`
+reg2 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+```
+
+Computing regressions in this high-frequency data set requires high computational power. For this reason, we compute only two of these regressions within the problem set. Now, we want to generate the second regression using more explanatory variables. 
+
+**Task:** Create `reg3` according to `reg2` above. Add the explanatory variables `lrR`, `dnytpost10_1`, `dnytpost10_2`, `dothpost_1`, `dothpost_2`, `dothpost_3`, `dothpost10_1` and `dothpost10_2`. Remove the explanatory variables `dothpostpre_1`,`dothpostpre_2` and `dothpostpre_3`.
+
+```{r "11_3",warning=FALSE}
+# Create reg3 here
+```
+
+The variable `ano` gives an Amazon identifier (asin) and the numbers `1`, `2` and `3` after the dummy variables `dnytpost` and `dothpost` provide information about which country the observation belongs to. U.S. Data were used for both regressions.  
+
+Subsequently, the three remaining regressions are then read in. To the first regression `reg1` some dummy variables were added as control variables. These dummy variables  For performance reasons we have omitted these variables in this task, but they are stored in `reg1` which we will read in. In the interval $[-20;40]$ for `NYT_elapse` and `OTH_elapse` all expressions were stored individually in different dummy variables, in sum 120 control variables.
+
+**Task:** Read in the files `reg1.RDS`, `reg4.RDS`, and `reg5.RDS` and save them also like this. Do not forget to press `check`. 
+
+```{r "11_4"}
+# Enter your code here
+```
+
+After all regressions are available, proceed with the generation of a regression table for comparison purposes. For this purpose, we use the function `modelsummary`, which can display multiple regressions more clearly and with more possibilities than `summary`.
+
+**Task:** Use the function `modelsummary` from the R package `modelsummary` to display the five regressions `reg1`, `reg2`, `reg3`, `reg4` and `reg5`. Do not forget to `check` this chunk. 
+
+```{r "11_5"}
+
+RegTable <- ____________(list(____, reg2, ____, ____, ____), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("L1.lrank" = "Lagged log sales rank", "lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
+ RegTable 
+
+```
+
+The results of the upper estimation deviate visibly  from the underlying results of Reimers and Waldfogel. This deviation is likely due to the variable `L1.lrank`, which is originally calculated with an specific Stata (the programming language used by the authors for the original data processing) function called `L1`. For my calculation of this variable I created a manual function, which can be found [here](t.b.d.). Visibly, the coefficient for `L1.lrank` turns out to be lower than calculated by the authors. Consequently, the actual effect of seasonal effects emanating from the variable `L1.lrank` could potentially be smaller than calculated by Reimers and Waldfogel. 
+
+
+Quiz: Which of these assumptions can be made?
+
+[1]: The impact of the New York Times is only short-term, as the coefficient becomes smaller over time.
+[2]: The R-squared error of over 0.95 is due to overfitting after adding these amount of explanatory variables.
+[3]: Log Amazon price (the coefficient) > 0, so an increasing price appears to increase sales rank and implies a decrease in sales volume.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Reg_Assumptions")
+```
+
+The coefficient for `NYT: 0-5 days` represents the occurrence of a New York Times review in the US within the first five days of its publication.
+
+
+Quiz: How should the coefficient for column 2 `NYT 0-5 days` be interpreted?
+
+[1]: A professional review in the New York Times lowers the sales rank by an average of 0.28 percent within the first five days of publication.
+[2]: A professional review from the New York Times lowers the sales rank by an average of 0.280*100 units within the first five days of publication.
+[3]: A professional review from the New York Times lowers the sales rank by an average of 28 percent within the first five days of publication.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Coeff_Interpretation")
+```
+
+The coefficient for `Log Amazon Price` is 0.083. This value indicates that a price increase on average increases the sales rank.
+
+
+Quiz: How should the coefficient for column 2 `Log Amazon Price` be interpreted?
+
+[1]: By increasing the price for one unit, the sales rank increases by an average of 0.084*100 units.
+[2]: By increasing the price for one percent, the sales rank increases by an average of 0.084 percent. As a result, the price is definitely elastic.
+[3]: By increasing the price for one percent, the sales rank increases by an average of 0.084 percent. There is no information about price elasticity.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Coeff_Interpretation2")
+```
+
+Expectedly, the New York Times recommendations are associated with the greatest effect on sales ranks. The coefficient accounts approximately -0.34 for U.S. data and about -0.36 for all data. In column three, an *interaction term* between `lR` and `lreview` was used. Generally, interaction terms are used to control for bias when an explanatory variable also depends on another independent variable. In this case, the addition of these interaction term implies a shrinking effect of the star ratings. This suggests that star ratings have more influence depending on multiple underlying ratings (Reimers, Waldfogel, 2021).  
+
+In the following, price is examined as independent variable. In chapter 2.3, the assumption was made that New York Times reviews could increases the price in the short-term. To investigate this further, we regress price on similar explanatory variables as in the regression above.        
+
+**Task:** Create an according regression by filling in the gaps. Use the variable `canum` as fixed effects.
+
+```{r "11_6"}
+reg6 <- fe___(______ ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | _____, vcov = ________, data = dataUS)
+
+reg7 <- feols(lpamzn ~ lrank + lreview + lR  + dnytpost1_3 + dnytpost6_3 + dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+
+```
+
+**Task:** Run the following chunk to visualize the regression with `modelsummary`.
+
+```{r "11_7"}
+# Enter your code here.
+```
+
+The occurrence of New York Times reviews within the first five days of publication is associated with a 0.01 percent price increase. This price increase remains relatively even over time looking at review occurrence within five days to 20 days of publication. Chapter 2.3 also assumed that Amazon star ratings tend to increase demand in long-term, which may lead to lower prices due to more competition. As above, I added an interaction term for "reg7" to illustrate the dependence of Amazon star ratings on the number of reviews. When estimating the effect on the Amazon price, the addition of this interaction term results in a positive coefficient on the `log star rating` of 0.045 instead of a negative coefficient of -0.007. 
+
+
+Quiz: What does this mean for the assumption of a long-term price increase?
+
+[1]: The assumption is incorrect because descriptive analyzes cannot account for dependencies between different effects.
+[2]: The assumption is correct and the interaction term is inappropriate for this situation.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Des_vs_Pred")
+```
+
+**Summary**
+
+After expanding our methodological knowledge in empirical economics in Section 3.1, we replicated the main regression table (with log sales rank as the dependent variable) from the underlying paper, and found that the coefficients differed from the original estimation results. These differences are due to the lagged sales rank, which was not replicatable. However, the regression from this problem shew similar coefficients but with higher standard errors. We found large short-term effects of New York Times reviews, while the overall effect of other professional reviews was less present. In addition, we learned how interaction terms work and how they are implemented in R. Second, we examined the effects on the Amazon price. We found overall small but positive effects from New York Times reviews and negative effects from other journals. By using an interaction term, we discarded the assumption that an increase in Amazon star ratings is associated with a decrease in Amazon prices.
+
+In the following chapter event studies are explained and implemented in R.
+
+## Exercise 3.3 -- Introduction and Implementation of Event Studies
+
+
+
+
+
+
+
+
+
+
+
+## Exercise 4 -- Summary statistics
+a) We often want to compute some summary statistic of a vector.
+For example:
+```{r "13_a"}
+x = 10:20
+# Computing the sum of x
+sum(x)
+```
+Now compute the mean of x.
+```{r "13_a_2"}
+# Enter your code here.
+```
+## Exercise 5 -- Computing with vectors
+a) Let y be a vector that contains the squared elements of x. Show y
+```{r "14_a"}
+# Enter your code here.
+```
+
+
+
+
+
+
+
+
 
 

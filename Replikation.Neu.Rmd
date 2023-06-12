@@ -33,7 +33,7 @@ library(gt)
 ```{r}
 setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit")
 data <- readRDS("The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data/dataEst.RDS")
-
+#data <- data[,c(1:70, 195:227)]
 ```
 
 ```{r}
@@ -168,15 +168,16 @@ prev_btitle <- NULL
 prev_lrank <- NULL
 new_lrank <- NULL
 for (i in 1:nrow(data)) {
-  if (i == 1 || data$canum[i] != prev_btitle) {
-    new_lrank[i] <- data$lrank[i]
-  } else {
+ # {
+#  if (i == 1 || data$canum[i] != prev_btitle) {
+#    new_lrank[i] <- data$lrank[i]
+#  } 
+
     new_lrank[i] <- prev_lrank
-  }
   prev_btitle <- data$canum[i]
   prev_lrank <- data$lrank[i]
 }
-data$L1.rank <- new_lrank
+data$L1.lrank <- new_lrank
 
 
 
@@ -244,6 +245,14 @@ for (k in 1:3) {
 
 ```
 
+```{r}
+
+dataTest <- data[,c(4, 21, 67, 70)]
+
+
+
+```
+
 
 
 ```{r}
@@ -256,43 +265,26 @@ for (k in 1:3) {
 
 #Regression 1
 #reghdfe lrank L1.lrank lpamzn lreview lR  DNYT* DOTH* epos* eneg* if cno==3, absorb(canum) vce(robust)
-reg1 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR + DNYT + DNYT0 + DNYT1 + DNYT2 + DNYT3 +DNYT4 + DNYT5 + DNYT6 + DNYT7 + DNYT8 + DNYT9 + DNYT10 + DNYT11 + DNYT12 + DNYT13 +DNYT14 + DNYT15 +DNYT16 + DNYT17 +DNYT18 +DNYT19 + DNYT20 + DNYT21 + DNYT22 + DNYT23 + DNYT24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DNYT39 +DNYT40 + DNYTm1 + DNYTm2 + DNYTm3 + DNYTm4 + DNYTm5 + DNYTm6 + DNYTm7 + DNYTm8 + DNYTm9 + DNYTm10 + DNYTm11 + DNYTm12 + DNYTm13 + DNYTm14 + DNYTm15 + DNYTm16 + DNYTm17 + DNYTm18 + DNYTm19 + DNYTm20 + DOTH0 + DOTH1 + DOTH2 + DOTH3 +DOTH4 + DOTH5 + DOTH6 + DOTH7 + DOTH8 + DOTH9 + DOTH10 + DOTH11 + DOTH12 + DOTH13 + DOTH14 + DOTH15 +DOTH16 + DOTH17 + DOTH18 + DOTH19 + DOTH20 + DOTH21 + DOTH22 + DOTH23 + DOTH24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DOTH39 +DOTH40 + DOTHm1 + DOTHm2 + DOTHm3 + DOTHm4 + DOTHm5 + DOTHm6 + DOTHm7 + DOTHm8 + DOTHm9 + DOTHm10 + DOTHm11 + DOTHm12 + DOTHm13 + DOTHm14 + DOTHm15 + DOTHm16 + DOTHm17 + DOTHm18 + DOTHm19 + DOTHm20 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+reg1 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + DNYT + DNYT0 + DNYT1 + DNYT2 + DNYT3 +DNYT4 + DNYT5 + DNYT6 + DNYT7 + DNYT8 + DNYT9 + DNYT10 + DNYT11 + DNYT12 + DNYT13 +DNYT14 + DNYT15 +DNYT16 + DNYT17 +DNYT18 +DNYT19 + DNYT20 + DNYT21 + DNYT22 + DNYT23 + DNYT24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DNYT39 +DNYT40 + DNYTm1 + DNYTm2 + DNYTm3 + DNYTm4 + DNYTm5 + DNYTm6 + DNYTm7 + DNYTm8 + DNYTm9 + DNYTm10 + DNYTm11 + DNYTm12 + DNYTm13 + DNYTm14 + DNYTm15 + DNYTm16 + DNYTm17 + DNYTm18 + DNYTm19 + DNYTm20 + DOTH0 + DOTH1 + DOTH2 + DOTH3 +DOTH4 + DOTH5 + DOTH6 + DOTH7 + DOTH8 + DOTH9 + DOTH10 + DOTH11 + DOTH12 + DOTH13 + DOTH14 + DOTH15 +DOTH16 + DOTH17 + DOTH18 + DOTH19 + DOTH20 + DOTH21 + DOTH22 + DOTH23 + DOTH24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DOTH39 +DOTH40 + DOTHm1 + DOTHm2 + DOTHm3 + DOTHm4 + DOTHm5 + DOTHm6 + DOTHm7 + DOTHm8 + DOTHm9 + DOTHm10 + DOTHm11 + DOTHm12 + DOTHm13 + DOTHm14 + DOTHm15 + DOTHm16 + DOTHm17 + DOTHm18 + DOTHm19 + DOTHm20 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
 
 #Regression 2
 #reghdfe lrank L1.lrank  lpamzn lreview lR  dnytpost1_3 dnytpost6_3 dnytpost10_3 dnytpost1r_3 dnytpost6r_3 dnytpost10r_3 #dnytpostprer_* dothpost_3 dothpost10_3  dnytpostpre_* dothpostpre_* epos* eneg* if cno==3, absorb(ano) vce(robust)
-reg2 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
+reg2 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR  + dnytpost1_3 + dnytpost6_3 +  dnytpost10_3 + dothpost_3 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
 
 #Regression 3
 #reghdfe lrank L1.lrank  lpamzn lreview lR lrR  dnytpost1_3 dnytpost6_3 dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_3 dnytpost6r_3 dnytpost10r_3 dnytpostprer_* epos* eneg* if cno==3, absorb(ano) vce(robust)
-reg3 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR + lrR + dnytpost1_3 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
-
-
-
-
-#Transform data including all data
-dataAll <- data %>%
-  filter(ddate >= "2018-01-01" & ddate <= "2018-12-31") %>%
-  arrange(canum, ddate) 
-
+reg3 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + lrR + dnytpost1_3 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_3 + dnytpost6r_3 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | ano, vcov = "hetero", data = dataUS)
 
 
 #Regression 4, 5 for US, CA and GB Data
 
 #reghdfe lrank L1.lrank  lpamzn lreview lR   dnytpost1_*  dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
 #Regression 4
-reg4 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR  + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataAll)
+reg4 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR  + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = data)
 
 #reghdfe lrank L1.lrank  lpamzn lreview lR  lrR  dnytpost1_* dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
 #Regression 5
-reg5 <- feols(lrank ~ L1.rank + lpamzn + lreview + lR + lrR + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataAll)
-
-
-panel1 <- list("Standard Values" = reg1$coefficients[1:4])
-panel2 <- list("Standard Values" = reg2$coefficients[1:4], 
-               "NYT not recommended" = reg2$coefficients[c(5,6,7,9)])
-
-
-rows <- c("NYT not recommended", "NYT recommended", "Other paper") 
+reg5 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + lrR + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = data)
 
 
 RegTable <- modelsummary(list(reg1, reg2, reg3, reg4, reg5), statistic = "({std.error})", coef_omit = "DOTH|DNYT|epos|eneg|postpre|_1|_2", coef_rename = c("L1.rank" = "Lagged log sales rank", "lpamzn" = "Log Amazon price", "lreview" = "Number of ratings", "lR" = "log star rating","lrR" = "log number of ratings x log stars", "dnytpost1_3" = "NYT: 0-5 days", "dnytpost6_3" = "NYT: 6-10 days", "dnytpost10_3" = "NYT: 11-20 days", "dnytpost1r_3" = "NYT Rec: 0-5 days", "dnytpost6r_3" = "NYT Rec: 6-10 days", "dnytpost10r_3" = "NYT Rec: 11-20 days", "dothpost_3" = "OTH: 1-10 days", "dothpost10_3" = "OTH: 11-20 days"))
@@ -308,7 +300,7 @@ RegTable <- modelsummary(list(reg1, reg2, reg3, reg4, reg5), statistic = "({std.
 
 
  
-regTest <- feols(lrank ~ L1.rank + lpamzn + lreview + lR | canum, vcov = "hetero", data = dataUS)
+regTest <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR | canum, vcov = "hetero", data = dataUS)
 
  
  
@@ -345,7 +337,9 @@ regTest$residuals <- regTest$residuals - mean(regTest$residuals[which(dataUS$NYT
  
  reg2_agg <- reg2_agg %>%
    filter(OTH_elapse %% 1 == 0)
- ggplot(reg2_agg, aes(x = OTH_elapse, y = Avg.Sales.rank)) + geom_line() + scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + geom_line(aes(y = Max95), linetype = "dashed") + geom_line(aes(y = Min95), linetype = "dotted") +    scale_y_reverse() + 
+   ggplot(reg2_agg, aes(x = OTH_elapse, y = Avg.Sales.rank)) + geom_line() + scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) +  #   geom_line(aes(y = Max95), linetype = "dashed") + 
+#   geom_line(aes(y = Min95), linetype = "dotted") +    
+   scale_y_reverse() + 
    geom_vline(xintercept = -1, color = "red", size = 0.5) +
  ylim(0.3, -0.5) +
  theme_minimal() 
@@ -362,42 +356,39 @@ regTest$residuals <- regTest$residuals - mean(regTest$residuals[which(dataUS$NYT
 
 
 #Regression 1
-dataAll <- dataAll %>%
-  mutate(lRev_50 = ntile(lreview, 50))
+data <- data %>%
+  mutate(lrR_50 = ntile(lreview, 50))
 
-regRev <- lm(lreview ~ lrR_50, data = dataAll)
+regRev <- lm(lreview ~ lrR_50, data = data)
 
-regRev_agg <- aggregate(dataAll$lreview, by = list(dataAll$lrR_50), FUN = mean) 
+regRev_agg <- aggregate(data$lreview, by = list(data$lrR_50), FUN = mean) 
  colnames(regRev_agg) <- c("lRev_50", "log.review")
  
-dataAll <- merge(dataAll, regRev_agg, by = "lRev_50") 
+data <- merge(data, regRev_agg, by = "lRev_50") 
  
-
+#glue formula
 
 #Regression 2
-reg6 <- feols(lrank ~ L1.rank + lpamzn + lreview + log.review*lR + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3  + dnytpost10_1 + dnytpost10_2 + dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpostprer_1  + dnytpostprer_2  + dnytpostprer_3  + dothpost10_1  + dothpost10_2  + dothpost10_3  + dnytpost1r_3 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataAll)
+reg6 <- feols(lrank ~ L1.lrank + lpamzn + lreview + log.review + lR + DUMMYlRev50 + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3  + dnytpost10_1 + dnytpost10_2 + dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpostprer_1  + dnytpostprer_2  + dnytpostprer_3  + dothpost10_1  + dothpost10_2  + dothpost10_3  + dnytpost1r_3 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = data)
 
 summary(reg6)
 #	reghdfe lrank L1.lrank  lpamzn c.lR#i.r50 i.r50   dnytpost1_* dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
 #	estimates save "estimates/review_quantiles_50", replace
 
- reg3_agg <- aggregate(reg6$residuals, by = list(dataAll$log.review), FUN = mean) 
+ reg3_agg <- aggregate(reg6$residuals, by = list(data$log.review), FUN = mean) 
  colnames(reg3_agg) <- c("Quantiles", "log.Review.rank.effect")
  
-# reg3_agg <- aggregate(reg6$residuals, by = list(dataAll$lrR_50), FUN = mean) 
+# reg3_agg <- aggregate(reg6$residuals, by = list(data$lrR_50), FUN = mean) 
 # colnames(reg3_agg) <- c("Quantiles", "log.Review.rank.effect")
  
  
  regMerge <- merge(reg3_agg, regRev_agg, by = "Quantiles") %>%
    mutate(estimateInteraction = log.Review.rank.effect*log.review)
  
- 
- 
- 
- 
+
  
  reg3_agg <- reg3_agg %>%
-   group_by(lRev_50) %>%
+   group_by(lrR_50) %>%
    summarize(log.reviews = mean(log.reviews), 
              estimate = mean(log.sales.rank.effect), 
              Max95 = mean(Max95), 
