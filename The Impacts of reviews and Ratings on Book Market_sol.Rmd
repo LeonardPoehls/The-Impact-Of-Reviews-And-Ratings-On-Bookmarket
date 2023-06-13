@@ -1386,9 +1386,113 @@ $$ y = β_0 + β_1LaggedSalesRank + β_2Price + β_3NumberOfReviews + β_4StarRa
 #>
 reg7 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR | canum, vcov = "hetero", data = dataUS)
 
+```
+
+Now, this approach consists in aggregation the regression residuals on the filtered variable `NYT_elapse`. Before that, however, the residuals must be adjusted so that they have a value of zero for `NYT_elapse = -1`. This ensures that we can ideally estimate the effects after event start. 
+
+**Task:** `Check` the following Code to adjust the residuals from `reg7`. 
+
+```{r "3.3.3", warning=FALSE}
+
+#< task
+reg7$residuals <- reg7$residuals - mean(reg7$residuals[which(dataUS$NYT_elapse == -1)])
+#>
 
 ```
 
+Further, we aggregate the residuals on `NYT_elapse`. As a result, for each expression of `NYT_elapse`, an average residual is generated.
+
+**Task:** `Check` the following chunk to aggregate the residuals on `NYT_elapse`.
+
+```{r "3.3.4", warning=FALSE}
+
+#< task
+reg7_agg <- aggregate(reg7$residuals, by = list(dataUS$NYT_elapse), FUN = mean)
+  colnames(reg7_agg) <- c("NYT_elapse", "Avg.Sales.rank")
+ reg7_agg <- reg7_agg %>%
+   mutate(Max95 = Avg.Sales.rank + (1.96*sd(Avg.Sales.rank)/ sqrt(length(reg7))),
+          Min95 = Avg.Sales.rank - (1.96*sd(Avg.Sales.rank) / sqrt(length(reg7))))
+#>
+#mean(reg7$residuals[which(dataUS$NYT_elapse == -1)])
+```
+
+The variables `Max95` and `Min95` are indicating the 95 percent *confidence interval*. A confidence interval indicates to x percent (here: 95 percent) how probable it is that the actual value is in this interval or graphical range. The formula is as follows: 
+
+$$\bar{X} \pm Z \cdot \frac{s}{\sqrt{n}}$$
+
+where s indicates the standard deviation, Z the z-value for the confidence level and n the sample size. A simplified z-table can be found [here](http://www.ltcconline.net/greenl/courses/201/estimation/smallConfLevelTable.htm).
+
+**Task:** Create a `ggplot`- graph to visualize the average residuals on the y-axis and `NYT_elapse` on the x-axis. Add a vertical line to illustrate the day before the review was published. Information can be found [here](https://www.rdocumentation.org/packages/ggplot2/versions/0.9.1/topics/geom_vline).
+
+```{r "3.3.5", warning=FALSE}
+
+#< fill_in
+ESNYT <- ggplot(reg7_agg, aes(x = __________, y = ______________)) + 
+   geom_line() + 
+   ggtitle("Event Study - New York Times") +
+   scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + 
+   geom_line(aes(y = _____), linetype = "dashed") + 
+   geom_line(aes(y = _____), linetype = "dotted") +
+   # Add the vertical line here (Use: size = 0.5, color = "red")
+ 
+   scale_y_reverse() + 
+   ylim(0.3, -0.6) +
+   theme_minimal()
+ ESNYT 
+#>
+ESNYT <- ggplot(reg7_agg, aes(x = NYT_elapse, y = Avg.Sales.rank)) + 
+   geom_line() +
+   ggtitle("Event Study - New York Times") +
+   scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + 
+  geom_line(aes(y = Max95), linetype = "dashed") + 
+  geom_line(aes(y = Min95), linetype = "dotted") +
+  geom_vline(xintercept = -1, color = "red", size = 0.5) +
+  scale_y_reverse() + 
+  ylim(0.3, -0.6) +
+  theme_minimal()
+ESNYT 
+```
+
+As the graph shows, a published review in the New York Times is associated with a huge increase in log sales rank of about 0.40 units. After almost two weeks, the sales ranks returns to its base. Analogous, we implement the same event study for all other journals. 
+
+**Task:** According to above, adjust the residuals on `OTH_elapse = 1` and call it `reg7.1$residuals`. Furthermore, create `reg7.1_agg` with `aggregate()` on the variable `OTH_elapse`. Finally, add the minimum and maximum confidence interval. 
+
+```{r "3.3.6", warning=FALSE}
+
+#< task
+# Add your code here
+#>
+
+reg7$residuals <- reg7$residuals - mean(reg7$residuals[which(dataUS$OTH_elapse == -1)])
+
+reg7.1_agg <- aggregate(reg7$residuals, by = list(dataUS$OTH_elapse), FUN = mean)
+  colnames(reg7.1_agg) <- c("OTH_elapse", "Avg.Sales.rank")
+ reg7.1_agg <- reg7.1_agg %>%
+   mutate(Max95 = Avg.Sales.rank + (1.96*sd(Avg.Sales.rank)/ sqrt(length(reg7))),
+          Min95 = Avg.Sales.rank - (1.96*sd(Avg.Sales.rank) / sqrt(length(reg7))))
+```
+
+**Task:** Press `check` to illustrate the differences between effects of New York Times and other magazines. 
+
+```{r "3.3.7", warning=FALSE}
+
+ESOTH <- ggplot(reg7.1_agg, aes(x = OTH_elapse, y = Avg.Sales.rank)) + 
+   geom_line() +
+   ggtitle("Event Study - Other Magazines") +
+   scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + 
+#  geom_line(aes(y = Max95), linetype = "dashed") + 
+#  geom_line(aes(y = Min95), linetype = "dotted") +
+  geom_vline(xintercept = -1, color = "red", size = 0.5) +
+  scale_y_reverse() + 
+  ylim(0.5, -0.5) +
+  theme_minimal()
+ESOTH 
+
+```
+
+While `ESNYT` delivers a similar course to the New York Times Event Study from Reimers and Waldfogel, there are major differences in the graph produced here. This could be due to `L1.lrank`, which is not replicatable and differs from the variable created by Reimers and Waldfogel. Since no added value is generated from the graph, the effects (based on event studies) of other magazines are not discussed further in the course of this problem set. 
+
+In chapter 2.2, it was claimed that occurring intersection between magazines could contaminate our estimations. We found out that 
 
 
 
