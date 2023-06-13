@@ -987,11 +987,11 @@ Overall, prices rise within one year by approximately $1.5 US. Price collapses c
 
 **Summary**
 
-Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks.                                                            We have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
+Using descriptive analysis, we gained deeper insight into the data and were able to establish initial associations between variables related to pre-purchase information and price or quantity (sales ranks). First, we created an overview over general values of the underlying data set. By selectively filtering out certain observations that were effected by pre-purchase information from professional reviewers, we found differences primarily in prices and sales ranks. We have deepened our research and found out that both professional reviews and Amazon crowd ratings negatively affect the sales rank (a lower rank implies higher volumes sold). Conversely, crowd ratings lower average prices while professional reviews raise average prices. Finally, we reviewed whether book prices fluctuating within one year and found out that the more "successful" books are, the more the price fluctuates within one year. For long-term studies, we need data that go beyond a one-year horizon. 
 
 In the following chapter, we start with the empirical part of this problem set. 
 
-## Exercise 3 -- Empirical Strategies on Sales Ranks and Prices
+## Exercise 3 -- Empirical Strategies on Sales Ranks and Prices (ca. 4650)
 
 In following chapter *Empirical Strategies on Sales Ranks and Prices* we focus on empirical methods in general and their application to real data from Amazon. 
 
@@ -1453,9 +1453,9 @@ ESNYT <- ggplot(reg7_agg, aes(x = NYT_elapse, y = Avg.Sales.rank)) +
 ESNYT 
 ```
 
-As the graph shows, a published review in the New York Times is associated with a huge increase in log sales rank of about 0.40 units. After almost two weeks, the sales ranks returns to its base. Analogous, we implement the same event study for all other journals. 
+As the graph shows, a published review in the New York Times is associated with a huge increase in log sales rank of about 0.40 units. After almost two weeks, the sales ranks returns to its base. The proximity of the confidence interval line to the main line indicates a high level of significance. Analogous, we implement the same event study for all other journals. 
 
-**Task:** According to above, adjust the residuals on `OTH_elapse = 1` and call it `reg7.1$residuals`. Furthermore, create `reg7.1_agg` with `aggregate()` on the variable `OTH_elapse`. Finally, add the minimum and maximum confidence interval. 
+**Task:** According to above, adjust the residuals on `OTH_elapse = 1` and call it `reg7.1$residuals`. Furthermore, create `reg7.1_agg` with `aggregate()` on the variable `OTH_elapse`. Finally, add the minimum and maximum value of the 95 percent confidence interval. 
 
 ```{r "3.3.6", warning=FALSE}
 
@@ -1490,10 +1490,64 @@ ESOTH
 
 ```
 
-While `ESNYT` delivers a similar course to the New York Times Event Study from Reimers and Waldfogel, there are major differences in the graph produced here. This could be due to `L1.lrank`, which is not replicatable and differs from the variable created by Reimers and Waldfogel. Since no added value is generated from the graph, the effects (based on event studies) of other magazines are not discussed further in the course of this problem set. 
+While `ESNYT` delivers a similar course to the New York Times Event Study from Reimers and Waldfogel, there are major differences in the graph produced here. This could be due to `L1.lrank`, which is not replicatable and differs from the variable created by Reimers and Waldfogel. Since no added value is generated from the graph, the effects (based on Event Studies) of other magazines are not discussed further in the course of this problem set. 
 
-In chapter 2.2, it was claimed that occurring intersection between magazines could contaminate our estimations. We found out that 
+In chapter 2.3, it was claimed that occurring intersections between magazines could contaminate our estimations. We found that there are a total of 201 books that have been reviewed by other magazines besides the New York Times. Contamination can potentially lead to higher standard errors and inconsistencies in our estimate and result in misinterpretations. Contamination was permitted in the main regression because a number of observations at this level were not available for the event study. Now, we implement another Event Study with adjusted data.  
 
+**Task:** Create a data set `dataAdj` from which you filter out contaminated data where more than the New York Times has reviewed a book. 
+
+```{r "3.3.8", warning=FALSE}
+
+#< fill_in
+dataAdj <- data %>%
+  filter(((data$DBG == 0 & data$DCHI == _ & data$DLAT == _ & data$DWAPO == _ & data$DWSJ == _ & data$DNYT == _) | data$DNYT == _) & cno == _)
+#>
+
+dataAdj <- data %>%
+  filter(((data$DBG == 0 & data$DCHI == 0 & data$DLAT == 0 & data$DWAPO == 0 & data$DWSJ == 0 & data$DNYT == 1) | data$DNYT == 0) & cno == 3)
+
+```
+
+We now count about 50.000 observations less and filtered out the contaminated data. Let us repeat creating an Event Study of New York Times reviews. 
+
+**Task:** `Check` the following code to create an additional Event Study. 
+
+```{r "3.3.9", warning = FALSE}
+
+#< task
+# 1. Create a regression based on the adjusted data
+reg8 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR | canum, vcov = "hetero", data = dataAdj)
+# 2. Mean-adjustment on NYT_elapse = -1.
+reg8$residuals <- reg8$residuals - mean(reg8$residuals[which(dataAdj$NYT_elapse == -1)])
+# 3. Aggregation 
+reg8_agg <- aggregate(reg8$residuals, by = list(dataAdj$NYT_elapse), FUN = mean)
+  colnames(reg8_agg) <- c("NYT_elapse", "Avg.Sales.rank")
+ reg8_agg <- reg8_agg %>%
+   mutate(Max95 = Avg.Sales.rank + (1.96*sd(Avg.Sales.rank)/ sqrt(length(reg8))),
+          Min95 = Avg.Sales.rank - (1.96*sd(Avg.Sales.rank) / sqrt(length(reg8))))
+# 4. Visualizing
+ESNYTNew <- ggplot(reg8_agg, aes(x = NYT_elapse, y = Avg.Sales.rank)) + 
+   geom_line() +
+   ggtitle("Adjusted Event Study - New York Times") +
+   scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + 
+  geom_line(aes(y = Max95), linetype = "dashed") + 
+  geom_line(aes(y = Min95), linetype = "dotted") +
+  geom_vline(xintercept = -1, color = "red", size = 0.5) +
+  scale_y_reverse() + 
+  ylim(0.3, -0.6) +
+  theme_minimal()
+ESNYTNew
+#>
+
+```
+
+As the graph shows, there are almost no deviations from previous diagram. However, Event Studies also entail some disadvantages. First, the mean-adjusted method does not work that well. This is due to the fact that if many of these events occur simultaneously, possible seasonal fluctuation or other endogenous effects cannot be ruled out (V. Henderson Jr, 1990, pp. 288) As a result, the time period must be well chosen. Furthermore, Event Studies cannot provide causal evidence. Finally, other effects also influence the estimation, especially when the regression consists of only four explanatory variables.
+
+**Summary** 
+
+Event Studies are useful methods to illustrate the effect of events occurring at different times. We received information about the origin of Event Studies and how they work in general. We then focused on the implementation of event studies in R using so-called cross functional models, which can estimate the effect on a chronological sequence using aggregated residuals. We replicated these Event Studies from Reimers and Waldfogel and differentiated between New York Times reviews and reviews from other journals. While New York Times reviews show large effects on log sales rank, the estimate of the effect for other journals differs from the authors' estimate, making it unusable. Further, we adjusted the data to rule out contamination potential that was already detected in chapter 2.2. Finally, some disadvantages have been listed. 
+
+In chapter 4., we link sales ranks to sales quantities to determine and examine price elasticities.
 
 
 
