@@ -31,9 +31,17 @@ library(gt)
 
 
 ```{r}
-setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit")
-data <- readRDS("The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data/dataEst.RDS")
+setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/materials_for_confidential_data")
+data <- readRDS("dataEst.RDS")
 #data <- data[,c(1:70, 195:227)]
+
+A_B_params <- read_dta("A_B_params.dta")
+A_B_params_bs <- read_dta("A_B_params_bs.dta")
+pw_weekly <- read_dta("pw_weekly.dta")
+sigma <- read_dta("sigma.dta")
+nielsen <- read_dta("nielsen_notables_spine.dta")
+
+
 ```
 
 ```{r}
@@ -352,64 +360,201 @@ regTest$residuals <- regTest$residuals - mean(regTest$residuals[which(dataUS$NYT
 
 ```{r}
 
-# figure 3
+#US simulations
 
 
-#Regression 1
-data <- data %>%
-  mutate(lrR_50 = ntile(lreview, 50))
 
-regRev <- lm(lreview ~ lrR_50, data = data)
+dataUS <- data %>%
+  filter(cno == 3)
 
-regRev_agg <- aggregate(data$lreview, by = list(data$lrR_50), FUN = mean) 
- colnames(regRev_agg) <- c("lRev_50", "log.review")
- 
-data <- merge(data, regRev_agg, by = "lRev_50") 
- 
-#glue formula
 
-#Regression 2
-reg6 <- feols(lrank ~ L1.lrank + lpamzn + lreview + log.review + lR + DUMMYlRev50 + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3  + dnytpost10_1 + dnytpost10_2 + dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpostprer_1  + dnytpostprer_2  + dnytpostprer_3  + dothpost10_1  + dothpost10_2  + dothpost10_3  + dnytpost1r_3 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = data)
+dataUS <- merge(dataUS, A_B_params)
+dataUS <- merge(dataUS, sigma)
 
-summary(reg6)
-#	reghdfe lrank L1.lrank  lpamzn c.lR#i.r50 i.r50   dnytpost1_* dnytpost6_* dnytpost10_* dothpost_* dothpost10_*  dnytpostpre_* dothpostpre_* dnytpost1r_* dnytpost6r_* dnytpost10r_* dnytpostprer_* epos* eneg*, absorb(canum) vce(robust)
-#	estimates save "estimates/review_quantiles_50", replace
+dataUS$gamma1 <- 0
+dataUS$gamma1 <- ifelse((!is.na(dataUS$lreview) & !is.na(dataUS$lR)),  dataUS$B * (dataUS$lR + dataUS$lreview * reg5$coefficients["lR"]) / (1 - reg5$coefficients["L1.lrank"]))
+dataUS <- dataUS %>%
+  mutate(alpha1 = B* (reg5$coefficients["lpamzn"] / (1 - reg5$coefficients["L1.lrank"])))
 
- reg3_agg <- aggregate(reg6$residuals, by = list(data$log.review), FUN = mean) 
- colnames(reg3_agg) <- c("Quantiles", "log.Review.rank.effect")
- 
-# reg3_agg <- aggregate(reg6$residuals, by = list(data$lrR_50), FUN = mean) 
-# colnames(reg3_agg) <- c("Quantiles", "log.Review.rank.effect")
- 
- 
- regMerge <- merge(reg3_agg, regRev_agg, by = "Quantiles") %>%
-   mutate(estimateInteraction = log.Review.rank.effect*log.review)
- 
 
- 
- reg3_agg <- reg3_agg %>%
-   group_by(lrR_50) %>%
-   summarize(log.reviews = mean(log.reviews), 
-             estimate = mean(log.sales.rank.effect), 
-             Max95 = mean(Max95), 
-             Min95 = mean(Min95))
+#*******************************************************************************************
 
- ggplot(regRev_agg, aes(x = Quantiles, y = log.review.effect)) + 
-   geom_point() +
- #  geom_errorbar(aes(ymin = Min95, ymax = Max95), width = 0.1) +
-   scale_x_continuous(breaks = seq(0, 10, by = 2), limits = c(0, 10)) + 
-   scale_y_reverse() + 
-   geom_vline(xintercept = -1, color = "red", size = 0.5) +
-   ylim(0.5, -1.2) +
-   theme_minimal() 
 
- 
- 
- 
- 
+
+dataUS <- dataUS %>%
+  mutate(e1 = B* (reg5$coefficients["dnytpost1_3"] * dnytpost1_3 + 
+                              reg5$coefficients["dnytpost6_3"] * dnytpost6_3 + 
+                              reg5$coefficients["dnytpost10_3"] * dnytpost10_3 + 
+                              reg5$coefficients["dothpost_3"] * dothpost_3 + 
+                              reg5$coefficients["dothpost10_3"] * dothpost10_3 +
+                              reg5$coefficients["dnytpost1r_3"] * dnytpost1r_3 + 
+                              reg5$coefficients["dnytpost6r_3"] * dnytpost6r_3 + 
+                              reg5$coefficients["dnytpost10r_3"] * dnytpost10r_3) / (1 - reg5$coefficients["L1.lrank"]), 
+         q1 = A / exp(B * lrank - e1), 
+         q = A / exp(B * lrank))
+
+
+dataUS <- dataUS %>% 
+  group_by(asin) %>% 
+  mutate(maxdate = max(ddate), avgR = mean(R))
+
+dataUS <- dataUS %>%
+  filter(ddate == maxdate)
+reg9 <- feols(avgR ~ numbooks + gno | pubno, data = dataUS)
+
+Rhat <- predict(reg9)
+lRhat <- log(Rhat)
+
+
+
+dataUS <- dataUS %>% 
+  mutate(DOTH = ifelse(!is.na(OTHDATE), 1, 0)) %>%
+  rename(p = pamzn)
+
+# Zusammenfassung der Variablen basierend auf den Gruppierungen von asin und genre
+summary_data_Sim <- dataUS %>% 
+  group_by(asin, genre) %>%
+  summarise(
+    sum_q = sum(q),
+    sum_q1 = sum(q1),
+    mean_e1 = mean(e1),
+    mean_gamma1 = mean(gamma1),
+    mean_alpha1 = mean(alpha1),
+    mean_p = mean(p),
+    mean_lR = mean(lR),
+    mean_lRhat = mean(lRhat),
+    mean_R = mean(R),
+    mean_Rhat = mean(Rhat),
+    mean_sigma = mean(sigma),
+    mean_avgR = mean(avgR),
+    max_DNYT = max(DNYT),
+    max_DOTH = max(DOTH),
+    max_DUSAT = max(DUSAT),
+    mean_lreview = mean(lreview),
+    mean_drecommended = mean(drecommended)
+  )
+
+# Speichern des zusammengefassten Datensatzes in einer neuen Datei
+write.csv(summary_data_Sim, "quantity_us_simulations.csv", row.names = FALSE)
+
 
 ```
 
+```{r}
+
+#Table 3
+dataUS <- data %>%
+  filter(cno == 3)
+
+dataUS <- merge(dataUS, A_B_params)
+dataUS <- merge(dataUS, sigma)
+dataUS <- dataUS %>%
+  mutate(B = (-1)*B, 
+         gamma1 = B*(reg5$coefficients["lR"]+lreview*reg5$coefficients["lrR"]) / (1 - reg5$coefficients["lrank"]), 
+         alpha1 = B*(reg5$coefficients["lpamzn"]) / (1-(reg5$coefficients["L1.lrank"])), 
+         e1 = B * (reg5$coefficients["dnytpost1_3"] * dnytpost1_3 + 
+                              reg5$coefficients["dnytpost6_3"] * dnytpost6_3 + 
+                              reg5$coefficients["dnytpost10_3"] * dnytpost10_3 + 
+                              reg5$coefficients["dothpost_3"] * dothpost_3 + 
+                              reg5$coefficients["dothpost10_3"] * dothpost10_3 +
+                              reg5$coefficients["dnytpost1r_3"] * dnytpost1r_3 + 
+                              reg5$coefficients["dnytpost6r_3"] * dnytpost6r_3 + 
+                              reg5$coefficients["dnytpost10r_3"] * dnytpost10r_3) / (1 - reg5$coefficients["L1.lrank"]), 
+         q1_1 = A /(exp(B*lrank - e1)))
+
+
+lmean <- mean(data$lreview)
+
+
+
+star_elas_25 <- dataUS$B * (reg5$coefficients["lR"] +  reg5$coefficients["lrR"] * quantile(dataUS$lreview, probs = 0.25, na.rm = TRUE)) / (1 -  reg5$coefficients["L1.lrank"])
+
+star_elas_50 <- dataUS$B * ( reg5$coefficients["lR"] +  reg5$coefficients["lrR"] * quantile(dataUS$lreview, probs = 0.5, na.rm = TRUE)) / (1 -  reg5$coefficients["L1.lrank"])
+
+star_elas_75 <- dataUS$B * ( reg5$coefficients["lR"] +  reg5$coefficients["lrR"] * quantile(dataUS$lreview, probs = 0.75, na.rm = TRUE)) / (1 -  reg5$coefficients["L1.lrank"])
+
+dataUS$star_elas_25 <- star_elas_25
+dataUS$star_elas_50 <- star_elas_50
+dataUS$star_elas_75 <- star_elas_75
+
+star_elas_mean <- dataUS$B * (reg5$coefficients["lR"] + reg5$coefficients["lrR"] * mean(dataUS$lreview)) / (1 - reg5$coefficients["L1.lrank"])
+dataUS$star_elas_mean <- star_elas_mean
+	
+price_elas_mean <- dataUS$B * reg5$coefficients["lpamzn"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$price_elas_mean <- price_elas_mean
+
+nyt_1_5_not_rec <- dataUS$B * reg5$coefficients["dnytpost1_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_1_5_not_rec <- nyt_1_5_not_rec
+nyt_6_10_not_rec <- dataUS$B * reg5$coefficients["dnytpost6_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_6_10_not_rec <- nyt_6_10_not_rec
+nyt_11_20_not_rec <- dataUS$B * reg5$coefficients["dnytpost10_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_11_20_not_rec <- nyt_11_20_not_rec
+
+nyt_1_5_rec <- dataUS$B * reg5$coefficients["dnytpost1r_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_1_5_rec <- nyt_1_5_rec
+nyt_6_10_rec <- dataUS$B * reg5$coefficients["dnytpost6r_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_6_10_rec <- nyt_6_10_rec
+nyt_11_20_rec <- dataUS$B * reg5$coefficients["dnytpost10r_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_11_20_rec <- nyt_11_20_rec
+
+oth_1_10 <- dataUS$B *  reg5$coefficients["dothpost_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$oth_1_10 <- oth_1_10
+oth_11_20 <- dataUS$B *  reg5$coefficients["dothpost10_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$oth_11_20 <- oth_11_20
+
+#**************************************************************************************************************
+summary_data <- dataUS %>%
+  summarize(
+    price_elas_mean = mean(price_elas_mean),
+    star_elas_25 = quantile(star_elas_25, 0.25),
+    star_elas_50 = median(star_elas_50),
+    star_elas_75 = quantile(star_elas_75, 0.75),
+    nyt_1_5_not_rec = mean(nyt_1_5_not_rec),
+    nyt_6_10_not_rec = mean(nyt_6_10_not_rec),
+    nyt_11_20_not_rec = mean(nyt_11_20_not_rec),
+    nyt_1_5_rec = mean(nyt_1_5_rec),
+    nyt_6_10_rec = mean(nyt_6_10_rec),
+    nyt_11_20_rec = mean(nyt_11_20_rec),
+    oth_1_10 = mean(oth_1_10),
+    oth_11_20 = mean(oth_11_20)
+  ) %>%
+  mutate(across(everything(), ~ format(., digits = 3)))
+
+
+#***************************************************************************************************************
+
+collapsed_data <- aggregate(cbind(summary_data_Sim$max_DNYT, summary_data_Sim$max_DOTH, summary_data_Sim$mean_drecommended, summary_data_Sim$sum_q, summary_data_Sim$sum_q1), by = list(summary_data_Sim$asin), FUN = mean)
+colnames(collapsed_data) <- c("asin", "DNYT", "DOTH", "drecommended", "q", "q1")
+# Berechnung der Veränderung
+collapsed_data$change <- 100 * ((collapsed_data$q / collapsed_data$q1) - 1)
+
+# Berechnung der Mittelwerte für verschiedene Kombinationen von DNYT, DOTH und drecommend
+other_only <- mean(collapsed_data$change[collapsed_data$DNYT == 0 & collapsed_data$DOTH == 1])
+nyt_not_rec_only <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_data$DOTH == 0 & collapsed_data$drecommended == 0])
+nyt_rec_only <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_data$DOTH == 0 & collapsed_data$drecommended == 1])
+both_not_rec <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_data$DOTH == 1 & collapsed_data$drecommended == 0])
+both_rec <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_data$DOTH == 1 & collapsed_data$drecommended == 1])
+nytoverall <- mean(collapsed_data$change[collapsed_data$DNYT == 1])
+overall <- mean(collapsed_data$change[collapsed_data$DNYT + collapsed_data$DOTH >= 1])
+
+
+#se_other_only <- sqrt(var(collapsed_data$change[collapsed_data$DNYT == 0 & collapsed_data$DOTH == 1], na.rm = TRUE) / length(dataUS))
+#se_nyt_not_rec_only <- sqrt(var(nyt_not_rec_only, na.rm = TRUE) / length(reg5$residuals))
+#se_nyt_rec_only <- sqrt(var(nyt_rec_only, na.rm = TRUE) / length(reg5$residuals))
+#se_both_not_rec <- sqrt(var(both_not_rec, na.rm = TRUE) / length(reg5$residuals))
+#se_both_rec <- sqrt(var(both_rec, na.rm = TRUE) / length(reg5$residuals))
+#se_nytoverall <- sqrt(var(nytoverall, na.rm = TRUE) / length(reg5$residuals))
+#se_overall <- sqrt(var(overall, na.rm = TRUE) / length(reg5$residuals))
+
+
+#***************************************************************************************************************************
+
+# Erstellen des zusammengefassten Datensatzes
+summary_data2 <- data.frame(price_elas_mean, star_elas_25, star_elas_50, star_elas_75, star_elas_mean, nyt_1_5_not_rec, nyt_6_10_not_rec, nyt_11_20_not_rec, nyt_1_5_rec, nyt_6_10_rec, nyt_11_20_rec, oth_1_10, oth_11_20, other_only, nyt_not_rec_only, nyt_rec_only, both_not_rec, both_rec, overall, nytoverall)
+
+#SE = c(se(price_elas_mean), se(star_elas_25), se(star_elas_50), se(star_elas_75), se(star_elas_mean), se(nyt_1_5_not_rec), #se(nyt_6_10_not_rec), se(nyt_11_20_not_rec), se(nyt_1_5_rec), se(nyt_6_10_rec), se(nyt_11_20_rec), se(oth_1_10), se(oth_11_20), #se(other_only), se(nyt_not_rec_only), se(nyt_rec_only), se(both_not_rec), se(both_rec), se(overall), se(nytoverall)
+
+```
 
 
 

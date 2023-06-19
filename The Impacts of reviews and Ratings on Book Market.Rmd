@@ -98,7 +98,7 @@ After editing this chapter, you gained an insight of the initial situation on th
 
 ## Exercise 1.1 -- Book Market, Professional Reviews and Crowd Ratings
 
-Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts comsuming it, such as visits to cinema or whine. By the consumption of **Credence Goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
+Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts consuming it, such as visits to cinema or whine. By the consumption of **Credence Goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
 
 
 Quiz: What would you guess books belong to?
@@ -647,7 +647,7 @@ Using descriptive analysis, we gained deeper insight into the data and were able
 
 In the following chapter, we start with the empirical part of this problem set. 
 
-## Exercise 3 -- Empirical Strategies on Sales Ranks and Prices
+## Exercise 3 -- Empirical Strategies on Sales Ranks and Prices (ca. 4650)
 
 In following chapter *Empirical Strategies on Sales Ranks and Prices* we focus on empirical methods in general and their application to real data from Amazon. 
 
@@ -1099,6 +1099,108 @@ As the graph shows, there are almost no deviations from previous diagram. Howeve
 Event Studies are useful methods to illustrate the effect of events occurring at different times. We received information about the origin of Event Studies and how they work in general. We then focused on the implementation of event studies in R using so-called cross functional models, which can estimate the effect on a chronological sequence using aggregated residuals. We replicated these Event Studies from Reimers and Waldfogel and differentiated between New York Times reviews and reviews from other journals. While New York Times reviews show large effects on log sales rank, the estimate of the effect for other journals differs from the authors' estimate, making it unusable. Further, we adjusted the data to rule out contamination potential that was already detected in chapter 2.2. Finally, some disadvantages have been listed. 
 
 In chapter 4., we link sales ranks to sales quantities to determine and examine price elasticities.
+
+## Exercise 4 -- Translating Sales Ranks in Quantities and Price Elasticities
+
+The research results of the sales ranks on Amazon in regressions are limited to relative statements about the sales level of a book as opposed to other books. In order to make economic statements regarding to price elasticity and welfare, absolut sales volumes are needed. Reimers and Waldfogel collected data from the Top 100 Weekly Bestsellers, where Reimers and Waldfogel claim they matched 876 books (hits in U.S. asin). The collected data was originally produced by [the Nielsen Company](https://www.nielsen.com/), which is a market research company, and therefore the data cannot be replicated. Due to the fact that the Amazon data set is based on daily observations of sales ranks while the Nielsen data lists only weekly observations, the authors created a formula based on the general assumption that sales and ranks are exponentially related (Chevalier and Goolsbee, 2003) to reconcile daily sales ranks with weekly sales data: 
+
+$$q_{jw} = \sum_{t \in w} A_{rjt} - B + \upsilon_{jw}$$
+
+where $t$ and $j$ stand for the day and the book index, $w$ denotes the week, $ \upsilon_{jw}$ represents an error term and A and B are to be estimated by using least squares (Reimers and Waldfogel, 2021). By applying a 500-fold bootstrapping procedure (re-sampling method in which the coefficients are estimated using 500 different samples), estimators A and B were associated with average values of 10167 and 0.45. 
+
+
+Quiz: Which of these two statements could potentially have an adverse effect at an bootstrapping procedure?
+
+[1]: Re-sampling methods often require intensive computer power, especially if the data set is large.
+[2]: To rely on the solution of this method, the underlying data must be normally distributed.
+
+```{r eval=FALSE}
+# Run line to answer the quiz above
+answer.quiz("Sampling_vs_Methods")
+```
+
+In the following, not only price elasticities are calculated, but also elasticities from professional valuations and Amazon star ratings. Calculating these elasticities, Reimers and Waldfogel used the following formula:  
+
+$$
+ \epsilon = \frac{B*Coefficient \ of \ Elasticity}{1 - Coefficient \ of \ Log Sales Rank} 
+$$
+
+To implement this formula in R, we use the coefficients estimated in `reg5`. 
+
+**Task:** `Check` the following Code to see how the 25th, the 50th and the 75th quantile of Amazon star rating elasticities get implemented in R.
+
+```{r "13_1"}
+star_elas_25 <- dataUS$B * (reg5$coefficients["lR"] +  reg5$coefficients["lrR"] * quantile(dataUS$lreview, probs = 0.25, na.rm = TRUE)) / (1 -  reg5$coefficients["L1.lrank"])
+
+star_elas_50 <- dataUS$B * ( reg5$coefficients["lR"] +  reg5$coefficients["lrR"] * quantile(dataUS$lreview, probs = 0.5, na.rm = TRUE)) / (1 -  reg5$coefficients["L1.lrank"])
+
+star_elas_75 <- dataUS$B * ( reg5$coefficients["lR"] +  reg5$coefficients["lrR"] * quantile(dataUS$lreview, probs = 0.75, na.rm = TRUE)) / (1 -  reg5$coefficients["L1.lrank"])
+
+dataUS$star_elas_25 <- star_elas_25
+dataUS$star_elas_50 <- star_elas_50
+dataUS$star_elas_75 <- star_elas_75
+```
+
+After this instruction the further elasticities are calculated by the reader. 
+
+**Task:** Determine the elasticities for `lpamzn`, `lreview`, `dothpost_3` and `dothpost10_3`. According to the chunk above, save your results as column in `dataUS` under the names `price_elas_mean`, `star_elas_mean`, `oth_1_10` and `oth_11_20`. Press `Check` to confirm.
+
+**Note:** The coefficient for `lrR` was added to account for interaction effects. For the following chunks `lrR` is not needed.  
+
+```{r "13_2"}
+# Enter your code here.
+```
+
+Elasticities for the New York Times elasticity effects are calculated below. 
+
+**Task:** Press `check` to calculate the remaining elasticities. 
+
+```{r "13_3"}
+nyt_1_5_not_rec <- dataUS$B * reg5$coefficients["dnytpost1_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_1_5_not_rec <- nyt_1_5_not_rec
+nyt_6_10_not_rec <- dataUS$B * reg5$coefficients["dnytpost6_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_6_10_not_rec <- nyt_6_10_not_rec
+nyt_11_20_not_rec <- dataUS$B * reg5$coefficients["dnytpost10_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_11_20_not_rec <- nyt_11_20_not_rec
+
+nyt_1_5_rec <- dataUS$B * reg5$coefficients["dnytpost1r_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_1_5_rec <- nyt_1_5_rec
+nyt_6_10_rec <- dataUS$B * reg5$coefficients["dnytpost6r_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_6_10_rec <- nyt_6_10_rec
+nyt_11_20_rec <- dataUS$B * reg5$coefficients["dnytpost10r_3"] / (1 - reg5$coefficients["L1.lrank"])
+dataUS$nyt_11_20_rec <- nyt_11_20_rec
+
+```
+
+Finally, we read in the remaining elasticity values. 
+
+**Task:** Read in the following RDS files: `other_only.RDS`, `nyt_not_rec_only.RDS`, `nyt_rec_only.RDS`, `both_not_rec.RDS`, `both_rec.RDS`, `nytoverall.RDS` and `overall.RDS`. 
+
+```{r "13_4"}
+# Enter your code here.
+```
+
+After collecting all elasticity values, we create a table to visualize them. The authors also generated within a bootstrapping procedure standard errors for the estimated elasticity values. Basically, in addition to a variance-covariance matrix, they created normally distributed random variables to calculate within a bootstrapping procedure standard errors the elasticities that are present for us. For reasons of performance, these calculations will have no relevance in the further course. 
+
+Let us illustrate these elasticities in a table. 
+
+**Task:** First, create a data set with `data.frame` to list all elasticity values. Then, use `kbl()` to create a table containing the elasticity values. Fill in the ___ gaps and press `check` to confirm your input. 
+
+```{r "13_5"}
+summary_data <- d_______me(Effects = c(mean(______elas_mean), mean(star_elas_25), mean(star_elas_50), mean(star_elas_75), mean(star_elas_mean), mean(nyt_1_5_not_rec), mean(nyt_6_10_not_rec), mean(nyt_11_20_not_rec), mean(nyt_1_5_rec), mean(nyt_6_10_rec), mean(nyt_11_20_rec), mean(oth_1_10), mean(oth_11_20), other_only, nyt_not_rec_only, nyt_rec_only, both_not_rec, both_rec, overall, nytoverall))
+
+row.names(__m_________) = c("Price Elasticity", "Star Elasticity 25%", "Star Elasticity 50%", "Star Elasticity 75%", "Star Elasticity Overall", "NYT 1-5 Days", "NYT 6-11 Days", "NYT 11-20 Days", "NYT 1-5 Days rec", "NYT 6-11 Days rec", "NYT 11-20 Days rec", "OTH 1-10 Days", "OTH 11-20 Days", "Only other Magazines", "Only NYT not recommended", "Only NYT recommended", "Both not recommended", "Both recommended", "overall", "NYT reviewed")
+
+______y_da__ %>%
+kbl(caption = "Elasticities") %>%
+  kable_paper("striped", full_width = TRUE) %>%
+  p______ws("*Percent effect of review on annual q*", 14, 20) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
+```
+
+
+
+
 
 
 

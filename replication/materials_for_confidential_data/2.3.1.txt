@@ -1,0 +1,15 @@
+
+dataDesKript2 <- data %>% 
+  summarize(country = "All",
+            Price = round(mean(pamzn),2), 
+            Star_Rating = round(mean(R),2), 
+            Sales_Rank = round(mean(rank),2),
+            Number_of_Ratings = round(mean(review), 2),
+            Teenth = quantile(R, probs = 0.1, na.rm = TRUE), 
+            Tweentyfifth = quantile(R, probs = 0.25, na.rm = TRUE),
+            Fiftith = quantile(R, probs = 0.5, na.rm = TRUE),
+            Seventyfifth = quantile(R, probs = 0.75, na.rm = TRUE), 
+            Ninetith = quantile(R, probs = 0.9, na.rm = TRUE),
+            Titles = n_distinct(titleno),
+            Observations = length(asin), 
+            Editions = n_distinct(asin))
