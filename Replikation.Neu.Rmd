@@ -365,54 +365,52 @@ regTest$residuals <- regTest$residuals - mean(regTest$residuals[which(dataUS$NYT
 
 
 dataUS <- data %>%
-  filter(cno == 3)
+  filter(cno == 3) %>%
+  arrange(canum, ddate)
 
 
 dataUS <- merge(dataUS, A_B_params)
 dataUS <- merge(dataUS, sigma)
 
-dataUS$gamma1 <- 0
-dataUS$gamma1 <- ifelse((!is.na(dataUS$lreview) & !is.na(dataUS$lR)),  dataUS$B * (dataUS$lR + dataUS$lreview * reg5$coefficients["lR"]) / (1 - reg5$coefficients["L1.lrank"]))
-dataUS <- dataUS %>%
-  mutate(alpha1 = B* (reg5$coefficients["lpamzn"] / (1 - reg5$coefficients["L1.lrank"])))
-
-
-#*******************************************************************************************
-
 
 
 dataUS <- dataUS %>%
-  mutate(e1 = B* (reg5$coefficients["dnytpost1_3"] * dnytpost1_3 + 
+  group_by(asin, genre) %>%
+  mutate(e1 = B * (reg5$coefficients["dnytpost1_3"] * dnytpost1_3 + 
                               reg5$coefficients["dnytpost6_3"] * dnytpost6_3 + 
                               reg5$coefficients["dnytpost10_3"] * dnytpost10_3 + 
                               reg5$coefficients["dothpost_3"] * dothpost_3 + 
                               reg5$coefficients["dothpost10_3"] * dothpost10_3 +
                               reg5$coefficients["dnytpost1r_3"] * dnytpost1r_3 + 
                               reg5$coefficients["dnytpost6r_3"] * dnytpost6r_3 + 
-                              reg5$coefficients["dnytpost10r_3"] * dnytpost10r_3) / (1 - reg5$coefficients["L1.lrank"]), 
-         q1 = A / exp(B * lrank - e1), 
-         q = A / exp(B * lrank))
+                              reg5$coefficients["dnytpost10r_3"] * dnytpost10r_3) / (1 - reg5$coefficients["L1.lrank"]),
+         q1 = A / (exp((B*lrank) - e1)), 
+         q = A / (exp((B*lrank))))
 
+dataUS$gamma1 <- 0
+dataUS$gamma1 <- ifelse((!is.na(dataUS$lreview) & !is.na(dataUS$lR)),  dataUS$B * (dataUS$lR + dataUS$lreview * reg5$coefficients["lR"]) / (1 - reg5$coefficients["L1.lrank"]))
+dataUS <- dataUS %>%
+  mutate(alpha1 = B*(reg5$coefficients["lpamzn"]) / (1-(reg5$coefficients["L1.lrank"])))         
 
 dataUS <- dataUS %>% 
   group_by(asin) %>% 
   mutate(maxdate = max(ddate), avgR = mean(R))
 
-dataUS <- dataUS %>%
+dataUS2 <- dataUS %>%
   filter(ddate == maxdate)
-reg9 <- feols(avgR ~ numbooks + gno | pubno, data = dataUS)
+reg9 <- feols(avgR ~ numbooks + gno | pubno, data = dataUS2)
 
 Rhat <- predict(reg9)
 lRhat <- log(Rhat)
 
 
 
-dataUS <- dataUS %>% 
+dataUS2 <- dataUS2 %>% 
   mutate(DOTH = ifelse(!is.na(OTHDATE), 1, 0)) %>%
   rename(p = pamzn)
 
 # Zusammenfassung der Variablen basierend auf den Gruppierungen von asin und genre
-summary_data_Sim <- dataUS %>% 
+summary_data_Sim <- dataUS2 %>% 
   group_by(asin, genre) %>%
   summarise(
     sum_q = sum(q),
@@ -428,6 +426,14 @@ summary_data_Sim <- dataUS %>%
     mean_sigma = mean(sigma),
     mean_avgR = mean(avgR),
     max_DNYT = max(DNYT),
+    max_1_5 = max(dnytpost1_3),
+    max_6_10 = max(dnytpost6_3),
+    max_11_20 = max(dnytpost10_3),
+    max_1_5_rec = max(dnytpost1r_3),
+    max_6_10_rec = max(dnytpost6r_3),
+    max_11_20_rec = max(dnytpost10r_3),
+    max_1_10 = max(dothpost_3),
+    max11_20 = max(dothpost10_3),
     max_DOTH = max(DOTH),
     max_DUSAT = max(DUSAT),
     mean_lreview = mean(lreview),
@@ -444,12 +450,13 @@ write.csv(summary_data_Sim, "quantity_us_simulations.csv", row.names = FALSE)
 
 #Table 3
 dataUS <- data %>%
-  filter(cno == 3)
+  filter(cno == 3) %>%
+  arrange(canum, ddate)
 
 dataUS <- merge(dataUS, A_B_params)
 dataUS <- merge(dataUS, sigma)
 dataUS <- dataUS %>%
-  mutate(B = (-1)*B, 
+  mutate(B = (-1)*B,
          gamma1 = B*(reg5$coefficients["lR"]+lreview*reg5$coefficients["lrR"]) / (1 - reg5$coefficients["lrank"]), 
          alpha1 = B*(reg5$coefficients["lpamzn"]) / (1-(reg5$coefficients["L1.lrank"])), 
          e1 = B * (reg5$coefficients["dnytpost1_3"] * dnytpost1_3 + 
@@ -478,13 +485,22 @@ dataUS$star_elas_50 <- star_elas_50
 dataUS$star_elas_75 <- star_elas_75
 
 star_elas_mean <- dataUS$B * (reg5$coefficients["lR"] + reg5$coefficients["lrR"] * mean(dataUS$lreview)) / (1 - reg5$coefficients["L1.lrank"])
+
+star_elas_se <- var(dataUS$B * (reg5$coefficients["lR"] + reg5$coefficients["lrR"] * mean(dataUS$lreview)) / (1 - reg5$coefficients["L1.lrank"])) / sqrt(length(dataUS))
+
+
+
+
 dataUS$star_elas_mean <- star_elas_mean
+
 	
 price_elas_mean <- dataUS$B * reg5$coefficients["lpamzn"] / (1 - reg5$coefficients["L1.lrank"])
 dataUS$price_elas_mean <- price_elas_mean
 
 nyt_1_5_not_rec <- dataUS$B * reg5$coefficients["dnytpost1_3"] / (1 - reg5$coefficients["L1.lrank"])
 dataUS$nyt_1_5_not_rec <- nyt_1_5_not_rec
+
+
 nyt_6_10_not_rec <- dataUS$B * reg5$coefficients["dnytpost6_3"] / (1 - reg5$coefficients["L1.lrank"])
 dataUS$nyt_6_10_not_rec <- nyt_6_10_not_rec
 nyt_11_20_not_rec <- dataUS$B * reg5$coefficients["dnytpost10_3"] / (1 - reg5$coefficients["L1.lrank"])
@@ -504,6 +520,7 @@ dataUS$oth_11_20 <- oth_11_20
 
 #**************************************************************************************************************
 summary_data <- dataUS %>%
+  group_by(asin, genre) %>%
   summarize(
     price_elas_mean = mean(price_elas_mean),
     star_elas_25 = quantile(star_elas_25, 0.25),
@@ -516,18 +533,30 @@ summary_data <- dataUS %>%
     nyt_6_10_rec = mean(nyt_6_10_rec),
     nyt_11_20_rec = mean(nyt_11_20_rec),
     oth_1_10 = mean(oth_1_10),
+    max_DNYT = max(DNYT),
+    max_DOTH = max(DOTH),
+    e1 = mean(e1),
     oth_11_20 = mean(oth_11_20)
   ) %>%
   mutate(across(everything(), ~ format(., digits = 3)))
 
 
 #***************************************************************************************************************
-
-collapsed_data <- aggregate(cbind(summary_data_Sim$max_DNYT, summary_data_Sim$max_DOTH, summary_data_Sim$mean_drecommended, summary_data_Sim$sum_q, summary_data_Sim$sum_q1), by = list(summary_data_Sim$asin), FUN = mean)
-colnames(collapsed_data) <- c("asin", "DNYT", "DOTH", "drecommended", "q", "q1")
-# Berechnung der Veränderung
-collapsed_data$change <- 100 * ((collapsed_data$q / collapsed_data$q1) - 1)
-
+-
+collapsed_data <- summary_data_Sim %>% 
+   group_by(asin) %>% 
+   summarize(
+     mean_DNYT = mean(max_DNYT),
+     mean_DOTH = mean(max_DOTH),
+     mean_drecommend = mean(mean_drecommended),
+     mean_q = mean(sum_q),
+     mean_q1 = mean(sum_q1)
+   )
+ colnames(collapsed_data) <- c("asin", "DNYT", "DOTH", "drecommended", "q", "q1")
+ # Berechnung der Veränderung
+ collapsed_data$change <- 100 * ((collapsed_data$q / collapsed_data$q1) - 1)
+  
+  
 # Berechnung der Mittelwerte für verschiedene Kombinationen von DNYT, DOTH und drecommend
 other_only <- mean(collapsed_data$change[collapsed_data$DNYT == 0 & collapsed_data$DOTH == 1])
 nyt_not_rec_only <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_data$DOTH == 0 & collapsed_data$drecommended == 0])
@@ -550,7 +579,7 @@ overall <- mean(collapsed_data$change[collapsed_data$DNYT + collapsed_data$DOTH 
 #***************************************************************************************************************************
 
 # Erstellen des zusammengefassten Datensatzes
-summary_data2 <- data.frame(price_elas_mean, star_elas_25, star_elas_50, star_elas_75, star_elas_mean, nyt_1_5_not_rec, nyt_6_10_not_rec, nyt_11_20_not_rec, nyt_1_5_rec, nyt_6_10_rec, nyt_11_20_rec, oth_1_10, oth_11_20, other_only, nyt_not_rec_only, nyt_rec_only, both_not_rec, both_rec, overall, nytoverall)
+summary_data2 <- data.frame(mean(price_elas_mean), mean(star_elas_25), mean(star_elas_50), mean(star_elas_75), mean(star_elas_mean), mean(nyt_1_5_not_rec), mean(nyt_6_10_not_rec), mean(nyt_11_20_not_rec), mean(nyt_1_5_rec), mean(nyt_6_10_rec), mean(nyt_11_20_rec), mean(oth_1_10), mean(oth_11_20), other_only, nyt_not_rec_only, nyt_rec_only, both_not_rec, both_rec, overall)
 
 #SE = c(se(price_elas_mean), se(star_elas_25), se(star_elas_50), se(star_elas_75), se(star_elas_mean), se(nyt_1_5_not_rec), #se(nyt_6_10_not_rec), se(nyt_11_20_not_rec), se(nyt_1_5_rec), se(nyt_6_10_rec), se(nyt_11_20_rec), se(oth_1_10), se(oth_11_20), #se(other_only), se(nyt_not_rec_only), se(nyt_rec_only), se(both_not_rec), se(both_rec), se(overall), se(nytoverall)
 

@@ -12,8 +12,8 @@ library(grid)
 library(gridExtra)
  
  #Set Working Directory
- setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket") 
- 
+ setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data") 
+
  # Set problem set's name
  ps.name = "The Impacts of reviews and Ratings on Book Market"; sol.file = paste0(ps.name,"_sol.Rmd")
  
@@ -85,12 +85,7 @@ A2. tbd.
 
 A3. tbd.
 
-```{r}
-#< task_notest
-getwd()
-#>
 
-```
 
 
 ## An Instruction how to work with Problem sets
@@ -267,17 +262,17 @@ failure: Try again.
 As already mentioned, the previous model was a severe simplification of a complex market. For instance, the fiscus also impacts market activity by implementing price caps, by subsidizing various branches or in ensuring that no so called price cartels are created. Price cartels are an association of organizations closing price agreements for particular goods to bypass the competition. Usually, the course of the two curves is not linear and the conditions for a perfect market are not satisfied. The slope of the demand or supply curve depends on the so called **Price Elasticity**. For the demand side, **Price elasticity** indicates how demand reacts on changes in prices relatively. The formula looks as follows:  
 
 $$
- \epsilon = \frac{\Delta Q/Q}{\Delta P/P} =  \frac{\%\,\mathrm{Change\,in\,the\,quantity\,of\,goods\,demanded}}{\%\,\mathrm{Change\,in\,price}}
+ \epsilon = \frac{\Delta Q/Q}{\Delta P/P} = \frac{\text{% Change in the quantity of goods demanded}}{\text{% Change in price}} 
 $$
 
-Hence, price elasticity delivers a value ε := [0, ∞] that can also show whether price increases would be worthwhile. An elasticity of ε = 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of ε < 1 are inelastic and otherwise elastic.   
+Hence, price elasticity delivers a value $ε$ $:=$ $[0, ∞]$ that can also show whether price increases would be worthwhile. An elasticity of $ε =$ 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of $ε <$ 1 are inelastic and otherwise elastic.   
 
 #< quiz "Elastic_orInelastic"
 question: You are bar owner and want to maximize your turnover. In a particular period of time, you found out that the demand on beer is linear and a price increase from 3 Units to 4 Units implies a decreasing sales quantity from 1000 quantity units to 875 quantity units. Which of the following responses is correct? 
 sc:
 - The price is inelastic - You should not increase the price.
-- The price is elastic - You should increase the price by 47%.
-- The price is inelastic - You should increase the price by 34%.
+- The price is elastic - You should increase the price by 47 percent.
+- The price is inelastic - You should increase the price by 34 precent.
 - The price is inelastic - You can easily more than double the price.*
 
 success: Great, your answer is correct!
@@ -335,7 +330,7 @@ ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
 #>
 ```
 
-Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ($\bar R_{j}$ < $R_{j}$), the same quality ($\bar R_{j}$ = $R_{j}$) or a higher expected quality than the actual quality ($\bar R_{j}$ > $R_{j}$). 
+Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ( $\bar R_{j}$ < $R_{j}$ ), the same quality ( $\bar R_{j}$ = $R_{j}$ ) or a higher expected quality than the actual quality ( $\bar R_{j}$ > $R_{j}$ ). 
 
 ```{r "1.2.3", warning=FALSE}
 #< task
@@ -392,7 +387,7 @@ ggplot(data = DatasetTest) +
   
 ```
 
-As visualized in the upper graph, the consumer would choose quantity Q1 for $$(\bar R_{j} < R_{j})$$, quantity Q* for $$(\bar R_{j} = R_{j})$$ and quantity Q2 for $$(\bar R_{j} > R_{j})$$. For choosing Q1, the consumer would expect a surplus of triangle A while getting an actual surplus of A + B (ex post recognition of actual quality). A consumer with access to pre-purchase information would always choose Q* with a surplus of A + B + C. Overestimating the books quality, the consumer would buy quantity Q2 and obtains a surplus of A + B + C - D. It is obvious, that quality expectations affect the overall utility of the consumer and thus the demand curve appears to shift without impacting the price elasticity. In fact, the curve merely adjusts to the actual demand. 
+As visualized in the upper graph, the consumer would choose quantity Q1 for ( $\bar R_{j} < R_{j}$ ), quantity Q* for ( $\bar R_{j} = R_{j}$ ) and quantity Q2 for ( $\bar R_{j} > R_{j}$ ). For choosing Q1, the consumer would expect a surplus of triangle A while getting an actual surplus of A + B (ex post recognition of actual quality). A consumer with access to pre-purchase information would always choose Q* with a surplus of A + B + C. Overestimating the books quality, the consumer would buy quantity Q2 and obtains a surplus of A + B + C - D. It is obvious, that quality expectations affect the overall utility of the consumer and thus the demand curve appears to shift without impacting the price elasticity. In fact, the curve merely adjusts to the actual demand. 
 
 #< quiz "ValueAdded_Triangle"
 question: Which triangle represents the value added of pre-purchase information?
@@ -475,7 +470,7 @@ The variable `asin` represents the corporate amazon ID to differentiate between 
 
 **Chronological variables**
 
-`ddate` shows the main date on which the crowd ratings were created What all other chronological variables are based on. `NYT_elapse` (New York Times), `BG_elapse` (Boston Globe), `CHI_elapse` (Chicago Tribune), `LAT_elapse` (Los Angeles Times), `WAPO_elapse` (Washington Post), `WSJ_elapse` (Wall Street Journal) and `OTH_elapse` (All magazines except NYT) indicate how many days have passed since/until the publication of the individual professional review. As a reference date serves here `ddate`. `epos` (if > 0) and `eneg` (if < 0) are counting days since publication. 
+`ddate` shows the main date on which the crowd ratings were created What all other chronological variables are based on. `NYT_elapse` (New York Times), `BG_elapse` (Boston Globe), `CHI_elapse` (Chicago Tribune), `LAT_elapse` (Los Angeles Times), `WAPO_elapse` (Washington Post), `WSJ_elapse` (Wall Street Journal) and `OTH_elapse` (All magazines except NYT) indicate how many days have passed since/until the publication of the individual professional review. As a reference date serves here `ddate`. `epos` (if `pubno` $>$ 0) and `eneg` (if `pubno` $<$ 0) are counting days since publication. 
 
 **Value Variables** 
 
@@ -483,7 +478,7 @@ The variable `rank` stands for the Amazon sales rank, on the basis of which we w
 
 **Dummy Variables** 
 
-Dummy variables are binary variables that can take only two values (here: 1 and 0). Any variable starting with `dnytpost` indicates "1" if the New York Times has published reviews within the period defined by the following numbers after `dnyt`. For instance, `dnytpost1_5` takes the value 1 if [0 <`NYT_elapse` < 6]. For `dnytpost` and `dnytpost10`, [0 <`NYT_elapse` < 10] and [11 <`NYT_elapse` < 20] holds. `dnytpostpre` takes the value 1 if [-10 < `NYT_elapse` < 20]. The same principle applies to all variables starting with `dothpost` where the variable `OTH_elapse` defines the base instead of `NYT_elapse`. 
+Dummy variables are binary variables that can take only two values (here: 1 and 0). Any variable starting with `dnytpost` indicates "1" if the New York Times has published reviews within the period defined by the following numbers after `dnyt`. For instance, `dnytpost1_5` takes the value 1 if [0 $<$`NYT_elapse` $<$ 6]. For `dnytpost` and `dnytpost10`, [0 $<$`NYT_elapse` < 10] and [11 $<$`NYT_elapse` $<$ 20] holds. `dnytpostpre` takes the value 1 if [-10 < `NYT_elapse` $<$ 20]. The same principle applies to all variables starting with `dothpost` where the variable `OTH_elapse` defines the base instead of `NYT_elapse`. 
 
 To transform sales ranks from our main data set into quantities, the authors provided confidential data to determine quantities. This data got provided by Nielsen, a market research company, and Reimers and Waldfogel have published it only in already edited form. These mentioned confidential data sets contain information about weekly top 100 sold books between 2015 and 2018 while the accessible confidential data only delivers intermediate calculations to determine price elasticities. 
 
@@ -573,7 +568,7 @@ kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines got were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be biased by mutual overlays. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
+Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be contaminated. In this context, contamination are intersections resulting from overlaps, whereby respective effects can no longer be clearly assigned.The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
 
 The advantage for crowd ratings is that we also have the amount of ratings available. In fact, the selection of books to be evaluated by professional reviewers is not random (Berger, Sorensen, Rasmussen, 2010). We want to review whether book ratings from professional magazines are randomly distributed on their five-points scale on Amazon. If this is not the case, we cannot reject the assumption that journals only review "better" rated books on Amazon and vice versa. The left Graphs in the following illustrates that the distribution of professional reviews among crowd ratings is evenly distributed. 
 
@@ -592,6 +587,8 @@ failure: Try again.
 
 **Task:** Replace every ____ gap with ....... and check this chunk to create the data set the following graphs are based on. 
 ```{r "2.2.4", warning=FALSE}
+
+#< fill_in 
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesCrowd <- data %>%
@@ -612,23 +609,7 @@ DesCrowd <- rbind(y1, y2)
 
 #Create Dataset "DesAuth" to show the distribution among authors published books 
 
-DesAuth <- data %>%
-  group_by(numbooks) %>%
-  summarise(Number_Ratings = n(),
-            Number_ = round(sum(DNYT)/ Number_Ratings, 2),
-            Number_1 = round(sum(DOTH)/ Number_Ratings, 2))
-
-
-y1_1 <- DesAuth[,c(1, 3)] %>%
-  mutate(Group = "New York Times")
-y2_1 <- DesAuth[,c(1, 4)] %>%
-  mutate(Group = "Others")     
-
-colnames(y1_1) <- c("numbooks", "Number", "Group")
-colnames(y2_1) <- c("numbooks", "Number", "Group")
-
-DesAuth <- rbind(y1_1, y2_1)
-
+DesAuth <- readRDS("DesAuth.RDS")
 ```
 
 After we have created the dataset, we can proceed with the creation of the chart.
@@ -692,10 +673,10 @@ Starting with a good overview, we want to create a table including simple descri
 
 ```{r "2.3.1", warning=FALSE}
 
-#fill_in
+#< fill_in
 
 # Descriptive Values differentiated by country
-dataDesKript <- ____ %>%
+dataDesKript <- data %>%
    group_by(_______) %>%
    summarize(Price = round(mean(_____),2), 
             Star_Rating = round(____(R),2), 
@@ -730,7 +711,7 @@ kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States
   kable_paper("striped", full_width = TRUE) %>%
   pack_rows("Star rating percentiles", 5, 9) %>%
   pack_rows("", 10, 12)
-#< 
+#>
 
 dataDesKript <- data %>%
    group_by(country) %>%
@@ -747,7 +728,7 @@ dataDesKript <- data %>%
             Observations = NROW(country), 
             Editions = n_distinct(asin))
 #Read in dataDesKript2.RDS
-
+dataDesKript2 <-readRDS("dataDesKript2.RDS")
 # Merge Dataframes
 DataDes <- rbind(dataDesKript, dataDesKript2)
 
@@ -1580,9 +1561,9 @@ The research results of the sales ranks on Amazon in regressions are limited to 
 
 $$q_{jw} = \sum_{t \in w} A_{rjt} - B + \upsilon_{jw}$$
 
-where $t$ and $j$ stand for the day and the book index, $w$ denotes the week, $ \upsilon_{jw}$ represents an error term and A and B are to be estimated by using least squares (Reimers and Waldfogel, 2021). By applying a 500-fold bootstrapping procedure (re-sampling method in which the coefficients are estimated using 500 different samples), estimators A and B were associated with average values of 10167 and 0.45. 
+where $t$ and $j$ stand for the day and the book index, $w$ denotes the week, $\upsilon_{jw}$ represents an error term and A and B are to be estimated by using least squares (Reimers and Waldfogel, 2021). By applying a 500-fold bootstrapping procedure (re-sampling method in which the coefficients are estimated using 500 different samples), estimators A and B were associated with average values of 10167 and 0.45. 
 
-#< quiz "Sampling_vs_Methods"
+#< quiz "Sampling_Methods"
 question: Which of these two statements could potentially have an adverse effect at an bootstrapping procedure? 
 sc:
 - Re-sampling methods often require intensive computer power, especially if the data set is large.*
@@ -1706,19 +1687,77 @@ kbl(caption = "Elasticities") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
 #>
 
-summary_data <- data.frame(Effects = c(mean(price_elas_mean), mean(star_elas_25), mean(star_elas_50), mean(star_elas_75), mean(star_elas_mean), mean(nyt_1_5_not_rec), mean(nyt_6_10_not_rec), mean(nyt_11_20_not_rec), mean(nyt_1_5_rec), mean(nyt_6_10_rec), mean(nyt_11_20_rec), mean(oth_1_10), mean(oth_11_20), other_only, nyt_not_rec_only, nyt_rec_only, both_not_rec, both_rec, overall, nytoverall))
+summary_data <- data.frame(Effects = c(mean(price_elas_mean), mean(star_elas_25), mean(star_elas_50), mean(star_elas_75), mean(star_elas_mean), mean(nyt_1_5_not_rec), mean(nyt_6_10_not_rec), mean(nyt_11_20_not_rec), mean(nyt_1_5_rec), mean(nyt_6_10_rec), mean(nyt_11_20_rec), mean(oth_1_10), mean(oth_11_20), other_only, nyt_not_rec_only, nyt_rec_only, both_not_rec, both_rec, overall))
 
-row.names(summary_data) = c("Price Elasticity", "Star Elasticity 25%", "Star Elasticity 50%", "Star Elasticity 75%", "Star Elasticity Overall", "NYT 1-5 Days", "NYT 6-11 Days", "NYT 11-20 Days", "NYT 1-5 Days rec", "NYT 6-11 Days rec", "NYT 11-20 Days rec", "OTH 1-10 Days", "OTH 11-20 Days", "Only other Magazines", "Only NYT not recommended", "Only NYT recommended", "Both not recommended", "Both recommended", "overall", "NYT reviewed")
+row.names(summary_data) = c("Price Elasticity", "Star Elasticity 25%", "Star Elasticity 50%", "Star Elasticity 75%", "Star Elasticity Overall", "NYT 1-5 Days", "NYT 6-11 Days", "NYT 11-20 Days", "NYT 1-5 Days rec", "NYT 6-11 Days rec", "NYT 11-20 Days rec", "OTH 1-10 Days", "OTH 11-20 Days", "Only other Magazines", "Only NYT not recommended", "Only NYT recommended", "Both not recommended", "Both recommended", "Average")
 
 summary_data %>%
 kbl(caption = "Elasticities") %>%
   kable_paper("striped", full_width = TRUE) %>%
-  pack_rows("*Percent effect of review on annual q*", 14, 20) %>%
+  pack_rows("Percent effect of review on annual q", 14, 19) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
 
 ```
 
+As expected, these values differ slightly from the elasticity values determined by Reimers and Waldfogel. In all likelihood, this is due to the regression coefficient of `L1.lrank` differing from the value calculated in the underlying paper. Nevertheless, the top half of this table provides similar values to the original table.
 
+#< quiz "General_Elasticity_Question"
+question: Which of the following answers is **not** correct? 
+sc:
+- This table shows elasticities of demand.
+- The addition of the interaction term `lrR` can be related to the differences in the quantile effects of the star ratings.
+- Book prices on Amazon are generally elastic, so price increases are accompanied by disproportionately high changes in demand.*
+success: Great, your answer is correct!   
+failure: Try again.
+#>
+
+The coefficient for `Price Elasticity` accounts approximately -0.17. 
+
+#< quiz "Coeff_Elasticity_Price"
+question: Which of the following answers is correct? 
+sc:
+- Book prices on Amazon are elastic.
+- A price increase of one percent is associated with a decrease in sales of 0.17 percent.*
+- A price increase of one percent is associated with a increase in sales of 0.17 percent.
+success: Great, your answer is correct!   
+failure: Try again.
+#>
+
+The coefficient for `NYT 1-5 days` is about 0.53, while the coefficient for `NYT 1-5 days rec` accounts approximately 0.64.  
+
+#< quiz "Coeff_Elasticity_NYT"
+question: Which of the following answers is **not** correct? 
+sc:
+- The coefficient for `NYT 1-5 days` indicates that the occurrence of a New York Times review is associated with an increase in sales volume of 53 percent with the first five days of publication.
+- The coefficient for `NYT 1-5 days` indicates that a one percent book price increase reviewed by The New York Times is associated with a 0.53 percent increase in sales volume within the first five days after publication.*
+- New York Times recommendations have larger impacts on the sales volume than New York Times reviews without recommendation.
+success: Great, your answer is correct!   
+failure: Try again.
+#>
+
+We now focus on the explanatory power of this model. The calculations are based on the estimated regression coefficients for determining the relative changes in the elasticity variables and the sales ranks (as a relative index for demand). 
+
+#< quiz "Expl_Elasticity_Power"
+question: Which of the following answers is **not** correct? 
+sc:
+- These elasticities are based on estimated coefficients, so significance levels and other coefficients of determination should be included for interpretation purposes
+- Book prices on the U.S. Market are inelastic despite the fact that the prices are not statutory fixed. 
+- Since the cost of a book is only a small part of the total consumption cost, the actual price elasticity tends to be larger than 1.*
+success: Great, your answer is correct!   
+failure: Try again.
+#>
+
+Focusing the elasticity effects below (from the 14th row), the annual percentage effects on the estimated sales volume `q` were calculated. In this part of the table, large differences in coefficients occurred. This could be due to the fact that these coefficients were calculated within a randomly drawn sample, and this sample was not defined in terms of size, nor is it possible to replicate which observations were used for the calculations. The highest effect in this table has the value for `Both not recommended`, which means that besides the New York Times at least one other magazine has also reviewed the book. The value of 2.57 means that the occurrence of the above condition is associated with an increase in sales of 2.57 percent. In contrast to this examination, Reimers and Waldfogel estimated for the same coefficient a value of 3.833 (Reimers and Waldfogel, 2021, Table 3). The average effect (that at least one magazine reviewed the book) estimated in this problem set accounts about 0.8 indicating an annual sales increasing effect of 0.8 percent. 
+
+**Summary** 
+
+In order to be able to make economic statements about price elasticity and actual demand with the help of the relative investigations of Amazon Sales Ranks, absolute sales figures are required. To generate these, the authors created an exponential formula based on sales numbers from the Nielsen Company  and previous examinations from Chevalier and Goolsbee. As a result, it has become possible to estimate sales figures and thus determine price elasticities accordingly. Next to price elasticities, we examined elasticity effects of professional reviews and crowd ratings and estimated an annual effect of Amazon star ratings of approximately 0.6 percent and of professional reviews of about 0.8 percent. However, these elasticities are based on estimated sales volumes, estimated relative sales ranks, and common intercepts with respect to different magazines, making it difficult to make a statement without significance parameters.  
+
+After working through this chapter, you will have completed the content portion of this assignment and will continue with the conclusion. 
+
+## Exercise 5 -- Conclusion
+
+**Recapitulation**
 
 
 
