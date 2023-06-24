@@ -1,0 +1,10 @@
+f2 <- ggplot(aes(x = R, fill = Group, y = Number/sum(Number)), data = DesAuth) +
+  geom_density(width = 0.5, stat = "identity", alpha = 0.4, position = position_identity(), adjust = 1) +
+  theme_bw() +
+  labs(title = " published Books",
+       x = "Number of Published Books ", 
+       y = "Occurence Density of Professional Reviews") +
+  guides(fill=guide_legend(title="")) +
+  theme(legend.position = c(0.2, 0.75),
+  panel.grid.minor=element_blank(),plot.background=element_blank())
+f2

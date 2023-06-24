@@ -48,7 +48,7 @@ nielsen <- read_dta("nielsen_notables_spine.dta")
 
 #Table 1 Replication
 
-#saveRDS(dataEst, file = "The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data/dataEst.RDS")
+saveRDS(DesAuth, file = "DesAuth.RDS")
 
 # Descriptive Values differentiated by country
 dataDesKript <- data %>%
@@ -542,7 +542,7 @@ summary_data <- dataUS %>%
 
 
 #***************************************************************************************************************
--
+
 collapsed_data <- summary_data_Sim %>% 
    group_by(asin) %>% 
    summarize(
