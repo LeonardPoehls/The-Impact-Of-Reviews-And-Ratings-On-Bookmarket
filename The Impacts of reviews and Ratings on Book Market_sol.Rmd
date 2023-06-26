@@ -1,10 +1,6 @@
 ---
-output:
-  word_document: 
-  toc_depth: 3
-    fig_width: 7
-    fig_height: 4
-    fig_caption: TRUE
+  output: 
+  word: default
   html_document: default
 ---
 
@@ -34,7 +30,7 @@ library(gridExtra)
  
  #open problem set in web browser
 show.ps(ps.name,launch.browser=TRUE, auto.save.code=FALSE, sample.solution=FALSE, load.sav=FALSE,  is.solved=FALSE)
- 
+
  stop.without.error()
 
 ```
@@ -54,7 +50,7 @@ Hence, users got capable to receive important non-professional pre-information f
 
 Today, the distribution of market share in print books have been changed significantly, while Amazon have taken over the leadership as the biggest retailer of print books in all over the world. For instance, the Amazon share for U.S. book market accounts more than 40% percent and around 50% for the Uk market share (McLoughlin, 2022).
 
-To examine these effects, this problem set aims to reorganize and replicate part of the study from Reimers and Waldfogel by retyping and extending their investigations about the effects of professional reviews and crowd ratings on sales ranks and revenues. 
+To examine these effects, this problem set aims to reorganize and replicate part of the study from Reimers and Waldfogel by retyping and extending their investigations about the effects of professional reviews and crowd ratings on sales ranks and quantities. 
 
 ## Exercise Content
 
@@ -124,7 +120,7 @@ After editing this chapter, you gained an insight of the initial situation on th
 
 ## Exercise 1.1 -- Book Market, Professional Reviews and Crowd Ratings
 
-Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty of what they want to buy. For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts consuming it, such as visits to cinema or whine. By the consumption of **Credence Goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
+Generally, economists differentiate goods concerning their characteristics, their occurrences or other conditions. Focusing the degree of uncertainty, we distinguish between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty of what they want to buy (Wieneke, 2019). For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without any information advantages, buyers are not capable to assess the goods quality until the buyer starts consuming it, such as visits to cinema or whine (Wieneke, 2019). By the consumption of **Credence Goods** the buyer never gets into the situation to evaluate the quality of the underlying good as the degree of uncertainty is the highest here. Common credence goods are services like lawyers or surgeons (Wieneke, 2019). 
 
 #< quiz "Books_As_Goods"
 question: What would you guess books belong to?
@@ -187,11 +183,11 @@ In the following chapter 1.2, you will pick up the economic basic knowledge you 
 Colloquially, the term "welfare" is associated with many contexts, such as unemployment benefit or other social assistance. The actual origin of this term lies in the economy. Mathematically, welfare is sum of producer surplus and consumer surplus. Basically, consumer surplus is the difference between the price for a good that consumers are willing to pay and the actual price of this good. Against this, Producer surplus is the difference between the price that suppliers would be willing to charge for their goods and the actual price of this good. Actually, the economic reality is much more complex. For simplifying purposes, we focus on polypol markets (markets with many suppliers) under perfect conditions, that the model requires in order to work. Without even one of these assumptions, the model is invalid.   
 
 #< quiz "perfectMarket_Conditions"
-question: Which of these conditions is **not** relevant for a perfect market? 
+question: Which of these conditions is **not** relevant for a perfect polypol market? 
 sc:
 - Perfect information availability (Knowledge about every price for the underlying good).
 - No personal preferences (Preferences, that prevent you from acting rationally).
-- Homogenous goods (Equal goods).
+- Homogeneous goods (Equal goods).
 - Fast reaction velocity (Changing market conditions are quickly recognized from every market participant).
 - Every good has the same quality.*
 - A large number of demanders and suppliers.
@@ -202,37 +198,50 @@ failure: Try again.
 
 Under these conditions, we apply a graph to illustrate the situation between demand and supply to better understand the added value of pre-purchase information. 
 
-**Task:** Run the following chunk to create this model. Press `check` to collect your points. 
+#< info "How to create graphs with the package `ggplot2`."
+
+The `ggplot` package allows you to create diagrams based on a data set you provide. The structure for the most important functions is as follows:
+
+```{r}
+#General function to initialize ggplot2 and aes() is used to define mappings between variables and visual properties.
+ggplot(data = data_set, aes(y = y, x = x)) +
+#Family function for geometric objects to be added (e.g. geom_bar, geom_line, geom_density, geom_histogramm, geom_text,...)
+geom_line(aes(y=y, x=x), color = "color", size = 2, ...) +
+#To create multiple panels within one plot
+facet_grid(~variable_to_split) +
+#Function to set the labels of the plot as x-axis, y-axis, title
+labs() +
+#Define the scales for the axis
+xlim()/ylim() +
+#Function to modify the overall appearance of the plot
+theme() +
+#Customizing legends and guides for color, size, ...
+guides() +
+#Change the limits or designations for x-axis or y-axis
+scale_x_continuous() +
+scale_y_continuous() 
+```
+
+**Note:** Add a `+` after these functions to connect them (except of the last function).
+#>
+
+**Task:** Run the following chunk to create this model. For performance purposes I saved the essential part `fdemandsupplyfinal` in `fdemandsupply`. Press `check` to collect your points. 
 
 ```{r "1.2.1"}
 #< task_notest
 
 #load the package "ggplot2"
 library(ggplot2)
-#Create a fictive data set 
 demand <- c(2, 1.5, 1, 0.5, 0)
 xAxis <- c(0, 1,2,3,4)
 supply <- c(0, 0.5, 1, 1.5, 2)
 xGroup <- c(1, 1, 1, 1, 1)
 DatasetTest <- data.frame(Price = demand, Quantity = xAxis, Supply = supply, Group = xGroup)
-#Create a plot
-ggplot(data = DatasetTest) +
-  geom_line(aes(x=Quantity, y=Price, group = Group), linetype = 1, size = 0.8) +
-  geom_line(aes(x=Quantity, y=supply, group = Group), linetype = 1, size = 0.8) +
-  geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = "red", linetype = "dashed") +
-  geom_segment(aes(x = 0, y = 1, xend = 2, yend = 1), color = "red", linetype = "dashed") +
-#Mark Zone A
-  geom_text(aes(x=0.5, y=1.3, label = "A"), color = "black", hjust=0, size=8, alpha = 0.1) +
-#Mark Zone B
-  geom_text(aes(x=0.5, y=0.7, label = "B"), color = "black", hjust=0, size=8, alpha = 0.1) +
-#Mark Zone C
-  geom_text(aes(x=1.5, y=0.3, label = "C"), color = "black", hjust=0, size=8, alpha = 0.1) +  
-#Mark intersection point
-  geom_point(aes(x = 2, y=1), color = "red", size=2.5) +
-#Add line description
-geom_text(aes(x=0.5, y=1.83, label = "Demand"), color = "Black", angle = 315, size= 4, alpha=0.1) +
-geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 45, size= 4, alpha=0.1) +
-#Set specific layout
+#Read in fdemandsupply
+fdemandsupply <- readRDS("fdemandsupply.RDS")
+fdemandsupplyfinal <- fdemandsupply  +
+geom_text(aes(x=0.5, y=1.83, label = "Demand"), color = "Black", angle = 329, size= 4, alpha=0.1) +
+geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 31, size= 4, alpha=0.1) +
   theme_bw() +
   labs(title = "How is Pre-Purchase Information related to Welfare?",
        x = "Quantity", 
@@ -240,9 +249,8 @@ geom_text(aes(x=3.35, y=1.78, label = "Supply"), color = "Black", angle = 45, si
   scale_x_continuous(labels = c("0", "", "Q*", "", "")) +
   scale_y_continuous(labels = c("0", "", "P*", "", "")) +
   theme(
- # axis.text.y=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
-
+fdemandsupplyfinal
 #>
 
 ```
@@ -270,11 +278,11 @@ $$
 Hence, price elasticity delivers a value $ε$ $:=$ $[0, ∞]$ that can also show whether price increases would be worthwhile. An elasticity of $ε =$ 1 tells us that a price increase of one percents implies a demand decrease of one percent and represents the maximum turnover point for suppliers. As a result, elasticities of $ε <$ 1 are inelastic and otherwise elastic.   
 
 #< quiz "Elastic_orInelastic"
-question: You are bar owner and want to maximize your turnover. In a particular period of time, you found out that the demand on beer is linear and a price increase from 3 Units to 4 Units implies a decreasing sales quantity from 1000 quantity units to 875 quantity units. Which of the following responses is correct? 
+question: You are bar owner and want to maximize your turnover. In a particular period of time, you found out that the demand on beer is linear and a price increase from three Units to four Units implies a decreasing sales quantity of 1000 quantity units to 875 quantity units. Which of the following responses is correct? 
 sc:
 - The price is inelastic - You should not increase the price.
 - The price is elastic - You should increase the price by 47 percent.
-- The price is inelastic - You should increase the price by 34 precent.
+- The price is inelastic - You should increase the price by 34 percent.
 - The price is inelastic - You can easily more than double the price.*
 
 success: Great, your answer is correct!
@@ -307,20 +315,20 @@ ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
   geom_segment(aes(x = 4, y = 8, xend = 4, yend = 9), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 9, xend = 2, yend = 9), color = "red", linetype = "dashed") +
   geom_text(aes(x=2.75, y=9.25, label = "ΔQU = 2"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=4.25, y=8.95, label = "ΔPU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=5, y=7.85, label = "ε = 2"), color = "black", angle = 337.5, hjust=0, size=4, alpha = 0.1) +
+  geom_text(aes(x=4.25, y=9.1, label = "ΔPU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
+  geom_text(aes(x=5, y=7.85, label = "ε = 2"), color = "black", angle = 340.5, hjust=0, size=4, alpha = 0.1) +
   
   geom_segment(aes(x = 4, y = 6, xend = 4, yend = 7), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 7, xend = 3, yend = 7), color = "red", linetype = "dashed") +
   geom_text(aes(x=3.15, y=7.2, label = "ΔQU = 1"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
   geom_text(aes(x=4.25, y=6.9, label = "PU = 1"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=5, y=5.45, label = "ε = 1"), color = "black", angle = 315, hjust=0, size=4, alpha = 0.1) +
+  geom_text(aes(x=5, y=5.45, label = "ε = 1"), color = "black", angle = 323.5, hjust=0, size=4, alpha = 0.1) +
   
   geom_segment(aes(x = 4, y = 2, xend = 4, yend = 4), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 4, y = 4, xend = 3, yend = 4), color = "red", linetype = "dashed") +
   geom_text(aes(x=3.15, y=4.2, label = "ΔQU = 1"), color = "red", hjust=0, size=2.5, alpha = 0.1) +
   geom_text(aes(x=4.25, y=3.45, label = "ΔPU = 2"), color = "red", angle = 270, hjust=0, size=2.5, alpha = 0.1) +
-  geom_text(aes(x=4.6, y=1.7, label = "ε = 0,5"), color = "black", angle = 292.5, hjust=0, size=4, alpha = 0.1) +
+  geom_text(aes(x=4.45, y=1.75, label = "ε = 0,5"), color = "black", angle = 307.5, hjust=0, size=4, alpha = 0.1) +
   
   labs(title = "Demand Curves and their Price Elasticities",
        x = "Quantity in QU (Quantity Units)", 
@@ -332,7 +340,7 @@ ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
 #>
 ```
 
-Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen and Kenneth Train claimed that pre-purchase information changes the perception of the books quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different use depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ( $\bar R_{j}$ < $R_{j}$ ), the same quality ( $\bar R_{j}$ = $R_{j}$ ) or a higher expected quality than the actual quality ( $\bar R_{j}$ > $R_{j}$ ). 
+Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen (2007) and Kenneth Train (2015) claimed that pre-purchase information changes the perception of the goods quality and that a distinction between anticipated ex ante utility and experienced ex post utility is needed to measure the effect of these information on welfare. In simpler terms, we assume that a consumer obtains a different utility depending on the availability of pre-purchase information. In sum, the consumer could face three various situations depending on the books expected quality. The consumer can expect lower quality than the actual quality ( $\bar R_{j}$ < $R_{j}$ ), the same quality ( $\bar R_{j}$ = $R_{j}$ ) or a higher expected quality than the actual quality ( $\bar R_{j}$ > $R_{j}$ ). 
 
 ```{r "1.2.3", warning=FALSE}
 #< task
@@ -438,7 +446,6 @@ To better understand our data set, we categorize some important variables and ta
 **Task:** Use the function `readRDS` to load the data set called `dataEst.RDS`. Save this data set under the name `data`.
 
 ```{r "2.1.1", warning=FALSE}
-setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data")
 #< task
 #use readRDS("file_name.RDS") to load your data
 #>
@@ -464,7 +471,7 @@ cat("col_a__s(__ta)")
 #>
 ```
 
-As one can see, the main data set consists of 69 variables. Not each of these are essential for the following course and will not be considered further. For those to whom this does not apply will find an explanation below. 
+As one can see, the main data set consists of 239 variables. Not each of these are essential for the following course and will not be considered further. For those to whom this does not apply will find an explanation below. 
 
 **Identification Variables**
 
@@ -496,6 +503,16 @@ In chapter 2.2, we dare a first dive into the data set by creating descriptive s
 
 In the following part, we will analyze data to gain a deeper understanding of the occurrence of professional ratings. In addition, we want to check whether the collected data from journals appropriates for following estimations. 
 
+**Task:** Check the following chunk to read in the main data set.
+
+```{r "2.1.1", warning=FALSE}
+#< task
+data <- readRDS("dataEst.RDS") %>%
+  arrange(canum, ddate)
+#>
+
+```
+
 **Task:** Create two dummy variables that indicate `1` when an observation belongs to a book that has been reviewed. Additionally, read in the data set `DesRat` and save it accordingly, and then `check` the chunk.
 
 **Note:** In sum, the underlying data set includes data about **8770 books**. 
@@ -523,6 +540,8 @@ DesRat <- readRDS("DesRat.RDS")
 
 ```{r "2.2.2", warning=FALSE}
 
+#< task
+
 #Create Row Names
 rownames(DesRat) <- c("Relative share", "Absolut share") 
 
@@ -532,6 +551,7 @@ kbl(col.names = c("Share_of_NYT_Ratings" = "New York Times", "Share_of_BG_Rating
   kable_paper("striped", full_width = TRUE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
 
+#>
 
 ```
 
@@ -543,14 +563,12 @@ In total, 12.66 percent of all books (1521) included in the data set have been p
 
 #< fill_in
 
-#gt_table
-
 DesIntersection <- re___D_("DesIntersection.RDS")
 
 row.names(_______________) <- c("New York Times", "Los Angeles Times", "Boston Globe", "Chicago Tribune", "Washington Post", "Wall Street Journal", "Without Intersections", "Sum")
 
 DesIntersection  %>%
-kbl(__l_n____ = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" = "∩ Los Angeles Times", "Intersection_BG" = "∩ Boston Globe",  "∩ Intersection_CHI" = "∩ Chicago Tribune", "∩ Intersection_WAPO" = "∩ Washington Post", "Intersection_DWSJ" = "∩ Wall Street Journal"), ______ = "Intersections between New York Times and other magazines ") %>%
+kbl(__l_n____ = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" = "∩ Los Angeles Times", "Intersection_BG" = "∩ Boston Globe",  "∩ Intersection_CHI" = "∩ Chicago Tribune", "∩ Intersection_WAPO" = "∩ Washington Post", "Intersection_DWSJ" = "∩ Wall Street Journal"), ______ = "Intersections between New York Times and other magazines") %>%
   kable_paper("striped", full_width = TRUE) %>%
   pack_rows("", 8, 8) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
@@ -562,7 +580,7 @@ DesIntersection <- readRDS("DesIntersection.RDS")
 row.names(DesIntersection) <- c("New York Times", "Los Angeles Times", "Boston Globe", "Chicago Tribune", "Washington Post", "Wall Street Journal", "Without Intersections", "Sum")
 
 DesIntersection  %>%
-kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" = "∩ Los Angeles Times", "Intersection_BG" = "∩ Boston Globe",  "∩ Intersection_CHI" = "∩ Chicago Tribune", "∩ Intersection_WAPO" = "∩ Washington Post", "Intersection_DWSJ" = "∩ Wall Street Journal"), caption = "Intersections between New York Times and other magazines ") %>%
+kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" = "∩ Los Angeles Times", "Intersection_BG" = "∩ Boston Globe",  "∩ Intersection_CHI" = "∩ Chicago Tribune", "∩ Intersection_WAPO" = "∩ Washington Post", "Intersection_DWSJ" = "∩ Wall Street Journal"), caption = "Intersections between New York Times and other magazines") %>%
   kable_paper("striped", full_width = TRUE) %>%
   pack_rows("", 8, 8) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
@@ -571,16 +589,6 @@ kbl(col.names = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" 
 Looking at the New York Times reviews, we noticed that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be contaminated. In this context, contamination are intersections resulting from overlaps, whereby respective effects can no longer be clearly assigned. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
 
 Similarly, an uneven distribution of professional ratings in terms of author name recognition could lead to possible bias. For instance, if professional reviewers at the New York Times prefer certain well-known authors because of personal relations or preferences, those reviewers might tend to review or even recommend just those books rather than other books. The same applies for preferences to particular genres of the reviewers. Below, we use a density function to examine whether the professional reviewers at the New York Times and other magazines had any preference in selecting the books to be evaluated.   
-
-#< quiz "Distribution_Guess"
-question: Focusing the published books, What is your suggestion? 
-sc:
-- The more books an author publishes, the more likely these books will be professionally reviewed. 
-- The more books an author publishes, the less likely these books will be professionally reviewed.
-- The overall distribution is even.*
-success: Great, your answer is correct!
-failure: Try again.
-#>
 
 **Task:** Create a dataset `DesGenre` in which you calculate the proportion of professional reviews per book title. Differentiate according to the genre of the books (`genre`). Do not forget to check your solution. 
 
@@ -603,7 +611,7 @@ y2 <- DesGenre [,c(1, 4)] %>%
 colnames(y1) <- c("Genre", "Number", "Group")
 colnames(y2) <- c("Genre", "Number", "Group")
 
-DesGenre  <- rbind(__, __)
+DesGenrefinal  <- rbind(__, __)
 #>
 
 DesGenre  <- data %>%
@@ -620,73 +628,105 @@ y2 <- DesGenre [,c(1, 4)] %>%
 colnames(y1) <- c("Genre", "Number", "Group")
 colnames(y2) <- c("Genre", "Number", "Group")
 
-DesGenre  <- rbind(y1, y2)
+DesGenrefinal  <- rbind(y1, y2)
 
 ```
 
 After we have created the dataset, we can proceed with the creation of the chart.
 
-**Task:** Execute the following chunk to create the graph representing the density of professional reviews among the number of published books. 
+**Task:** Create the graph representing the density of professional reviews among the number of published books. Save this graph as `f1` and use `facet_grid()` to split this graph by the variable `Group`.
 
 ```{r "2.2.5", warning=FALSE}
 
-#Create the related Graphs
+#< fill_in
 
-#Create the graph based on crowd ratings
-
- f1 <- ggplot(data = DesGenre) +
-  facet_grid(~Group) +
-  geom_bar(aes(x = Genre, y = Number/sum(Number), fill = Group), stat = "identity") +
+#Create the graph based on book genres
+ __ <- ggplot(__ta = ________) +
+  facet_grid(~_____) +
+  geom_bar(aes(x = Genre, y = Number/sum(Number), fill = _____), stat = "identity") +
   theme_bw() +
-  labs(title = "Book Genres",
+  labs(title = "Distribution of Professional Reviews on Book Genres",
        x = " Categories of Book Genres", 
        y = "Occurrence Density of professional reviews") +
   guides(fill=guide_legend(title="")) +
-  theme(axis.text.x=element_blank(),
+  theme(legend.position = "bottom",
+  axis.text.x=element_blank(),
+  panel.grid.minor=element_blank(),plot.background=element_blank())
+f1
+#> 
+
+ f1 <- ggplot(data = DesGenrefinal) +
+  facet_grid(~Group) +
+  geom_bar(aes(x = Genre, y = Number/sum(Number), fill = Group), stat = "identity") +
+  theme_bw() +
+  labs(title = "Density of Professional Reviews among Book Genres",
+       x = "Book Genres", 
+       y = "Occurrence Density of professional reviews") +
+  guides(fill=guide_legend(title="")) +
+  theme(legend.position = "bottom",
+  axis.text.x=element_blank(),
   panel.grid.minor=element_blank(),plot.background=element_blank())
 f1
 
 ```
 
-This density plot represents 
+Every underlying bar represents the density of professional reviews on the individual book genre. In total, the Amazon data set provides information about 121 different book genres which are not listed in the chart for clarity. The aim is to identify possible distributional skews that might reject the assumption of randomized book selection by professional reviewers. Apparently, the New York Times and other magazines prefer to rate some of the genre categories more frequently than others. However, with the exception of about one-tenth of the book genres, the probability density for other books appears uniform. 
 
+#< quiz "Genre_Guess"
+question: What could this probably be due to?
+sc:
+- This could be due to the fact that book genres vary in their demand on reviews. For instance, the need for professional reviews is likely larger for novels than for travel guides.*
+- The assumption of randomization can generally be rejected.
+- Novels and other few categories generate higher sales than many other genres, making them stand out.
+success: Great, your answer is correct!
+failure: Try again.
+#>
 
+#< quiz "Distribution_Guess"
+question: Focusing the **New York Times reviews**, What is your suggestion? 
+sc:
+- The more books an author publishes, the more likely these books will be professionally reviewed. 
+- The more books an author publishes, the less likely these books will be professionally reviewed.
+- The overall distribution is even.*
+success: Great, your answer is correct!
+failure: Try again.
+#>
+
+**Task:** `Check` the following chunk to create a density graph for the distribution on published books. 
 
 ```{r "2.2.6", warning=FALSE}
 
-
-f2 <- ggplot(data = DesGenre) +
-  facet_grid(~Group) +
-  geom_bar(aes(x = Genre, y = Number/sum(Number), fill = Group), stat = "identity") +
-  theme_bw() +
-  labs(title = "Book Genres",
-       x = " Categories of Book Genres", 
-       y = "Occurrence Density of professional reviews") +
-  guides(fill=guide_legend(title="")) +
-  theme(axis.text.x=element_blank(),
-  panel.grid.minor=element_blank(),plot.background=element_blank())
-f2
-
+#< task
+DesAuth <- readRDS("DesAuth.RDS")
 
 f2 <- readRDS("f2.RDS")
 f2
-
+#>
 
 ```
 
-Here, we notice a quite even distribution among the number of published books between 0 and 21 percent. The 25 percent quantile line is located at two published books which states that a huge amount of 25 percent of all books reviewed on Amazon are written by "inexperienced" authors who published two books or less. The distribution remains even until 65 published books. After that, almost no more books were reviewed. Because of that, we limited the x-axis. Similar to star ratings, we can assume that the book selection of professional reviewers is less dependent on the number of books published so far. 
+The variable `numbooks` appropriates as an indication of prior author awareness. We focus on the distribution of professional reviews among the number of published books to review the assumption of randomization according to the top graph. For the New York Times, we overall note an even distribution across all popularity levels. In contrast, other magazines visibly preferred to specifically review books by already well-known authors. As a result, the assumption of randomization for other magazines can be rejected which calls into question all estimation results regarding the effects of other magazines in the further course of this examination.    
 
 **Summary**
 
-In summary, we have gained deeper insights into the relative and absolut numbers of professional reviews. It was illustrated to us that a relatively high proportion, between 30 and 67 percent, of all non-New York Times magazines were also reviewed by the New York Times, which may bias future estimates. To disprove the assumption that the selection of professionally reviewed books is not random, we use two different variables (Amazon Star Rating and Number of previous published books) to check whether the relative distribution on said variables disproves this assumption. In both cases we found out, that the distributions regarding to these variables are more or less even which is why we may assume a random choice of books for the time being. After all, the professional reviewers at the New York Times have discretion over about which books they actually review. Accordingly, we can never assume a 100 percent random distribution.
+In summary, we have gained deeper insights into the relative and absolut numbers of professional reviews. It was illustrated to us that a relatively high proportion, between 30 and 67 percent, of all non-New York Times magazines were also reviewed by the New York Times, which may bias future estimates. To disprove the assumption that the selection of professionally reviewed books is not random, we used two variables (regarding the book genre and the Number of previous published books) to review whether the relative distribution on said variables disproves this assumption. For book genres, we found that the distribution across New York Times and other magazine reviews is uniform, so we can assume random selection of books based on their genre. Across the number of published books indicating the popularity of an author, we detected an even distribution for New York Times reviews and a left skew for reviews from other magazines. After all, the professional reviewers at the New York Times have discretion over about which books they actually review. Accordingly, we can never assume a complete random distribution.
 
 ## Exercise 2.3 -- Recognition of Potential Effects through Descriptive Approaches
 
 Before we start identifying potential effect, we need a good overview of the relevant descriptive values. Generally, descriptive values are based on simple statistics to describe and to visualize contexts, that have already happened. These values are easily understood and can provide sound summaries of high data volumes within seconds. The most powerful function of descriptive analyses is the ability to identify relationships in order to make predictions using more complex statistics. This procedure is exactly the same as what we have already done in chapter 2.2. 
 
+**Task:** Check the following chunk to read in the main data set.
+
+```{r "2.1.1", warning=FALSE}
+#< task
+data <- readRDS("dataEst.RDS") %>%
+  arrange(canum, ddate)
+#>
+```
+
 Starting with a good overview, we want to create a table including simple descriptive values distinguished by `country`. 
 
-**Task:** Try to fill any ____ gap with ....... and check this chunk to create an overview of the main descriptive values.
+**Task:** Create `dataDesKript` to create a descriptive chart of specific variables. When creating this chart, distinguish between data from the USA, Canada and the UK. Also read in `dataDesKript2` to add information about all countries. `Check` your result. 
 
 ```{r "2.3.1", warning=FALSE}
 
@@ -752,15 +792,15 @@ DataDes <- rbind(dataDesKript, dataDesKript2)
 # Transform Dataframe into a clearer schema
 DataDesTest <- t(DataDes)
 colnames(DataDesTest) <- rownames(DataDes)
-DataDescriptive <- as.data.frame(DataDesTest)
+DataDescriptivesb <- as.data.frame(DataDesTest)
 colnames(DataDescriptive) <- unlist(DataDescriptive[1,])
-DataDescriptive <- DataDescriptive[-1,]
+DataDescriptivefinal <- DataDescriptive[-1,]
 
 # Change Row Names 
-row.names(DataDescriptive) = c("Price", "Star rating", "Sales rank", "Number of ratings", "10th", "25th", "50th", "75th", "90th", "Titles", "Observations", "Editions")
+row.names(DataDescriptivefinal) = c("Price", "Star rating", "Sales rank", "Number of ratings", "10th", "25th", "50th", "75th", "90th", "Titles", "Observations", "Editions")
 
 # Kable-Function to create an attractive overview
-DataDescriptive %>%
+DataDescriptivefinal %>%
 kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States", "All" = "All"), caption = "Group Rows") %>%
   kable_paper("striped", full_width = TRUE) %>%
   pack_rows("Star rating percentiles", 5, 9) %>%
@@ -775,7 +815,7 @@ question: Comparing UK (without FBP) and Germany (with FBP), which country accou
 sc:
 - United Kingdom (UK).* 
 - Germany.
-success: Great, your answer is correct! The UK accounted a price increase of 80 percent after this period, while Germany accounted an increase of 29 percent (Fuchs, Sprang, Beurich, Götz, 2019)
+success: Great, your answer is correct! The UK accounted a price increase of 80 percent after this period, while Germany accounted an increase of 29 percent (Fuchs, Sprang, Beurich, Götz, 2019).
 failure: Try again.
 #>
 
@@ -786,15 +826,19 @@ Hence, we gained insight into general descriptive values over the entire data se
 **Task:** Use the fuction `readRDS` to read the RDS-file `DataDescriptiveJournals`. Save this data set under the file name `DataDescriptiveJournals`. In Addition, create a table with `kbl()` according to the table above.
 
 ```{r "2.3.2", warning=FALSE}
+
+#< task
+
 #read out 
 DataDescriptiveJournals <- readRDS("DataDescriptiveJournals.RDS")
-# Kable-Function to create an attractive overview
 
+# Kable-Function to create a table
 DataDescriptiveJournals %>%
 kbl(col.names = c("CA" = "Canada", "GB" = "Great Britain", "US" = "United States", "All" = "All"), caption = "Group Rows") %>%
   kable_paper("striped", full_width = TRUE) %>%
   pack_rows("Star rating percentiles", 5, 9) %>%
   pack_rows("", 10, 12)
+#>
 
 ```
 
@@ -802,7 +846,7 @@ Without differentiating between magazines or knowing whether the review turned o
 
 The variance in percentiles of star ratings could be due to the fact that we have no information about how it has been reviewed, with which a polarization of the reviews may have taken place. For the New York Times reviews, the main data set contains information about whether the New York Times recommended a book using the variable `drecommended`. In the following, we generate two chronological graphs to show the descriptive affects from professional reviews on sales ranks and prices. 
 
-**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings (cno == 3 -> US). 
+**Note:** For further examinations we distinguish between the US data and the entire data, as the US market is the largest and has the most average crowd ratings (`cno` == 3 -> U.S.). 
 
 **Task:** Execute the following chunk to create three different filtered data sets. Press `check` to collect your points.
 
@@ -814,8 +858,8 @@ The variance in percentiles of star ratings could be due to the fact that we hav
 dataReviewRec <- data %>%
   filter(drecommended == _ & cno == 3) %>%
   summarise(AVGPrice = mean(pamzn), 
-            AVGSalesRank = ____(rank, na.rm = TRUE), 
-            AVGCR = ____(R, na.rm = TRUE))
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(_, na.rm = TRUE))
 
 #U.S. data reviewed by the New York Times but not recommended
 dataReviewNRec <- data %>%
@@ -832,14 +876,75 @@ dataReviewNNYT <- data %>%
             AVGCR = mean(R, na.rm = TRUE)) 
 #>
 
+#U.S. data recommended by New York Times 
+dataReviewRec <- data %>%
+  filter(drecommended == 1 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
+
+#U.S. data reviewed by the New York Times but not recommended
+dataReviewNRec <- data %>%
+  filter(drecommended == 0 & DNYT == 1 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE))
+
+#U.S. data not recommended or reviewed by The New York Times.
+dataReviewNNYT <- data %>%
+  filter(drecommended == 0 & DNYT == 0 & cno == 3) %>%
+  summarise(AVGPrice = mean(pamzn), 
+            AVGSalesRank = mean(rank, na.rm = TRUE), 
+            AVGCR = mean(R, na.rm = TRUE)) 
+
 ```
  
-After creating these three datasets, proceed to transform the data by creating the final dataset to visualize the results. 
+After creating these three data sets, proceed to transform the data by creating the final dataset to visualize the results. 
+**Task:** Use `data.frame` to create the data set for the following graph. Press `check` to execute your solution. 
  
-**Task:** Replace every ____ gap with the correct code and check this chunk to create the data set the following graphs are based on. 
- 
-```{r "2.3.4", warning = FALSE}
+```{r "2.3.4", warning=FALSE}
+
+#< fill_in
 dataNYTPrice <- data.frame(Price = c(dataReviewRec$AVGPrice, dataReviewNRec$AVGPrice, dataReviewNNYT$AVGPrice), SalesRank = c(dataReviewRec$AVGSalesRank, dataReviewNRec$AVGSalesRank, dataReviewNNYT$AVGSalesRank), Category = c("Recommended", "Not Recommended", "Not NYT"))
+#>
+
+dataNYTPrice <- data.frame(Price = c(dataReviewRec$AVGPrice, dataReviewNRec$AVGPrice, dataReviewNNYT$AVGPrice), SalesRank = c(dataReviewRec$AVGSalesRank, dataReviewNRec$AVGSalesRank, dataReviewNNYT$AVGSalesRank), Category = c("Recommended", "Not Recommended", "Not NYT"))
+
+```
+ 
+Next, this dataset is presented in two charts to distinguish between different expressions of New York Times reviews.  
+ 
+**Task:** Try to fill in the gaps to create the following plot `f3`. Use `geom_text` to label the bars. Then, read in and the save the plot `f4` correspondingly. Finally, use `grid.arrange` to plot these graphs side by side. Press `check` to confirm.  
+ 
+```{r "2.3.5", warning = FALSE}
+
+#< fill_in
+
+#Plot 1: Mean Prices
+f3 <- ____________ %>%
+   ggplot() +
+   geom_histogram(___(y = _____, x = ________,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = _____ - 1.5, label = round(Price, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+   ylim(0, 21) +
+  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+ scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
+  labs(title = "Differences in mean prices (US Data only)",
+       x = "", 
+       y = "Price in USD") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom", 
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+#Plot 2: Mean Sales Ranks
+f4 <- readRDS("f4.RDS")
+#Side by side plot
+grid.arrange(__, __, ncol = 2)
+
+#>
 
 #Plot 1: Mean Prices
 f3 <- dataNYTPrice %>%
@@ -854,35 +959,20 @@ f3 <- dataNYTPrice %>%
  scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
   labs(title = "Differences in mean prices (US Data only)",
        x = "", 
-       y = "Price in $US") +
+       y = "Price in USD") +
   guides(fill = guide_legend(reverse = TRUE)) +
    theme(legend.position = "bottom", 
    axis.text.y=element_blank(),
    panel.grid.minor=element_blank(),plot.background=element_blank())
 
 #Plot 2: Mean Sales Ranks
-f4 <- dataNYTPrice %>%
-   ggplot() +
-   geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
-  geom_text(aes(x = Category, y = SalesRank - 75000, label = round(SalesRank, 2)), color = "white", size = 5) +
-   coord_flip() +
-   scale_x_discrete(expand = c(0, 1)) +
-   theme_bw() +
-#   ylim(0, 21) +
-  # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
- scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
-  labs(title = "Differences in mean Sales Ranks (US Data only)",
-       x = "", 
-       y = "Sales Rank") +
-  guides(fill = guide_legend(reverse = TRUE)) +
-   theme(legend.position = "bottom",
-   axis.text.y=element_blank(),
-   panel.grid.minor=element_blank(),plot.background=element_blank())
-
+f4 <- readRDS("f4.RDS")
+#Side by side plot
 grid.arrange(f3, f4, ncol = 2)
+
 ```
 
-The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8 US cheaper than books mentioned in the New York Times.                    Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
+The Price differences between New York Times recommended and non-recommended books is not significant while there is a big price gap between New York Times data and non new York Times data. The fact that the price difference between recommended and non-recommended books is quite small could be attributable to the fact that a non-recommendation does not always equate to a poor rating. On the other hand, books not mentioned in the New York Times are on average about $2.8 US cheaper than books mentioned in the New York Times. Observing the average sales ranks, we determine clearer differences between these three categories. Since the sales ranks are not direct quantity data, they can still serve as a quite useful comparative value. We see a decline of approximately 35% in sales rank from category to category. 
 
 #< quiz "Prices_and_SalesRanks"
 question: Which of the following statements may be made? 
@@ -899,10 +989,34 @@ We want to conduct a similar examination for crowd ratings, with the difference 
 
 Before we start, let us divide Amazon star ratings into three categories: less than three stars, three and four stars, and more than four stars. 
 
-**Task:** Create three dummy variables that show `1` when the star rating is between one and three, three and four and more than five. Orientate on exercise `2.2.1` to create a dummy variable. Then, try to replace the ___ gaps to create three filtered data sets according to `2.3.3`. Name these data sets `dataCR1_3`, `dataCR3_4` and `dataCR4_5`.
+**Task:** Create three dummy variables that show `1` when the star rating is between one and three, three and four and more than five. Orientate on exercise `2.2.1` to create a dummy variable. Then, create three filtered data sets according to `2.3.3`. Name these data sets `dataCR1_3`, `dataCR3_4` and `dataCR4_5`.
 
+**Note:** Professionally reviewed books gets filtered out to focus on star ratings that could not affected by professional reviews.    
 
-```{r "2.3.5", warning = FALSE}
+```{r "2.3.6", warning = FALSE}
+
+#< fill_in 
+
+data$starRating1_3 <- ifelse(data$R >= _ & data$R < _, 1, 0)
+data$starRating3_4 <- ifelse(data$R >= _ & data$R < _, 1, 0)
+data$starRating4_5 <- ifelse(data$R >= _ & data$R < _, 1, 0)
+
+dataCR1_3 <- data %>%
+  filter(data$starRating1_3 == _ & DALL == 0 & cno == 3) %>%
+  _________(AVGPrice = ____(pamzn), 
+            AVGSalesRank = ____(rank, na.rm = TRUE))
+
+dataCR3_4 <- data %>%
+  filter(data$starRating3_4 == _ & DALL == 0 & cno == 3) %>%
+  _________(AVGPrice = ____(pamzn), 
+            AVGSalesRank = ____(rank, na.rm = TRUE))
+
+dataCR4_5 <- data %>%
+  filter(data$starRating4_5 == _ & DALL == 0 & cno == 3) %>%
+  _________(AVGPrice = ____(pamzn), 
+            AVGSalesRank = ____(rank, na.rm = TRUE))
+
+#> 
 
 data$starRating1_3 <- ifelse(data$R >= 1 & data$R < 3, 1, 0)
 data$starRating3_4 <- ifelse(data$R >= 3 & data$R < 4, 1, 0)
@@ -923,16 +1037,49 @@ dataCR4_5 <- data %>%
   summarise(AVGPrice = mean(pamzn), 
             AVGSalesRank = mean(rank, na.rm = TRUE))
 
-
 ```
 
-**Task:** Now run the following chunk to see how crowd ratings affect the price and sales ranks. Press `check` to confirm. 
+**Task:** We continue with the same procedure as for `2.3.4` and `2.3.5`. Now, execute the following chunk to create the needed data set. Press `check` to confirm. 
 
-```{r "2.3.6", warning= FALSE}
+```{r "2.3.7", warning=FALSE}
 
+#< task
 dataCRPrice <- data.frame(Price = c(dataCR1_3$AVGPrice, dataCR3_4$AVGPrice, dataCR4_5$AVGPrice), SalesRank = c(dataCR1_3$AVGSalesRank, dataCR3_4$AVGSalesRank, dataCR4_5$AVGSalesRank), Category = c("1-3 stars", "3-4 Stars", "more than 4 stars"))
+#>
+
+```
+ 
+**Task:** Create `f5` to create a chart that shows the average prices according to their star ratings. Use `ylim` to define the y-axis scale between 0 and 21 (note that the diagram has been flipped). Do not forget to press `Check`.
+
+```{r "2.3.8", warning= FALSE}
+
+#< fill_in
 
 #Plot 1: Mean Prices
+f5 <- dataCRPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = Price, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = Price - 1.5, label = round(Price, 2)), color = "white", size = 5) +
+   coord_____() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+   ___________ +
+ scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
+  labs(title = "Differences in Mean Prices (U.S. Data Only)",
+       x = "", 
+       y = "Price in USD") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom", 
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
+
+#Plot 2: Mean Sales Ranks
+f6 <- readRDS("f6.RDS")
+
+____.arrange(f5, f6, ____ = 2)
+
+#>
+
 f5 <- dataCRPrice %>%
    ggplot() +
    geom_histogram(aes(y = Price, x = Category,  fill = Category), stat = "identity", width = 0.3) +
@@ -942,30 +1089,16 @@ f5 <- dataCRPrice %>%
    theme_bw() +
    ylim(0, 21) +
  scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
-  labs(title = "Differences in mean prices (US Data only)",
+  labs(title = "Differences in Mean Prices (U.S. Data Only)",
        x = "", 
-       y = "Price in $US") +
+       y = "Price in USD") +
   guides(fill = guide_legend(reverse = TRUE)) +
    theme(legend.position = "bottom", 
    axis.text.y=element_blank(),
    panel.grid.minor=element_blank(),plot.background=element_blank())
 
 #Plot 2: Mean Sales Ranks
-f6 <- dataCRPrice %>%
-   ggplot() +
-   geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
-  geom_text(aes(x = Category, y = SalesRank - 220000, label = round(SalesRank)), color = "white", size = 5) +
-   coord_flip() +
-   scale_x_discrete(expand = c(0, 1)) +
-   theme_bw() +
- scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
-  labs(title = "Differences in mean Sales Ranks (US Data only)",
-       x = "", 
-       y = "Sales Rank") +
-  guides(fill = guide_legend(reverse = TRUE)) +
-   theme(legend.position = "bottom",
-   axis.text.y=element_blank(),
-   panel.grid.minor=element_blank(),plot.background=element_blank())
+f6 <- readRDS("f6.RDS")
 
 grid.arrange(f5, f6, ncol = 2)
 
@@ -975,12 +1108,12 @@ In contrast to the affects of professional reviews, the mean price exhibits an i
 
 The mean sales rank decreases the more stars were given. As we noticed, more than 75 percent of all observations were rated with four stars or higher, so we can assume a similar percentage of observations in the upper bar (565063). Nevertheless, the mean sales rank for books recommended by the New York Times is significantly lower than the mean sales rank of books rated more than four stars by the crowd. Nevertheless, the mean sales rank for New York Times-recommended books is significantly lower than the mean sales rank for crowd ratings rated higher than four stars. 
 
-To verify whether absolut book prices remain constant over time, we create a timeline for the average book price. We only observe for top 10000 and top 1000 sales ranks because we claim higher time based dependencies the 
+To verify whether absolut book prices remain constant over time, we create a timeline for the average book price. We only observe for top 10000 and top 1000 sales ranks because we claim higher time based dependencies. 
 
-**task:** Replace every ___ gap with the correct code. Use `left_join` to merge the data sets `dataTop10000` and `dataTop1000` by `ddate`
+**task:** Press `check` to create and merge the data sets `dataTop10000` and `dataTop1000` by `ddate`, to visualize the price development for observations for which applies $SalesRank < 10.001$ and $SalesRank < 1.001$. 
 
-```{r "2.3.7", warning=FALSE}
-
+```{r "2.3.9", warning=FALSE}
+#< task
 dataTop10000 <- data %>%
   filter(cno == 3 & rank <= 10000) %>%
   group_by(ddate) %>%
@@ -1002,8 +1135,8 @@ dataTop %>%
    scale_color_manual("Category", values = c("Top 10.000" = "deepskyblue", "Top 1.000" = "red"))  +
    labs(title = "Differences in mean Sales Ranks (US Data only)",
         x = "Date", 
-        y = "Mean Price in $US")  
-  
+        y = "Mean Price in USD")  
+#>  
 ```
 
 Overall, prices rise within one year by approximately $1.5 US. Price collapses can be observed in the spring, and there is a massive drop in prices in the summer months from June to September, with average prices (Top 1.000) falling by around 14 percent. The slump at the end of November is more like an outlier value. Obviously, better sold books tend to vary in price due to specific seasons. Lower prices in summer could be due to lower demand, as people prefer to read during the winter months. For the following event study in chapter 3.3 we have to take into account that there are fluctuations in book prices within a year and that these can be attributed to various factors. 
@@ -1070,6 +1203,15 @@ failure: Try again.
 #>
 
 The ideal number of control variables generally depends on the research question and the number of observations. But even with a high frequently data set like the Amazon data set it would be recommended not to control for too many variables (Kranz, 2022). 
+
+**Task:** Check the following chunk to read in the main data set.
+
+```{r "2.1.1", warning=FALSE}
+#< task
+data <- readRDS("dataEst.RDS") %>%
+  arrange(canum, ddate)
+#>
+```
 
 We then perform a multiple regression in R. Regression results are usually presented in the form of tables, listing the values of the coefficients. For illustration, we regress the sales rank on the price from the main Amazon data set:  
 
@@ -1201,6 +1343,15 @@ In the following chapter, we apply the methods and tools from this chapter to ex
 
 After the introduction for regressions, we focus on the research question to estimate the effect from professional reviews and crowd ratings on the book market. Replicating the underlying regressions by Reimers and Waldfogel, the data set must first be transformed.  
 
+**Task:** Check the following chunk to read in the main data set.
+
+```{r "2.1.1", warning=FALSE}
+#< task
+data <- readRDS("dataEst.RDS")
+#>
+
+```
+
 **Task:** Create the data set `dataUS` that only includes observations from the US market. To enable this, use the condition `cno == 3`. Finally, use `arrange()` to sort the data by `canum` and then by `ddate`. Press `check` to confirm your solution. 
 
 ```{r "3.2.1", warning=FALSE}
@@ -1250,18 +1401,16 @@ The variable `ano` gives an Amazon identifier (asin) and the numbers `1`, `2` an
 
 Subsequently, the three remaining regressions are then read in. To the first regression `reg1` some dummy variables were added as control variables. These dummy variables  For performance reasons we have omitted these variables in this task, but they are stored in `reg1` which we will read in. In the interval $[-20;40]$ for `NYT_elapse` and `OTH_elapse` all expressions were stored individually in different dummy variables, in sum 120 control variables.
 
-**Task:** Read in the files `reg1.RDS`, `reg4.RDS`, and `reg5.RDS` and save them also like this. Do not forget to press `check`. 
+**Task:** check the following chunk to run `reg1`, `reg4` and `reg5`. 
 
 ```{r "3.2.4"}
-#< task
-# Enter your code here
+#< task_notest
+reg1 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + DNYT + DNYT0 + DNYT1 + DNYT2 + DNYT3 +DNYT4 + DNYT5 + DNYT6 + DNYT7 + DNYT8 + DNYT9 + DNYT10 + DNYT11 + DNYT12 + DNYT13 +DNYT14 + DNYT15 +DNYT16 + DNYT17 +DNYT18 +DNYT19 + DNYT20 + DNYT21 + DNYT22 + DNYT23 + DNYT24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DNYT39 +DNYT40 + DNYTm1 + DNYTm2 + DNYTm3 + DNYTm4 + DNYTm5 + DNYTm6 + DNYTm7 + DNYTm8 + DNYTm9 + DNYTm10 + DNYTm11 + DNYTm12 + DNYTm13 + DNYTm14 + DNYTm15 + DNYTm16 + DNYTm17 + DNYTm18 + DNYTm19 + DNYTm20 + DOTH0 + DOTH1 + DOTH2 + DOTH3 +DOTH4 + DOTH5 + DOTH6 + DOTH7 + DOTH8 + DOTH9 + DOTH10 + DOTH11 + DOTH12 + DOTH13 + DOTH14 + DOTH15 +DOTH16 + DOTH17 + DOTH18 + DOTH19 + DOTH20 + DOTH21 + DOTH22 + DOTH23 + DOTH24 + DNYT25 + DNYT26 + DNYT27 + DNYT28 + DNYT29 + DNYT30 + DNYT31 + DNYT32 + DNYT33 + DNYT34 + DNYT35 + DNYT36 + DNYT37 + DNYT38 + DOTH39 +DOTH40 + DOTHm1 + DOTHm2 + DOTHm3 + DOTHm4 + DOTHm5 + DOTHm6 + DOTHm7 + DOTHm8 + DOTHm9 + DOTHm10 + DOTHm11 + DOTHm12 + DOTHm13 + DOTHm14 + DOTHm15 + DOTHm16 + DOTHm17 + DOTHm18 + DOTHm19 + DOTHm20 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = dataUS)
+
+reg4 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR  + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = data)
+
+reg5 <- feols(lrank ~ L1.lrank + lpamzn + lreview + lR + lrR + dnytpost1_1 + dnytpost1_2 + dnytpost1_3 + dnytpost6_1 + dnytpost6_2 + dnytpost6_3 + dnytpost10_1 + dnytpost10_2 +  dnytpost10_3 + dothpost_1 + dothpost_2 + dothpost_3 + dothpost10_1 + dothpost10_2 + dothpost10_3 + dnytpostpre_1 + dnytpostpre_2 + dnytpostpre_3 + dothpostpre_1 + dothpostpre_2 + dothpostpre_3 + dnytpost1r_1 + dnytpost1r_2 + dnytpost1r_3 + dnytpost6r_1 + dnytpost6r_2 + dnytpost6r_3 + dnytpost10r_1 + dnytpost10r_2 + dnytpost10r_3 + dnytpostprer_1 + dnytpostprer_2 + dnytpostprer_3 + epos + epos2 + epos3 + eneg + eneg2 + eneg3 | canum, vcov = "hetero", data = data)
 #>
-
-reg1 <- readRDS("reg1.RDS")
-
-reg4 <- readRDS("reg4.RDS")
-
-reg5 <- readRDS("reg5.RDS")
 
 ```
 
@@ -1370,6 +1519,15 @@ In the following chapter event studies are explained and implemented in R.
 ## Exercise 3.3 -- Introduction and Implementation of Event Studies
 
 In their paper, Reimers and Waldfogel used an so-called **Event Study** to illustrate and estimate the impact of events (here: publication of professional reviews) that took place. Originally, Event Studies come from the financial sector from James Dolly in 1933. He examined the price effects of stock splits, studying the occurrence of price changes at the time of the split (MacKinley, 1997, ppt. 13). MacKinley listed several methods for applying Event Studies, including *Cross-Sectional Models* that use regressions (MacKinley, 1997, ppt. 33). Reimers and Waldfogel also used such an approach to visualize short-term effects on the Amazon sales rank.
+
+**Task:** Check the following chunk to read in the main data set.
+
+```{r "2.1.1", warning=FALSE}
+#< task
+data <- readRDS("dataEst.RDS") %>%
+  arrange(canum, ddate)
+#>
+```
 
 The first step of the authors procedure is to place all books chronologically on top of each other. For this purpose, the variables `NYT_elapse` and `OTH_elapse` are suitable. For both scenarios, the variable is filtered 20 days before and 40 days after the review is published. Before implementing this Event Study, the data structure need to get reviewed. 
 
@@ -1596,6 +1754,19 @@ $$
 $$
 
 To implement this formula in R, we use the coefficients estimated in `reg5`. 
+
+**Task:** Check the following chunk to read in the main data set and to filter for U.S. observations. 
+
+```{r "2.1.1", warning=FALSE}
+#< task
+data <- readRDS("dataEst.RDS") %>%
+  arrange(canum, ddate)
+
+data <- dataUS %>%
+  filter(cno == 3)
+#>
+
+```
 
 **Task:** `Check` the following Code to see how the 25th, the 50th and the 75th quantile of Amazon star rating elasticities get implemented in R.
 

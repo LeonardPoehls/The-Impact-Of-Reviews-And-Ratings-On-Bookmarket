@@ -1,0 +1,14 @@
+#Create a plot
+fdemandsupply <- ggplot(data = DatasetTest) +
+  geom_line(aes(x=Quantity, y=Price, group = Group), linetype = 1, size = 0.8) +
+  geom_line(aes(x=Quantity, y=supply, group = Group), linetype = 1, size = 0.8) +
+  geom_segment(aes(x = 2, y = 0, xend = 2, yend = 1), color = "red", linetype = "dashed") +
+  geom_segment(aes(x = 0, y = 1, xend = 2, yend = 1), color = "red", linetype = "dashed") +
+#Mark Zone A
+  geom_text(aes(x=0.5, y=1.3, label = "A"), color = "black", hjust=0, size=8, alpha = 0.1) +
+#Mark Zone B
+  geom_text(aes(x=0.5, y=0.7, label = "B"), color = "black", hjust=0, size=8, alpha = 0.1) +
+#Mark Zone C
+  geom_text(aes(x=1.5, y=0.3, label = "C"), color = "black", hjust=0, size=8, alpha = 0.1) +  
+#Mark intersection point
+  geom_point(aes(x = 2, y=1), color = "red", size=2.5)

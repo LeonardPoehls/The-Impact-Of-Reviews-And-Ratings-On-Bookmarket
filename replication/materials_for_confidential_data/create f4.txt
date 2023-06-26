@@ -1,0 +1,17 @@
+f4 <- dataNYTPrice %>%
+    ggplot() +
+    geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+   geom_text(aes(x = Category, y = SalesRank - 75000, label = round(SalesRank, 2)), color = "white", size = 5) +
+    coord_flip() +
+    scale_x_discrete(expand = c(0, 1)) +
+    theme_bw() +
+ #   ylim(0, 21) +
+   # geom_bar(aes(y = SR, x = Category,  fill = Category), position = "dodge", stat = "identity")
+  scale_fill_manual("", values = c("Not NYT" = "deepskyblue", "Not Recommended" = "darkorchid2", "Recommended" = "blue3")) +
+   labs(title = "Differences in mean Sales Ranks (US Data only)",
+        x = "", 
+        y = "Sales Rank") +
+    guides(fill = guide_legend(reverse = TRUE)) +
+    theme(legend.position = "bottom",
+    axis.text.y=element_blank(),
+    panel.grid.minor=element_blank(),plot.background=element_blank())

@@ -32,6 +32,7 @@ library(gt)
 
 ```{r}
 setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/materials_for_confidential_data")
+ setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data") 
 data <- readRDS("dataEst.RDS")
 #data <- data[,c(1:70, 195:227)]
 

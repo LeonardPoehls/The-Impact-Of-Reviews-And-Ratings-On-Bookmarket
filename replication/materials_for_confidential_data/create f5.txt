@@ -1,0 +1,16 @@
+f5 <- dataCRPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = Price, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = Price - 1.5, label = round(Price, 2)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+   ylim(0, 21) +
+ scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
+  labs(title = "Differences in Mean Prices (U.S. Data Only)",
+       x = "", 
+       y = "Price in USD") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom", 
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())

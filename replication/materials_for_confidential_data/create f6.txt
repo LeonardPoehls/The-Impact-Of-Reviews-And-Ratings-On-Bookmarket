@@ -1,0 +1,15 @@
+f6 <- dataCRPrice %>%
+   ggplot() +
+   geom_histogram(aes(y = SalesRank, x = Category,  fill = Category), stat = "identity", width = 0.3) +
+  geom_text(aes(x = Category, y = SalesRank - 220000, label = round(SalesRank)), color = "white", size = 5) +
+   coord_flip() +
+   scale_x_discrete(expand = c(0, 1)) +
+   theme_bw() +
+ scale_fill_manual("", values = c("1-3 stars" = "deepskyblue", "3-4 Stars" = "darkorchid2", "more than 4 stars" = "blue3")) +
+  labs(title = "Differences in mean Sales Ranks (US Data only)",
+       x = "", 
+       y = "Sales Rank") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+   theme(legend.position = "bottom",
+   axis.text.y=element_blank(),
+   panel.grid.minor=element_blank(),plot.background=element_blank())
