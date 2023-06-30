@@ -21,7 +21,7 @@ In 1995, one year after Amazon was incorporated, more than 61 percent of all boo
 
 In the following 28 years, we have witnessed the growth of digitization and the development of crowd rating infrastructure on online sites. Users are thus able to obtain important non-professional pre-purchase information from other users that can influence purchasing behavior and economic welfare effects. As a result, online retailers have largely replaced the trade in physical books. From an economic point of view, pre-purchase information also has an impact on personal quality expectations and thus on demand.  
 
-Today, the distribution of print book market share has changed significantly, and Amazon has taken the lead as the largest retailer of print books in the entire world. For instance, the Amazon share of the U.S. book market accounts more than 40 percent percent and around 50 percent of the Uk market share (McLoughlin, 2022).
+Today, the distribution of print book market share has changed significantly, and Amazon has taken the lead as the largest retailer of print books in the entire world. For instance, the Amazon share of the U.S. book market accounts more than 40 percent and around 50 percent of the Uk market share (McLoughlin, 2022).
 
 To examine these effects, this problem set aims to reorganize and replicate part of the study from Reimers and Waldfogel by retyping and extending their research on the effects of professional reviews and crowd ratings on sales ranks and quantities. 
 
@@ -93,7 +93,7 @@ After editing this chapter, you gained an insight of the initial situation on th
 
 ## Exercise 1.1 -- Book Market, Professional Reviews and Crowd Ratings
 
-In general, economists distinguish goods concerning their characteristics, their occurrence or other conditions. With respect to the degree of uncertainty, we differentiate between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty about what they want to buy (Wieneke, 2019). For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without information advantage, buyers are unable to assess the quality of the good until they consume it, as in the case cinema visits or whine (Wieneke, 2019). By the consumption of **Credence Goods** the buyer never gets into the situation of evaluating the quality of the underlying good, as the degree of uncertainty is the highest here. Common credence goods are services such as lawyers or surgeons (Wieneke, 2019).  
+In general, economists distinguish goods concerning their characteristics, their occurrence, or other conditions. With respect to the degree of uncertainty, we differentiate between three different goods, **Search Goods**, **Experience Goods** and **Credence Goods**. Buyer of **Search Goods** already have an accurate perception and a high degree of certainty about what they want to buy (Wieneke, 2019). For instance, sugar or computer are typical search goods. **Experience Goods** are associated with a lower degree of certainty. Without information advantage, buyers are unable to assess the quality of the good until they consume it, as in the case cinema visits or whine (Wieneke, 2019). By the consumption of **Credence Goods** the buyer never gets into the situation of evaluating the quality of the underlying good, as the degree of uncertainty is the highest here. Common credence goods are services such as lawyers or surgeons (Wieneke, 2019).  
 
 
 Quiz: What would you guess books belong to?
@@ -109,7 +109,7 @@ answer.quiz("Books_As_Goods")
 
 The underlying paper focuses on the book market to examine the impacts from crowd ratings and professional reviews on sales ranks. So why is the book market particularly well suited for this study? In their paper, Reimers and Waldfogel (2021) enumerated three main reasons for this assertion. First, books are among experience goods. For the other two goods, pre-purchase information is less or not relevant. Second, the number of professional reviews (in high visible media) is relatively small and distributed among a few major newspapers. The third reason relates to the data set on which the entire study is based. The high frequently data on book demand at Amazon should contain about 45% of the US physical book market, roughly comparable to the figures of Mcloughlin in 2022.
 
-As explained, professional reviews are periodic reviews in daily newspaper articles. The data set includes information on the appearance of professional reviews from the New York Times, the Chicago Tribune, the Boston Globe, the Wall Street Journal, the Los Angeles Times and the Washington Post. However, quantitative information as well as star ratings are not available. Additionally, The New York Times recommends nine books every week (New York Times, 2023). Professional reviews enable access to pre-purchase information.  
+As explained, professional reviews are periodic reviews in daily newspaper articles. The data set includes information on the appearance of professional reviews from the New York Times, the Chicago Tribune, the Boston Globe, the Wall Street Journal, the Los Angeles Times, and the Washington Post. However, quantitative information as well as star ratings are not available. Additionally, The New York Times recommends nine books every week (New York Times, 2023). Professional reviews enable access to pre-purchase information.  
 
 
 Quiz: What is your suggestion, which of these newspapers has the most impact on the sales quantity?
@@ -126,7 +126,7 @@ Quiz: What is your suggestion, which of these newspapers has the most impact on 
 answer.quiz("Big_Newspapers")
 ```
 
-As well as professional reviews, the Amazon data set also contains information about star ratings from buyers. Identified as a buyer on Amazon, anyone may rate their purchased product on a five-point scale. In principle, people benefit from the ratings of other customers because they optimize their buying behavior as a result. In contrast to professional ratings, however, crowd ratings tend to generate less trust. Crowd reviews are prone to fake content for defamatory or fraudulent purposes, while professional reviews are created by objective and professional raters. Therefore, the more ratings exist for the particular product, the more likely the calculated average star rating approximates the "actual" quality. Thus, the crowd ratings represent the second piece of information before the purchase.
+As well as professional reviews, the Amazon data set also contains information about star ratings from buyers. Identified as a buyer on Amazon, anyone may rate their purchased product on a five-point scale. In principle, people benefit from the ratings of other customers because they optimize their buying behaviour as a result. In contrast to professional ratings, however, crowd ratings tend to generate less trust. Crowd reviews are prone to fake content for defamatory or fraudulent purposes, while professional reviews are created by objective and professional raters. Therefore, the more ratings exist for the particular product, the more likely the calculated average star rating approximates the "actual" quality. Thus, the crowd ratings represent the second piece of information before the purchase.
  
 Hence, Reimers and Waldfogel (2021) claim that consumers interact with these two types of pre-purchase information in different ways, potentially leading to different or overlapping effects. One possible reason for this could be the different accessibility of these types of information. While audience reviews are visible to every Amazon user, professional reviews are accessible but not automatically visible to everyone. Also, people who happen to find a book on Amazon are less likely to check for the presence of a professional review after the fact. Conversely, people who have found a book reviewed by experts automatically get access to the reviews of the masses during the purchase process. Incidentally, word-of-mouth can be also understood as pre-purchase information. Nevertheless, the consumer has access to at least one type of pre-purchase information.  
 
@@ -184,7 +184,7 @@ info("How to create graphs with the package `ggplot2`.")
 **Task:** Run the following chunk to create this model. For performance purposes, I saved the essential part `fdemandsupplyfinal` in `fdemandsupply`. Press `check` to collect your points. 
 
 ```{r "4_2"}
-
+#setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data")
 #load the package "ggplot2"
 library(ggplot2)
 demand <- c(2, 1.5, 1, 0.5, 0)
@@ -293,7 +293,7 @@ ggplot(data = DatasetPEN, aes(x = Price, y = Quantity_Value, group = ε)) +
   theme(panel.grid.minor=element_blank(),plot.background=element_blank()) 
 ```
 
-Returning to the subject of pre-purchase information, a clear classification of these are needed. Alan T. Sorensen (2007) and Kenneth Train (2015) contend that pre-purchase information alters perception of the goods quality and that a distinction between anticipated ex ante utility and experienced ex post utility is necessary to measure the effect of this information on welfare. In simpler terms, we assume that a consumer has a different utility depending on the availability of pre-purchase information. In summary, consumers may face three different situations depending on the expected quality of the books. The consumer can expect lower quality than the actual quality ( $\bar R_{j}$ < $R_{j}$ ), the same quality ( $\bar R_{j}$ = $R_{j}$ ) or a higher expected quality than the actual quality ( $\bar R_{j}$ > $R_{j}$ ). 
+Returning to the subject of pre-purchase information, a clear classification of these is needed. Alan T. Sorensen (2007) and Kenneth Train (2015) contend that pre-purchase information alters perception of the goods quality and that a distinction between anticipated ex ante utility and experienced ex post utility is necessary to measure the effect of this information on welfare. In simpler terms, we assume that a consumer has a different utility depending on the availability of pre-purchase information. In summary, consumers may face three different situations depending on the expected quality of the books. The consumer can expect lower quality than the actual quality ( $\bar R_{j}$ < $R_{j}$ ), the same quality ( $\bar R_{j}$ = $R_{j}$ ) or a higher expected quality than the actual quality ( $\bar R_{j}$ > $R_{j}$ ). 
 
 ```{r "4_4",warning=FALSE}
 
@@ -414,7 +414,7 @@ You successfully loaded the data set. Now, we want to see how the data set is or
 #use head(data set name) to show your data set
 ```
 
-As can be seen, the main data set consists of 239 variables. Not every one of them is essential for the following course and will not be considered further. For those to whom this does not apply, there is an explanation below.  
+As can be seen, the main data set consists of 230 variables. Not every one of them is essential for the following course and will not be considered further. For those to whom this does not apply, there is an explanation below.  
 
 **Identification Variables**
 
@@ -494,7 +494,7 @@ In total, 12.66 percent of all books (1521) included in the data set have been p
 info("How to use `kbl()` to generate tables.")
 ```
 
-**Task:** Create according to chunk `2.2.2` a table based on the function `kbl()` to visualize the intersections between the single magazines. 
+**Task:** First, read in the data set `DesIntersection`. Then, create according to chunk `2.2.2` a table based on the function `kbl()` to visualize the intersections between the single magazines. `Check` your results.  
 
 ```{r "7_7",warning=FALSE}
 
@@ -510,13 +510,21 @@ kbl(__l_n____ = c("Intersection_NYT" = "∩ New York Times", "Intersection_LAT" 
 
 ```
 
-By focusing on New York Times reviews, we found that a number of 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be contaminated. In this context, contamination are intersections resulting from overlaps, whereby respective effects can no longer be clearly assigned. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
+By focusing on New York Times reviews, we found several 201 books were reviewed by at least one other magazine. Conversely, a larger proportion of the reviews from other magazines were also rated by the New York Times. To determine the exact proportion, we calculated that at least 30 percent (Wall Street Journal) and at most 67 percent (Boston Globe) of non-New York Times magazines were also reviewed by the New York Times. As a result, estimates in this regard may be contaminated. In this context, contamination are intersections resulting from overlaps, whereby respective effects can no longer be clearly assigned. The row or column sum does not reflect the total number of reviews in the journals, as we only consider individual overlays. In reality, there are also multiple overlays where three or four journals review one book. 
 
 Similarly, an uneven distribution of professional ratings in terms of author name recognition could lead to possible bias. For instance, if professional reviewers at the New York Times prefer certain well-known authors because of personal relations or preferences, those reviewers might tend to review or even recommend just those books rather than other books. The same applies for preferences to particular genres of the reviewers. Below, we use a density function to examine whether the professional reviewers at the New York Times and other magazines had any preference in selecting the books to be evaluated.   
 
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("How to work with `group_by`, `summarise` and other functions using the `dplyer` package.")
+```
+
+
+
 **Task:** Create a dataset `DesGenre` in which you calculate the proportion of professional reviews per book title. Differentiate according to the genre of the books (`genre`). Do not forget to check your solution. 
 
-```{r "7_8",warning=FALSE}
+```{r "7_10",warning=FALSE}
 
 #Create Dataset "DesCrowd" to show the distribution among crowd ratings
 DesGenre  <- data %>%
@@ -525,22 +533,24 @@ DesGenre  <- data %>%
             Number_NYT = n_distinct(titleno[which(data$DNYT == 1)]) / n_distinct(titleno),
             Number_OTH = n_distinct(titleno[which(data$____ == 1)]) / n_distinct(titleno))
 
+# The formulation [,c(1, 3)] 
 y1 <- DesGenre [,c(1, 3)] %>%
   mutate(Group = "New York Times")
 y2 <- DesGenre [,c(1, 4)] %>%
   mutate(Group = "Others")     
 
+#Change the column names of y1 and y2
 colnames(y1) <- c("Genre", "Number", "Group")
 colnames(y2) <- c("Genre", "Number", "Group")
 
 DesGenrefinal  <- rbind(__, __)
 ```
 
-After we have created the dataset, we can proceed with the creation of the chart.
+After we have created the data set, we can proceed with the creation of the chart.
 
 **Task:** Create the graph representing the density of professional reviews among the number of published books. Save this graph as `f1` and use `facet_grid()` to split this graph by the variable `Group`.
 
-```{r "7_9",warning=FALSE}
+```{r "7_11",warning=FALSE}
 
 #Create the graph based on book genres
  __ <- ggplot(__ta = ________) +
@@ -585,7 +595,7 @@ answer.quiz("Distribution_Guess")
 
 **Task:** `Check` the following chunk to create a density graph for the distribution on published books. 
 
-```{r "7_10",warning=FALSE}
+```{r "7_12",warning=FALSE}
 DesAuth <- readRDS("DesAuth.RDS")
 
 f2 <- readRDS("f2.RDS")
@@ -610,6 +620,11 @@ data <- readRDS("dataEst.RDS") %>%
 ```
 
 Starting with a good overview, we want to create a table including simple descriptive values distinguished by `country`. 
+
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("How to calculate with descriptice formulas in R")
+```
 
 **Task:** Create `dataDesKript` to create a descriptive chart of specific variables. When creating this chart, distinguish between data from the USA, Canada and the UK. Also read in `dataDesKript2` to add information about all countries. `Check` your result. 
 
@@ -844,7 +859,7 @@ In contrast to the affects of professional reviews, the mean price exhibits an i
 
 The mean sales rank decreases the more stars were given. As we noticed, more than 75 percent of all observations were rated with four stars or higher, so we can assume a similar percentage of observations in the upper bar (565063). Nevertheless, the mean sales rank for books recommended by the New York Times is significantly lower than the mean sales rank of books rated more than four stars by the crowd. Nevertheless, the mean sales rank for New York Times-recommended books is significantly lower than the mean sales rank for crowd ratings rated higher than four stars. 
 
-To verify whether absolut book prices remain constant over time, we create a timeline for the average book price. We only observe for top 10000 and top 1000 sales ranks because we claim higher time based dependencies. 
+To verify whether absolute book prices remain constant over time, we create a timeline for the average book price. We only observe for top 10000 and top 1000 sales ranks because we claim higher time-based dependencies. 
 
 **task:** Press `check` to create and merge the data sets `dataTop10000` and `dataTop1000` by `ddate`, to visualize the price development for observations for which applies $SalesRank < 10.001$ and $SalesRank < 1.001$. 
 
@@ -953,10 +968,17 @@ We then perform a multiple regression in R. Regression results are usually prese
 
 $$ y = x_0 + β_1Price + β_2StarRating + \varepsilon $$
 
-**Task:** Replace the ___ gaps with the correct code. Do not forget to press `check`.
 
-```{r "10_2",warning=FALSE}
-#Using set.seed() we fix the sample that is drawn
+```{r eval=FALSE}
+# Run for additional info in the Viewer pane
+info("How to draw samples in R")
+```
+
+
+**Task:** Replace the ___ gaps with the correct code. Use the function `lm` to estimate the regression above. Do not forget to press `check`.
+
+```{r "10_3",warning=FALSE}
+
 set.seed(123) 
 # We draw a sample of 100.000 observations for performance purposes from `data`
 dataLite <- data[sample(nrow(____), size = _____, replace = TRUE),]
@@ -990,9 +1012,9 @@ The R-squared value in the regression table below indicates a coefficient of det
 
 To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homoskedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
 
-**Task:** Run the following code to run a regression with robust standard errors. Do not forget to press `check`.
+**Task:** Solve the following chunk to run a regression with robust standard errors. Do not forget to press `check`.
 
-```{r "10_3",warning=FALSE}
+```{r "10_4",warning=FALSE}
 # Load the package `fixest` to use the following functions feols()
 ________(fixest)
 # We use the function feols() to add Fixed Effects and Robust Standard Errors. Use `dataLite` for your estimate.
@@ -1038,9 +1060,9 @@ $$ y = β_0 + β_1 x_1 + \varepsilon $$
 
 In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable canum as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
 
-**Task:** Replace the ___ gaps to create a regressions with fixed effects. Compare this regression `regFirstStep` with a regression without differences occur. Press `check` after solving this exercise. 
+**Task:** Replace the ___ gaps to create a regressions with fixed effects. Compare this regression `regFirstStep` with a regression without differences occur. Finally, we display the results with  `modelsummary`. Press `check` after solving this exercise. 
 
-```{r "10_4",warning=FALSE}
+```{r "10_5",warning=FALSE}
 
 # Load the package `modelsummary` to gain a more handsome regression table
 library(____________) 
@@ -1051,7 +1073,7 @@ regWFE <- lm(rank ~ pamzn, data = dataLite)
 modelsummary(list(regWFE, regFE), statistic = "({std.error})", coef_rename = c("pamzn" = "Amazon Price"))
 ```
 
-Column two shows the fixed-effects estimate with robust standard errors, while column one shows the regular regression. It is noticeable that the regressions estimates completely different values for the coefficients. Chapter 2.3 showed price differences that can be attributed to the respective country in which the book was rated. The regular regression seems to show exactly this endogeneity problem, that the Amazon price also depends on the country where the book was rated, as well as many other factors. Using fixed effects, we eliminated the country-specific effect and obtained the information that the Amazon price and the sales rank are not as strong related as we originally assumed.  
+Column two shows the fixed effects estimate with robust standard errors, while column one shows the regular regression. It is noticeable that the regressions estimate completely different values for the coefficients. Chapter 2.3 showed price differences that can be attributed to the respective country in which the book was rated. The regular regression seems to show exactly this endogeneity problem, that the Amazon price also depends on the country where the book was rated, as well as many other factors. Using fixed effects, we eliminated the country-specific effect and obtained the information that the Amazon price and the sales rank are not as strong related as we originally assumed.  
 
 The fixed-effects model requires a so-called panel data structure that has data available for each individual (here: books) at different points in time. However, the addition of fixed effects can also lead to inaccuracies and biases. The disadvantage is that the variables used as fixed effects can no longer be included in the regression as explanatory variables. This model also assumes that the explanatory variable is not collinear (perfectly correlated) to the fixed effects, otherwise this explanatory variable would be determined purely by the fixed effects. Finally, the endogeneity problem can not get completely eliminated by a fixed-effects model. Better suited for this purpose is the Difference-in-Difference approach or Instrumental Variable Estimation, which are not further discussed in the course of this problem set.                                                      
 
@@ -1213,7 +1235,7 @@ In the following chapter event studies are explained and implemented in R.
 
 ## Exercise 3.3 -- Introduction and Implementation of Event Studies
 
-In their paper, Reimers and Waldfogel used an so-called **Event Study** to illustrate and estimate the impact of events (here: publication of professional reviews) that took place. Originally, Event Studies come from the financial sector from James Dolly in 1933. He examined the price effects of stock splits, studying the occurrence of price changes at the time of the split (MacKinley, 1997, ppt. 13). MacKinley listed several methods for applying Event Studies, including *Cross-Sectional Models* that use regressions (MacKinley, 1997, ppt. 33). Reimers and Waldfogel also used such an approach to visualize short-term effects on the Amazon sales rank.
+In their paper, Reimers and Waldfogel used a so-called **Event Study** to illustrate and estimate the impact of events (here: publication of professional reviews) that took place. Originally, Event Studies come from the financial sector from James Dolly in 1933. He examined the price effects of stock splits, studying the occurrence of price changes at the time of the split (MacKinley, 1997, ppt. 13). MacKinley listed several methods for applying Event Studies, including *Cross-Sectional Models* that use regressions (MacKinley, 1997, ppt. 33). Reimers and Waldfogel also used such an approach to visualize short-term effects on the Amazon sales rank.
 
 **Task:** Check the following chunk to read in the main data set.
 
@@ -1224,7 +1246,7 @@ data <- readRDS("dataEst.RDS") %>%
 
 The first step of the authors procedure is to place all books chronologically on top of each other. For this purpose, the variables `NYT_elapse` and `OTH_elapse` are suitable. For both scenarios, the variable is filtered 20 days before and 40 days after the review is published. Before implementing this Event Study, the data structure need to get reviewed. 
 
-**Task:** Create the data set `dataESNYT` and `dataESOTH` to count the number of books with information about 20 days before and 40 days after the review is published.
+**Task:** Create the data set `dataESNYT` and `dataESOTH` to count the number of books with information about 20 days before and 40 days after the review was published.
 
 ```{r "12_2",warning=FALSE}
 dataESNYT <- data %>%
@@ -1309,7 +1331,17 @@ As the graph shows, a published review in the New York Times is associated with 
 **Task:** Press `check` to illustrate the differences between effects of New York Times and other magazines. 
 
 ```{r "12_8",warning=FALSE}
-# Enter your code here.
+ESOTH <- ggplot(reg7.1_agg, aes(x = OTH_elapse, y = Avg.Sales.rank)) + 
+   geom_line() +
+   ggtitle("Event Study - Other Magazines") +
+   scale_x_continuous(breaks = seq(-20, 40, by = 10), limits = c(-20, 40)) + 
+#  geom_line(aes(y = Max95), linetype = "dashed") + 
+#  geom_line(aes(y = Min95), linetype = "dotted") +
+  geom_vline(xintercept = -1, color = "red", size = 0.5) +
+  scale_y_reverse() + 
+  ylim(0.5, -0.5) +
+  theme_minimal()
+ESOTH 
 ```
 
 While `ESNYT` delivers a similar course to the New York Times Event Study from Reimers and Waldfogel, there are major differences in the graph produced here. This could be due to `L1.lrank`, which is not replicatable and differs from the variable created by Reimers and Waldfogel. Since no added value is generated from the graph, the effects (based on Event Studies) of other magazines are not discussed further in the course of this problem set. 
