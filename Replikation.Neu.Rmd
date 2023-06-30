@@ -34,7 +34,7 @@ library(gt)
 setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/materials_for_confidential_data")
  setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data") 
 data <- readRDS("dataEst.RDS")
-#data <- data[,c(1:70, 195:227)]
+
 
 A_B_params <- read_dta("A_B_params.dta")
 A_B_params_bs <- read_dta("A_B_params_bs.dta")
@@ -259,7 +259,6 @@ for (k in 1:3) {
 dataTest <- data[,c(4, 21, 67, 70)]
 
 
-
 ```
 
 
@@ -370,7 +369,6 @@ dataUS <- data %>%
   arrange(canum, ddate)
 
 
-dataUS <- merge(dataUS, A_B_params)
 dataUS <- merge(dataUS, sigma)
 
 
@@ -450,25 +448,14 @@ write.csv(summary_data_Sim, "quantity_us_simulations.csv", row.names = FALSE)
 ```{r}
 
 #Table 3
-dataUS <- data %>%
+data <- data %>%
   filter(cno == 3) %>%
   arrange(canum, ddate)
 
-dataUS <- merge(dataUS, A_B_params)
-dataUS <- merge(dataUS, sigma)
-dataUS <- dataUS %>%
-  mutate(B = (-1)*B,
-         gamma1 = B*(reg5$coefficients["lR"]+lreview*reg5$coefficients["lrR"]) / (1 - reg5$coefficients["lrank"]), 
-         alpha1 = B*(reg5$coefficients["lpamzn"]) / (1-(reg5$coefficients["L1.lrank"])), 
-         e1 = B * (reg5$coefficients["dnytpost1_3"] * dnytpost1_3 + 
-                              reg5$coefficients["dnytpost6_3"] * dnytpost6_3 + 
-                              reg5$coefficients["dnytpost10_3"] * dnytpost10_3 + 
-                              reg5$coefficients["dothpost_3"] * dothpost_3 + 
-                              reg5$coefficients["dothpost10_3"] * dothpost10_3 +
-                              reg5$coefficients["dnytpost1r_3"] * dnytpost1r_3 + 
-                              reg5$coefficients["dnytpost6r_3"] * dnytpost6r_3 + 
-                              reg5$coefficients["dnytpost10r_3"] * dnytpost10r_3) / (1 - reg5$coefficients["L1.lrank"]), 
-         q1_1 = A /(exp(B*lrank - e1)))
+data <- merge(data, A_B_params)
+data <- merge(data, sigma)
+data <- data %>%
+  mutate(B = (-1)*B)
 
 
 lmean <- mean(data$lreview)
@@ -536,7 +523,6 @@ summary_data <- dataUS %>%
     oth_1_10 = mean(oth_1_10),
     max_DNYT = max(DNYT),
     max_DOTH = max(DOTH),
-    e1 = mean(e1),
     oth_11_20 = mean(oth_11_20)
   ) %>%
   mutate(across(everything(), ~ format(., digits = 3)))
@@ -566,6 +552,14 @@ both_not_rec <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_
 both_rec <- mean(collapsed_data$change[collapsed_data$DNYT == 1 & collapsed_data$DOTH == 1 & collapsed_data$drecommended == 1])
 nytoverall <- mean(collapsed_data$change[collapsed_data$DNYT == 1])
 overall <- mean(collapsed_data$change[collapsed_data$DNYT + collapsed_data$DOTH >= 1])
+
+saveRDS(other_only, file = "other_only.RDS")
+saveRDS(nyt_not_rec_only, file = "nyt_not_rec_only.RDS")
+saveRDS(nyt_rec_only, file = "nyt_rec_only.RDS")
+saveRDS(both_not_rec, file = "both_not_rec.RDS")
+saveRDS(both_rec, file = "both_rec.RDS")
+saveRDS(nytoverall, file = "nytoverall.RDS")
+saveRDS(overall, file = "overall.RDS")
 
 
 #se_other_only <- sqrt(var(collapsed_data$change[collapsed_data$DNYT == 0 & collapsed_data$DOTH == 1], na.rm = TRUE) / length(dataUS))

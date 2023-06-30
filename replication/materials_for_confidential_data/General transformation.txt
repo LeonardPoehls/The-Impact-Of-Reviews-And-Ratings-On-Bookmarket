@@ -1,0 +1,49 @@
+data <- data %>%
+    mutate(dnytpost1 = ifelse(NYT_elapse >= 1 & NYT_elapse <= 5, 1, 0), 
+           dnytpost6 = ifelse(NYT_elapse >= 6 & NYT_elapse <= 10, 1, 0),
+    #       dnytpost10Test = ifelse(NYT_elapse >= 11 & NYT_elapse <= 20, 1, 0),
+  
+    #      dnytpostpreTest = ifelse(NYT_elapse >= -10 & NYT_elapse <= 20, 1, 0),
+    #      dothpostTest = ifelse(OTH_elapse >= 1 & OTH_elapse <= 10, 1, 0), 
+    #      dothpost10Test = ifelse(OTH_elapse >= 11 & OTH_elapse <= 20, 1, 0), 
+    #      dothpostpreTest = ifelse(OTH_elapse >= -10 & OTH_elapse <= 20, 1, 0),
+   
+          dnytpost1 = ifelse(is.na(NYT_elapse), 0, dnytpost1), 
+          dnytpost6 = ifelse(is.na(NYT_elapse), 0, dnytpost6),
+          dnytpost10 = ifelse(is.na(NYT_elapse), 0, dnytpost10), 
+          dothpost = ifelse(is.na(NYT_elapse), 0, dothpost), 
+          dnytpost10 = ifelse(is.na(NYT_elapse), 0, dnytpost10)) 
+
+
+
+for (x in c("NYT", "OTH")) {
+  
+  for (k in 0:40) {
+    
+    data[, paste0("D", x, k)] <- as.integer(data[, paste0(x, "_elapse")] == k)
+    data[, paste0("D", x, k)] <- replace(data[, paste0("D", x, k)], is.na(data[, paste0("D", x, k)]), 0)
+  }
+  
+  
+  for (k in 1:20) {
+  
+    data[, paste0("D", x, "m", k)] <- as.integer(data[, paste0(x, "_elapse")] == -1 * k)
+    data[, paste0("D", x, "m", k)] <- replace(data[, paste0("D", x, "m", k)], is.na(data[, paste0("D", x, "m", k)]), 0)
+  }
+}
+
+for (k in 1:3) {
+  data[, paste0("dnytpost1_", k)] <- data$dnytpost1 * (data$cno == k) * (data$drecommended == 0)
+  data[, paste0("dnytpost6_", k)] <- data$dnytpost6 * (data$cno == k) * (data$drecommended == 0)
+  data[, paste0("dnytpost10_", k)] <- data$dnytpost10 * (data$cno == k) * (data$drecommended == 0)
+  data[, paste0("dnytpostpre_", k)] <- data$dnytpostpre * (data$cno == k) * (data$drecommended == 0)
+  
+  data[, paste0("dothpost_", k)] <- data$dothpost * (data$cno == k)
+  data[, paste0("dothpost10_", k)] <- data$dothpost10 * (data$cno == k)
+  data[, paste0("dothpostpre_", k)] <- data$dothpostpre * (data$cno == k)
+  
+  data[, paste0("dnytpost1r_", k)] <- data$dnytpost1 * (data$cno == k) * data$drecommended
+  data[, paste0("dnytpost6r_", k)] <- data$dnytpost6 * (data$cno == k) * data$drecommended
+  data[, paste0("dnytpost10r_", k)] <- data$dnytpost10 * (data$cno == k) * data$drecommended
+  data[, paste0("dnytpostprer_", k)] <- data$dnytpostpre * (data$cno == k) * data$drecommended
+}

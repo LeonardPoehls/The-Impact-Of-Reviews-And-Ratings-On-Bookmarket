@@ -1,0 +1,16 @@
+data <- data %>%
+  arrange(canum, ddate)
+prev_btitle <- NULL
+prev_lrank <- NULL
+new_lrank <- NULL
+for (i in 1:nrow(data)) {
+ # {
+#  if (i == 1 || data$canum[i] != prev_btitle) {
+#    new_lrank[i] <- data$lrank[i]
+#  } 
+
+    new_lrank[i] <- prev_lrank
+  prev_btitle <- data$canum[i]
+  prev_lrank <- data$lrank[i]
+}
+data$L1.lrank <- new_lrank
