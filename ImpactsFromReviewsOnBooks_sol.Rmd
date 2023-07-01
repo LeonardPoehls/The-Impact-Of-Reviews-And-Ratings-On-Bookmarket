@@ -297,6 +297,7 @@ Price elasticity can be represented graphically. The following graph illustrates
 ```{r "1.2.2", warning=FALSE}
 #< task
 #Create a fictive data set 
+setwd("D:/Universitaet Ulm Unterlagen/Bachelorarbeit/The-Impact-Of-Reviews-And-Ratings-On-Bookmarket/replication/data")
 DatasetPE <- data.frame(
   Price = 1:10,
   Demand_05 = 10 - 0.5*1:10,
@@ -453,7 +454,7 @@ data_set <- readRDS("find/your/path/data_set.RDS")
  
 ```
 
-The data set is stored as variable `data_set`. If you want to save RDS files, the structure is as follows:
+The data set is stored in `data_set`. If you want to save RDS files, the structure is as follows:
 
 ```{r eval=FALSE}
 
@@ -608,15 +609,15 @@ library(kableExtra)
 
 # For multiple functions we use so-called pipes `%>%` to connect these functions 
 data_set  %>%
-kbl(col.names = c("old_column_name = new_column_name"), caption = "title") %>%
+kbl(col.names = c("old_column_name = new_column_name", "..."), caption = "title") %>%
   kable_paper("striped", full_width = TRUE) %>%
-#Creates seperate area with a caption within the table
+#Creates a separate area with a caption within the table
   pack_rows("caption", starting_row, ending_row) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
- 
+  
 ```
 
-**Note:** To apply `kbl()`, the underlying data set requires the so-called *long format*. Further explanations about this format you find in chapter 2.3.  
+`col.names` changes the column names so that column names with multiple words are also available. `kable_paper` and `kable_styling` influence the style and color formatting of the table. 
 
 #>
 
@@ -826,7 +827,7 @@ data <- readRDS("dataEst.RDS") %>%
 
 Starting with a good overview, we want to create a table including simple descriptive values distinguished by `country`. 
 
-#< info "How to calculate with descriptice formulas in R"
+#< info "How to calculate with descriptive formulas in R"
 
 R provides multiple formulas to calculate simple descriptive statistics. The R implementations is as follows:
 
@@ -1393,6 +1394,27 @@ The R-squared value in the regression table below indicates a coefficient of det
 
 To apply regressions correctly, certain assumptions must be made. One of these assumptions is **homoskedasticity**. To fulfill this assumption, the residuals of the regression must be uniformly distributed. **Robust Statistics** addresses making estimates that are insensitive to small changes in the basic assumptions like outlier values falsifying the regression residuals (Prof.Dr. Rachev, 2007). In R, there are different methods to implement Robust Standard Errors, all of which follow a similar approach. Basically, this algorithm determines the coefficients by disregarding outlier values and other disruptive factors. 
 
+#< info "How to use `feols()` from the package `fixest`"
+
+To create advanced regressions using robust standard errors, fixed effects, or instrumental variables, the `fixest` package provides the `feols()` function to implement them. Currently, `fixest` is the fastest software to perform these estimations (Berge and McDermott, 2023). The structure is as follows:
+
+```{r eval=FALSE}
+#First, load the package `fixest`
+library(fixest)
+
+```
+
+
+```{r eval = FALSE}
+# we want to regress x on y using z as fixed effects. We also apply robust standard errors over "vcov = "hetero"".
+reg <- feols(y ~ x | 0 | z, data = data_set)
+
+```
+
+**Note:** The 0 indicates a placeholder for instrumental variables. Without the use of instrumental variables, this value can also be omitted and serves only for illustrative purposes.
+
+#>
+
 **Task:** Solve the following chunk to run a regression with robust standard errors. Do not forget to press `check`.
 
 ```{r "3.1.3", warning=FALSE}
@@ -1426,7 +1448,24 @@ failure: Try again.
 
 #### **Fixed Effects**
 
-To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. The endogeneity problem occurs when the explanatory variable $x_k$ depends on the error term $\varepsilon $. For instance, we examine the effect of price (as the only explanatory variable) on the sales rank. Since the book price is determined by many other factors, the price appears to be an endogenous variable. As a result, biases arise and the respective coefficient could become inaccurate. When using fixed effects, we select certain variables to control for. These fixed effects are kept constant and do not affect the estimation. Using this method, we attempt to reduce the variation within explanatory variables by minimizing the potential for bias from omitted variables (Hill, Davis, Roos and French, 2020).
+To make sense of so-called fixed effects, we start with an explanation of fixed effects followed by their implementation in R. Before we start explaining fixed effects, we focus on the **endogeneity problem** of explanatory variables. The endogeneity problem occurs when the explanatory variable $x_k$ depends on the error term $\varepsilon $. For instance, we examine the effect of price (as the only explanatory variable) on the sales rank. Since the book price is determined by many other factors, the price appears to be an endogenous variable. As a result, biases arise and the respective coefficient could become inaccurate and no *causal statements* about effects can be made. When using fixed effects, we select certain variables to control for. These fixed effects are kept constant and do not affect the estimation. Using this method, we attempt to reduce the variation within explanatory variables by minimizing the potential for bias from omitted variables (Hill, Davis, Roos and French, 2020).
+
+#< info "How and when can causal statements be made?"
+
+Causal inference in statistics refers to the conclusions made about cause-and-effect relationships based on statistical and data analysis. To imply such inferences, multiple requirements have to be fulfilled. These requirements are as follows: 
+
+* Time sequence - The cause must precede the effect in time. 
+* Exclusion of spurious correlations 
+* Correlation 
+
+Regarding this study, a time sequence over one year is provided. A correlation is in principle easy to prove - but correlation is not equal to causality. To rule out spurious correlations between cause-effect relationships, several other requirements must be met. For instance, the data extraction must be completely randomized. This means ensuring that each professional reviewer selects their books at random. In addition, endogeneity effects must be ruled out. This works only with special statistical methods such as instrumental variable estimation. Particular data structures (such as heteroskedasticity) are also required. 
+
+**Note:** To avoid misunderstanding, the wording should also be taken into account accordingly. For instance:
+
+* **Causal statement:**  $β_1$ indicates that an increase of $x_1$ by one unit *leads to* an increase of the predicted value $\hat{y}$ by ten units
+* **No causal statement:** $β_1$ indicates that an increase of $x_1$ by one unit *is associated* with an increase of the predicted value $\hat{y}$ by ten units
+
+#>
 
 #< quiz "Fixed_Effects"
 question: What is your suggestion, does the implementation of fixed effects significantly affect the value of the coefficients of the explanatory variable(s)? 
@@ -1441,7 +1480,24 @@ Let us look at an example for this. We want to create a regression where the sal
 
 $$ y = β_0 + β_1 x_1 + \varepsilon $$
 
-In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable canum as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
+In the following, the variable `canum` (chapter 2.1) serves us as fixed effects. The regression considers the variable `canum` as fixed, controlling for each expression of the variable `canum`. Thus, book- and country-specific differences should eliminate effects on the price.  
+
+#< info "How to work with the function `modelsummary` and the eponymous package?"
+
+The function `modelsummary` creates tables to visualize regression tables among others. This function provides the ability to add coefficients of determination, standard errors, significance levels, and more. Likewise, the `modelsummary()` function can rename coefficient names and omit variables from the view. The Structure is as follows:
+
+```{r eval=FALSE}
+library(modelsummary)
+```
+
+```{r}
+modelsummary(list(Regression_Names), statistic = "({std.errors})" / "({p.value})" / "...", coef_rename = "old_coeff_name = new_coef_name", "...", coef_omit = c("coeff_name1", "..."))
+
+```
+
+More information about the package `modelsummary` you find [here](https://cran.r-project.org/web/packages/modelsummary/modelsummary.pdf). 
+
+#>
 
 **Task:** Replace the ___ gaps to create a regressions with fixed effects. Compare this regression `regFirstStep` with a regression without differences occur. Finally, we display the results with  `modelsummary`. Press `check` after solving this exercise. 
 
@@ -1717,7 +1773,24 @@ reg7$residuals <- reg7$residuals - mean(reg7$residuals[which(dataUS$NYT_elapse =
 
 ```
 
+**Note:** The command `reg7$residuals` provides access to every single residual from `reg7`. 
+
 Further, we aggregate the residuals on `NYT_elapse`. As a result, for each expression of `NYT_elapse`, an average residual is generated.
+
+#< info "How to use the function `aggregate()`"
+
+The `aggregate()` function in R is used to perform an aggregate operation on a data set. The data set is grouped among selected variables while a function is applied to each part of this group. The structure is as follows:
+
+```{r eval = FALSE}
+
+# `Fun =` should apply the calculation method
+aggregated_data <- aggregate(column/vector, by = list(Variables_to_be_group_by), Fun = mean/sum/...)
+
+```
+
+**Note:** Usually, `aggregate()` can be replaced by the combination of `group_by()` and `summarise()`, which is faster in computation. In this case I decided to use "aggregate" because of the different data sources.
+
+#>
 
 **Task:** `Check` the following chunk to aggregate the residuals on `NYT_elapse`.
 
@@ -1730,7 +1803,7 @@ reg7_agg <- aggregate(reg7$residuals, by = list(dataUS$NYT_elapse), FUN = mean)
    mutate(Max95 = Avg.Sales.rank + (1.96*sd(Avg.Sales.rank)/ sqrt(length(reg7))),
           Min95 = Avg.Sales.rank - (1.96*sd(Avg.Sales.rank) / sqrt(length(reg7))))
 #>
-#mean(reg7$residuals[which(dataUS$NYT_elapse == -1)])
+
 ```
 
 The variables `Max95` and `Min95` are indicating the 95 percent *confidence interval*. A confidence interval indicates to x percent (here: 95 percent) how probable it is that the actual value is in this interval or graphical range. The formula is as follows: 
@@ -2065,7 +2138,7 @@ The coefficient for `NYT 1-5 days` is about 0.53, while the coefficient for `NYT
 question: Which of the following answers is **not** correct? 
 sc:
 - The coefficient for `NYT 1-5 days` indicates that the occurrence of a New York Times review is associated with an increase in sales volume of 53 percent with the first five days of publication.
-- The coefficient for `NYT 1-5 days` indicates that a one percent book price increase reviewed by The New York Times is associated with a $e^{0,53} - 1 = $ 70 percent increase in sales volume within the first five days after publication.*
+- The coefficient for `NYT 1-5 days` indicates that a one percent book price increase reviewed by The New York Times is associated with a $e^{0{,}53}$ - 1 = 70 percent increase in sales volume within the first five days after publication.*
 - New York Times recommendations have larger impacts on the sales volume than New York Times reviews without recommendation.
 success: Great, your answer is correct!   
 failure: Try again.
@@ -2115,3 +2188,66 @@ Still, the New York Times has large short-term effects on sales, while Reimers a
 **Related Literature**
 
 In addition to the paper of Reimers and Waldfogel, also similar studies have been published. For instance, Chevalier and Goolsbee published their study back in 2003. In their study, they examined the price elasticity from Amazon and BN.com and found out, that the price elasticity for books sold on Amazon was about -0.6. Regarding the discussion of the extent to which authors with higher name recognition benefit from "positive" or "negative" reviews, Berger, Sorensen, and Rasmussen (2010) found that authors with higher prior awareness (more than ten published books) are expected to benefit almost twice as much from positive journal reviews. In contrast, less prior awareness authors (less than two published books) should benefit particularly well from bad reviews, while well-known authors should receive a negative impact from bad reviews on the number of books they sell. Chevalier and Mayzlin (2006) explained the phenomenon by noting that books listed on Amazon are generally better known than books that are not listed, so these listed books are more likely to suffer (due to a bad review) than unlisted books. A similar study was published by Reinstein and Snyder (2005), where the authors estimated the impact of professional reviews on movies using a difference-in-difference approach. Using two different levels of ratings (from positive ratings), the authors found that a single thumbs-up from the rater should result in an 11 percent increase in sales, while two thumbs-ups should have a 25 percent effect on sales.  
+
+## Exercise 6 -- Literature 
+
+### Bibliography
+
+Berger, J., Rasmussen, Scott J., Sorensen, Alan T. (2010). Positive Effects of Negative Publicity: When Negative Reviews Increase Sales, 29(5), 815-827. 
+
+Beurich, A., Götz, G., Sprang, C., Fuchs, A. (2023). Professor Götz presents results of the book prize binding project at press conference in Berlin. 
+
+Chevalier, J., Goolsbee, A. (2003). The Effect of Word of Mouth on Sales: Online Book Reviews. Kluwer Academic Publishers, (1), 203-222.
+
+Curcic, D. (2023). Impact of Amazon On The Publishing Industry.
+
+Davis, Andrew P., Hill, Terrence D., Roos, M., French, Michael T. (2020). Limitations of Fixed-Effects Models for Panel Data, Sage Journals, 63(3), 357-369. 
+
+Henderson Jr, Glenn V. (1990). Problems and Solutions in Conducting Event Studies. American Risk and Insurance Association, 57(2), 282-306.
+
+Kranz, S. (2022). 1 Predicting Prices for Bordeaux Red Wines. 
+
+Kwan, J. (2013). Why books cost more in Canada. 
+
+MacKinley, Craig A. (1997). Event Studies in Economics and Finance. Journal of Economic Literature, 35(1), 13-39
+ 
+Mayzlin, D., Chevalier, J. (2006). The Effect of Word of Mouth on Sales: Online Book Reviews. Kluwer Academic Publishers, 43(3), 345-354.
+
+Mcloughlin, D. (2022). Amazon Print Book Sales Statistics. 
+
+Nakayama, M. (2015). For Whats It's Worth: Fixed Book Prices in Foreign Book Markets. Publishing Trends.
+
+Rachev, S. (2007). Robust Estimation. 
+
+Reimers, I., Waldfogel, J. (2021). Digitization and Pre-purchase Information: The Causal and Welfare Impacts of Reviews and Crowd Ratings. American Economic Association, 111(6), 1944-1971
+
+Reinstein, David A., Snyder, Christopher M. (2005). The Influence of Expert Reviews on Consumer Demand For Experience Goods: A Case Study of Movie Critics. The Journal of Industrial Economics, 53(1), 27-51.
+
+Sorensen, Alan T. (2007). Besteller Lists and Product Variety, 55(4), 715-738.
+
+Stieb, M. (2022). Amazon's War on Fake Reviews. New York Intelligencer. 
+
+Train, K. (2015). Welfare calculations in discrete choice models when anticipated and experienced attributes differ: A guide with examples, Journal of Choice Modelling, 16, 15-22. 
+
+Wieneke, D. (2019). Customer strategy foundation: Search, Experience and Credence (SEC) analysis determines how consumers buy. 
+
+Wisniach, B. (2023). Amazon Sales Rank: Explained.
+
+### R Packages
+
+Arel-Bundock, V. (2022). modelsummary: Data and Model Summaries in R. Journal of Statistical Software, 103(1), 1-23. URL https://www.jstatsoft.org/article/view/v103i01 
+
+Berge L., McDermott, G. (2023). Fast Fixed-Effects Estimation: Short Introduction. URL https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html 
+
+Zhu, H. (2021). Create Awesome HTML Table with knit::kable and KableExtra. URL https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html 
+
+Zezula, P. (2021). Grafiken mit ggplot aus dem package library(ggplot2). URL https://md.psych.bio.uni-goettingen.de/mv/unit/ggplot2/ggplot2.html 
+
+
+
+
+
+
+
+
+
